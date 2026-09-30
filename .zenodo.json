@@ -1,0 +1,36 @@
+{
+  "title": "Code and results for: Zero- Versus Infinite-Temperature Damping in Variational Quantum Circuits",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "description": "<p>Scripts, committed result files and LaTeX source behind every table and figure of the paper <em>Zero- Versus Infinite-Temperature Damping in Variational Quantum Circuits: Feature Scale, Sampling Cost, and Frame Gauge</em> (V.-Q.-M. Nguyen, T.-V. Truong, H.-L. Nguyen, T.-K. Le, 2026). The paper compares amplitude damping with its Pauli twirl, generalized amplitude damping at infinite temperature, in single-qubit re-uploading fits, a four-qubit MNIST classifier and a three-qubit variational eigensolver. The README maps each table and figure to the script and result file that produce it.</p><p>Licenses: code under MIT; result files and figures under CC BY 4.0 (LICENSE-CC-BY-4.0.txt); the manuscript files are not covered by these licenses.</p>",
+  "keywords": [
+    "amplitude damping",
+    "Pauli twirling",
+    "generalized amplitude damping",
+    "variational quantum circuits",
+    "randomized compiling"
+  ],
+  "creators": [
+    {
+      "name": "Nguyen, Vu-Quoc-Minh",
+      "affiliation": "University of Science, Vietnam National University Ho Chi Minh City (VNU-HCM)",
+      "orcid": "0009-0007-2748-5107"
+    },
+    {
+      "name": "Truong, Tuan-Vu",
+      "affiliation": "Can Tho University",
+      "orcid": "0009-0005-6357-6060"
+    },
+    {
+      "name": "Nguyen, Hoang-Long",
+      "affiliation": "Identity Quantum Computing JSC",
+      "orcid": "0009-0005-7922-9266"
+    },
+    {
+      "name": "Le, Trung-Khanh",
+      "affiliation": "University of Science, Vietnam National University Ho Chi Minh City (VNU-HCM)",
+      "orcid": "0000-0003-0935-6743"
+    }
+  ]
+}
