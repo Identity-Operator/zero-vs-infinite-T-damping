@@ -1,5 +1,7 @@
 # Zero- versus infinite-temperature damping in variational quantum circuits
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23053251.svg)](https://doi.org/10.5281/zenodo.23053251)
+
 Code, result files and LaTeX source for
 
 > V.-Q.-M. Nguyen, T.-V. Truong, H.-L. Nguyen, and T.-K. Le,
@@ -142,6 +144,11 @@ into `code/old_code/`. These two scripts need `qiskit` and `qiskit-aer`
 
 Citation metadata, including the authors' ORCID iDs, is in
 [CITATION.cff](CITATION.cff).
+
+This repository is archived on Zenodo: version v1.0.0 is
+[doi:10.5281/zenodo.23053251](https://doi.org/10.5281/zenodo.23053251), and
+[doi:10.5281/zenodo.23053250](https://doi.org/10.5281/zenodo.23053250) always
+resolves to the latest version.
 
 ```bibtex
 @article{nguyen2026damping,

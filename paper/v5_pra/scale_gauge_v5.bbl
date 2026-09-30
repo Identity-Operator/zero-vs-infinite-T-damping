@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{60}%
+\begin{thebibliography}{61}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -899,4 +899,16 @@
    {journal} {PRX Quantum}\ }\textbf {\bibinfo {volume} {3}},\ \bibinfo {pages}
   {030341} (\bibinfo {year} {2022})},\ \Eprint
   {https://arxiv.org/abs/2205.02261} {arXiv:2205.02261} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nguyen}\ \emph {et~al.}(2026)\citenamefont {Nguyen},
+  \citenamefont {Truong}, \citenamefont {Nguyen},\ and\ \citenamefont
+  {Le}}]{nguyen2026zenodo}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.-Q.-M.}\
+  \bibnamefont {Nguyen}}, \bibinfo {author} {\bibfnamefont {T.-V.}\
+  \bibnamefont {Truong}}, \bibinfo {author} {\bibfnamefont {H.-L.}\
+  \bibnamefont {Nguyen}},\ and\ \bibinfo {author} {\bibfnamefont {T.-K.}\
+  \bibnamefont {Le}},\ }\href {https://doi.org/10.5281/zenodo.23053251}
+  {\bibinfo {title} {Code and results for: {Zero-} versus infinite-temperature
+  damping in variational quantum circuits}},\ \bibinfo {howpublished} {Zenodo,
+  version v1.0.0} (\bibinfo {year} {2026})\BibitemShut {NoStop}%
 \end{thebibliography}%
