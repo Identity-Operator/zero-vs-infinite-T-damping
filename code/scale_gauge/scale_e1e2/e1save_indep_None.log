@@ -1,0 +1,9 @@
+indep None   256 train 0.8950 test 0.8663 t250 0.880 loss 0.244771 (29s)
+indep None   512 train 0.8910 test 0.8716 t250 0.868 loss 0.268051 (30s)
+indep None   768 train 0.8850 test 0.8601 t250 0.884 loss 0.264556 (29s)
+indep None  1024 train 0.8890 test 0.8742 t250 0.884 loss 0.270763 (29s)
+indep None  1280 train 0.8880 test 0.8670 t250 0.864 loss 0.263695 (28s)
+indep None  1536 train 0.8800 test 0.8653 t250 0.868 loss 0.292239 (28s)
+indep None  1792 train 0.8880 test 0.8716 t250 0.868 loss 0.261008 (29s)
+indep None  2048 train 0.8930 test 0.8742 t250 0.884 loss 0.258862 (30s)
+E1SAVE_DONE indep None

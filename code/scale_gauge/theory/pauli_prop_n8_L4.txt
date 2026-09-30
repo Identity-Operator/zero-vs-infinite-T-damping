@@ -1,0 +1,4 @@
+# python pauli_prop.py (committed file), started 2026-09-24 20:43
+n=8 L=4 twirl: chain 8.9708e-04 | 120-draw rms 8.6142e-04 +- 3.6e-05
+  mean/median 1.43, max/mean 6.7, top 5% of draws carry 19%; 5-draw rms / full: median 0.96, P10 0.76, <= 0.70 in 4%
+# peak RSS 1203284 kB, wall 1912.97 s

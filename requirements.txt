@@ -1,0 +1,10 @@
+# Versions used for the paper (Python 3.12.3). For a CUDA build of torch, see pytorch.org.
+numpy==2.4.3
+scipy==1.17.1
+torch==2.11.0
+torchvision==0.26.0
+matplotlib==3.10.9
+scikit-learn==1.8.0
+# Only for the two cross-checks against van Rossum et al.'s Qiskit code (see README):
+qiskit==2.4.1
+qiskit-aer==0.17.2

@@ -1,0 +1,2 @@
+torchcirc AD     256 train 0.8990 test 0.8722 t250 0.888 loss 0.243717 (506s)
+torchcirc AD     512 train 0.8980 test 0.8762 t250 0.876 loss 0.237838 (789s)

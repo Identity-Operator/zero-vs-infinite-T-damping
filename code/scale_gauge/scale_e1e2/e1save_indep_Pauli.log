@@ -1,0 +1,9 @@
+indep Pauli  256 train 0.8910 test 0.8680 t250 0.868 loss 0.254185 (322s)
+indep Pauli  512 train 0.8960 test 0.8663 t250 0.880 loss 0.245578 (303s)
+indep Pauli  768 train 0.8920 test 0.8769 t250 0.880 loss 0.246204 (449s)
+indep Pauli 1024 train 0.8920 test 0.8706 t250 0.880 loss 0.254941 (493s)
+indep Pauli 1280 train 0.8990 test 0.8706 t250 0.876 loss 0.242911 (133s)
+indep Pauli 1536 train 0.8920 test 0.8745 t250 0.892 loss 0.253075 (128s)
+indep Pauli 1792 train 0.8820 test 0.8548 t250 0.848 loss 0.283875 (106s)
+indep Pauli 2048 train 0.8800 test 0.8755 t250 0.892 loss 0.245758 (118s)
+E1SAVE_DONE indep Pauli

@@ -1,0 +1,61 @@
+E0 = -3.232051 (exact diagonalisation)
+identity check post gamma=0.01: max|E_rev(th) - E_AD(th')| over 50 sets = 7.77e-16
+identity check post gamma=0.05: max|E_rev(th) - E_AD(th')| over 50 sets = 5.55e-16
+identity check post gamma=0.1: max|E_rev(th) - E_AD(th')| over 50 sets = 3.89e-16
+identity check post gamma=0.2: max|E_rev(th) - E_AD(th')| over 50 sets = 1.44e-15
+identity check mid  gamma=0.01: max|E_rev(th) - E_AD(th')| over 50 sets = 9.87e-02
+identity check mid  gamma=0.05: max|E_rev(th) - E_AD(th')| over 50 sets = 2.72e-01
+identity check mid  gamma=0.1: max|E_rev(th) - E_AD(th')| over 50 sets = 3.84e-01
+identity check mid  gamma=0.2: max|E_rev(th) - E_AD(th')| over 50 sets = 6.64e-01
+[    13s] uniform mid  g=0.01  AD      min rel err 0.0157  median 0.0630
+[    25s] uniform mid  g=0.01  revAD   min rel err 0.1108  median 0.1201
+[    42s] uniform mid  g=0.01  twirlAD min rel err 0.1268  median 0.1280
+[    56s] uniform mid  g=0.05  AD      min rel err 0.0220  median 0.0223
+[    71s] uniform mid  g=0.05  revAD   min rel err 0.3958  median 0.4048
+[    97s] uniform mid  g=0.05  twirlAD min rel err 0.4921  median 0.4950
+[   115s] uniform mid  g=0.1   AD      min rel err 0.0276  median 0.0276
+[   133s] uniform mid  g=0.1   revAD   min rel err 0.5826  median 0.5826
+[   158s] uniform mid  g=0.1   twirlAD min rel err 0.7417  median 0.7436
+[   177s] uniform mid  g=0.2   AD      min rel err 0.0370  median 0.0370
+[   194s] uniform mid  g=0.2   revAD   min rel err 0.6881  median 0.6881
+[   229s] uniform mid  g=0.2   twirlAD min rel err 0.9327  median 0.9327
+[   258s] uniform post g=0.01  AD      min rel err 0.0136  median 0.0146
+[   286s] uniform post g=0.01  revAD   min rel err 0.0137  median 0.0144
+[   320s] uniform post g=0.01  twirlAD min rel err 0.1184  median 0.1196
+[   346s] uniform post g=0.05  AD      min rel err 0.0147  median 0.0150
+[   373s] uniform post g=0.05  revAD   min rel err 0.0147  median 0.0151
+[   409s] uniform post g=0.05  twirlAD min rel err 0.4623  median 0.4638
+[   435s] uniform post g=0.1   AD      min rel err 0.0158  median 0.0160
+[   460s] uniform post g=0.1   revAD   min rel err 0.0157  median 0.0160
+[   492s] uniform post g=0.1   twirlAD min rel err 0.7006  median 0.7008
+[   516s] uniform post g=0.2   AD      min rel err 0.0179  median 0.0181
+[   541s] uniform post g=0.2   revAD   min rel err 0.0179  median 0.0181
+[   574s] uniform post g=0.2   twirlAD min rel err 0.9018  median 0.9018
+[   598s] small   mid  g=0.01  AD      min rel err 0.0156  median 0.0161
+[   623s] small   mid  g=0.01  revAD   min rel err 0.1065  median 0.1101
+[   655s] small   mid  g=0.01  twirlAD min rel err 0.1275  median 0.1278
+[   681s] small   mid  g=0.05  AD      min rel err 0.0220  median 0.0221
+[   705s] small   mid  g=0.05  revAD   min rel err 0.3958  median 0.3994
+[   728s] small   mid  g=0.05  twirlAD min rel err 0.4921  median 0.4934
+[   745s] small   mid  g=0.1   AD      min rel err 0.0276  median 0.0276
+[   762s] small   mid  g=0.1   revAD   min rel err 0.5826  median 0.5826
+[   786s] small   mid  g=0.1   twirlAD min rel err 0.7417  median 0.7436
+[   802s] small   mid  g=0.2   AD      min rel err 0.0370  median 0.0370
+[   817s] small   mid  g=0.2   revAD   min rel err 0.6881  median 0.6881
+[   837s] small   mid  g=0.2   twirlAD min rel err 0.9327  median 0.9327
+[   853s] small   post g=0.01  AD      min rel err 0.0134  median 0.0134
+[   867s] small   post g=0.01  revAD   min rel err 0.0134  median 0.0135
+[   886s] small   post g=0.01  twirlAD min rel err 0.1188  median 0.1190
+[   899s] small   post g=0.05  AD      min rel err 0.0146  median 0.0149
+[   914s] small   post g=0.05  revAD   min rel err 0.0147  median 0.0147
+[   930s] small   post g=0.05  twirlAD min rel err 0.4623  median 0.4634
+[   942s] small   post g=0.1   AD      min rel err 0.0157  median 0.0157
+[   954s] small   post g=0.1   revAD   min rel err 0.0157  median 0.0157
+[   973s] small   post g=0.1   twirlAD min rel err 0.7005  median 0.7006
+[   990s] small   post g=0.2   AD      min rel err 0.0179  median 0.0179
+[  1007s] small   post g=0.2   revAD   min rel err 0.0179  median 0.0179
+[  1029s] small   post g=0.2   twirlAD min rel err 0.9018  median 0.9019
+paired trajectories post g=0.01: max|E_rev - E_AD(mapped init)| after 500 steps = 4.88e-15
+paired trajectories post g=0.05: max|E_rev - E_AD(mapped init)| after 500 steps = 4.88e-15
+paired trajectories post g=0.1: max|E_rev - E_AD(mapped init)| after 500 steps = 6.22e-15
+paired trajectories post g=0.2: max|E_rev - E_AD(mapped init)| after 500 steps = 6.22e-15

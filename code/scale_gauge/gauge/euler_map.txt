@@ -1,0 +1,18 @@
+Euler rules for P.B, B.P and X B X: checked (up to global phase)
+z_flip(theta') = -z_AD(theta) for both gauges, n in 2-4, L in 1-4: max error 9.4e-16
+
+TR gauge, n=4, L=4: ring frame Q = XZXY; theta'_k = s theta_k + m pi, listed (s, m) for (t0, t1, t2):
+  layer 0: q0 -1,-0,-0  q1 -0,+1,+1  q2 -1,-0,-0  q3 -0,+0,-0
+  layer 1: q0 +1,-1,-0  q1 +0,+0,+1  q2 +1,-1,-0  q3 +0,+1,-0
+  layer 2: q0 +1,-1,-0  q1 +0,+0,+1  q2 +1,-1,-0  q3 +0,+1,-0
+  layer 3: q0 +1,-1,-0  q1 +0,+0,+1  q2 +1,-1,-0  q3 +0,+1,-0
+  layer 4: q0 +0,+0,+0  q1 +0,+0,+0  q2 +0,+0,+0  q3 +0,+0,+0
+  angles with sign flip: 24 of 60
+
+X gauge, n=4, L=4: ring frame Q = XIXX; theta'_k = s theta_k + m pi, listed (s, m) for (t0, t1, t2):
+  layer 0: q0 +0,+0,+0  q1 +1,-1,-0  q2 +0,+0,+0  q3 +0,+0,+0
+  layer 1: q0 -1,+1,+0  q1 -0,-0,-0  q2 -1,+1,+0  q3 -1,+1,+0
+  layer 2: q0 -1,+1,+0  q1 -0,-0,-0  q2 -1,+1,+0  q3 -1,+1,+0
+  layer 3: q0 -1,+1,+0  q1 -0,-0,-0  q2 -1,+1,+0  q3 -1,+1,+0
+  layer 4: q0 -0,-0,-0  q1 -0,-0,-0  q2 -0,-0,-0  q3 -0,-0,-0
+  angles with sign flip: 32 of 60

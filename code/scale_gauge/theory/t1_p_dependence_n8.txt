@@ -1,0 +1,10 @@
+# python t1_p_dependence.py 8 700 0.01, started 2026-09-24 22:03
+n=8: sigma_None L=1..30: 0.1159 ... 0.0622  (175s)
+p=0.3    L*=2  L_shot=2  br(L*)=0.0678  br(end)=0.0675  floor_closed=0.0667  Lambda markov=0.20386 tail=None  twirl(L*)=1.562e-02  L_end=6  (286s)
+p=0.2    L*=3  L_shot=2  br(L*)=0.0576  br(end)=0.0574  floor_closed=0.0566  Lambda markov=0.29543 tail=None  twirl(L*)=1.065e-02  L_end=6  (384s)
+p=0.1    L*=5  L_shot=3  br(L*)=0.0357  br(end)=0.0357  floor_closed=0.0351  Lambda markov=0.45789 tail=None  twirl(L*)=6.054e-03  L_end=6  (476s)
+p=0.05   L*=8  L_shot=4  br(L*)=0.0198  br(end)=0.0198  floor_closed=0.0194  Lambda markov=0.67078 tail=0.649160416591934  twirl(L*)=4.369e-03  L_end=10  (613s)
+p=0.03   L*=13  L_shot=None  br(L*)=0.0124  br(end)=0.0124  floor_closed=0.0121  Lambda markov=0.78665 tail=0.7869933577126116  twirl(L*)=3.606e-03  L_end=18  (865s)
+p=0.01   L*=49  L_shot=None  br(L*)=0.0043  br(end)=0.0043  floor_closed=0.0042  Lambda markov=0.92310 tail=0.9231150732712494  twirl(L*)=1.342e-03  L_end=64  (1657s)
+wrote code/scale_gauge/theory/t1_p_dependence_n8.json (1657s)
+# peak RSS 3571220 kB, wall 1658.44 s

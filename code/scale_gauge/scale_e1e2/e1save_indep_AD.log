@@ -1,0 +1,9 @@
+indep AD     256 train 0.8990 test 0.8722 t250 0.888 loss 0.243717 (179s)
+indep AD     512 train 0.8980 test 0.8762 t250 0.876 loss 0.237838 (167s)
+indep AD     768 train 0.9090 test 0.8693 t250 0.872 loss 0.227805 (153s)
+indep AD    1024 train 0.8940 test 0.8792 t250 0.884 loss 0.252500 (165s)
+indep AD    1280 train 0.8910 test 0.8821 t250 0.900 loss 0.258135 (204s)
+indep AD    1536 train 0.8950 test 0.8713 t250 0.876 loss 0.268401 (425s)
+indep AD    1792 train 0.8890 test 0.8801 t250 0.896 loss 0.257510 (153s)
+indep AD    2048 train 0.8960 test 0.8811 t250 0.896 loss 0.238967 (153s)
+E1SAVE_DONE indep AD

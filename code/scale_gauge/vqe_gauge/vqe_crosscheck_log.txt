@@ -1,0 +1,21 @@
+g=0.01  None       max|E_torch - E_qiskit| over 5 random par = 4.44e-16
+g=0.01  AD         max|E_torch - E_qiskit| over 5 random par = 3.84e-14
+g=0.01  AD_reverse max|E_torch - E_qiskit| over 5 random par = 1.51e-14
+g=0.01  Pauli      max|E_torch - E_qiskit| over 5 random par = 1.05e-15
+g=0.01  Depol      max|E_torch - E_qiskit| over 5 random par = 1.40e-14
+g=0.05  None       max|E_torch - E_qiskit| over 5 random par = 3.89e-16
+g=0.05  AD         max|E_torch - E_qiskit| over 5 random par = 1.59e-14
+g=0.05  AD_reverse max|E_torch - E_qiskit| over 5 random par = 3.94e-15
+g=0.05  Pauli      max|E_torch - E_qiskit| over 5 random par = 6.11e-16
+g=0.05  Depol      max|E_torch - E_qiskit| over 5 random par = 7.91e-16
+g=0.1   None       max|E_torch - E_qiskit| over 5 random par = 5.55e-16
+g=0.1   AD         max|E_torch - E_qiskit| over 5 random par = 1.19e-14
+g=0.1   AD_reverse max|E_torch - E_qiskit| over 5 random par = 1.94e-16
+g=0.1   Pauli      max|E_torch - E_qiskit| over 5 random par = 2.78e-16
+g=0.1   Depol      max|E_torch - E_qiskit| over 5 random par = 1.70e-16
+g=0.2   None       max|E_torch - E_qiskit| over 5 random par = 4.44e-16
+g=0.2   AD         max|E_torch - E_qiskit| over 5 random par = 1.27e-14
+g=0.2   AD_reverse max|E_torch - E_qiskit| over 5 random par = 4.00e-15
+g=0.2   Pauli      max|E_torch - E_qiskit| over 5 random par = 2.55e-16
+g=0.2   Depol      max|E_torch - E_qiskit| over 5 random par = 2.54e-16
+worst 3.84e-14; PASS at tolerance 1e-12

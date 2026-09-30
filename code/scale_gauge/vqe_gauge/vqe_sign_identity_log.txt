@@ -1,0 +1,2 @@
+open chain, B = {1}: max |E_(-J)(theta) - E_J(theta')| over 50 draws x gamma {0.1, 0.2} x {mid, post} x {none, AD, revAD, twirlAD} = 2.0e-15
+3-ring (frustrated), same shift: max difference 1.43 (not a gauge; on an odd cycle no product of X_i flips every bond, and Y or Z would flip the field)

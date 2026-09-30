@@ -1,0 +1,23 @@
+% TABLE (paired t, Holm-adjusted over 22 tests): L & ch & dacc & CI & P_holm & dchi (P_holm)
+1 & AD & $+0.001$ & $[-0.003,+0.005]$ & 1 & $-0.006$ (1)\\   % raw P 0.7 / 0.11
+1 & Pauli & $-0.059$ & $[-0.178,+0.001]$ & 1 & $+0.058$ (1)\\   % raw P 0.35 / 0.36
+1 & Depol & $+0.000$ & $[+0.000,+0.000]$ & exact & $+0.000$ (--)\\   % raw P nan / nan
+2 & AD & $+0.003$ & $[-0.003,+0.009]$ & 1 & $-0.072$ (0.0044)\\   % raw P 0.22 / 0.00021
+2 & Pauli & $+0.004$ & $[-0.003,+0.010]$ & 1 & $-0.043$ (0.26)\\   % raw P 0.23 / 0.016
+2 & Depol & $+0.000$ & $[-0.004,+0.004]$ & 1 & $-0.023$ (1)\\   % raw P 1 / 0.11
+3 & AD & $+0.009$ & $[+0.003,+0.015]$ & 0.038 & $-0.162$ (0.024)\\   % raw P 0.0021 / 0.0013
+3 & Pauli & $+0.001$ & $[-0.007,+0.008]$ & 1 & $-0.049$ (1)\\   % raw P 0.84 / 0.094
+3 & Depol & $+0.000$ & $[-0.007,+0.007]$ & 1 & $-0.037$ (1)\\   % raw P 0.94 / 0.3
+4 & AD & $+0.008$ & $[+0.002,+0.013]$ & 0.008 & $-0.247$ (1e-5)\\   % raw P 0.0004 / 4.8e-07
+4 & Pauli & $+0.001$ & $[-0.007,+0.009]$ & 1 & $-0.063$ (0.57)\\   % raw P 0.81 / 0.036
+4 & Depol & $+0.001$ & $[-0.006,+0.008]$ & 1 & $-0.062$ (1)\\   % raw P 0.73 / 0.067
+surviving at 0.05 after Holm: [(2, 'AD', 'chi'), (3, 'AD', 'acc'), (3, 'AD', 'chi'), (4, 'AD', 'acc'), (4, 'AD', 'chi')]
+S2 Fashion AD-None: dacc +0.0173 paired P 0.0085; dchi +0.299 paired P 0.25
+S2 Fashion Pauli-None: dacc +0.0045 paired P 0.28; dchi +0.333 paired P 0.099
+S2 Fashion Depol-None: dacc +0.0087 paired P 0.04; dchi +0.597 paired P 0.07
+S2 Fashion AD-Pauli: dacc +0.0128 paired P 0.026; dchi -0.035 paired P 0.91
+S1 L=2 AD-Pauli: dacc -0.0010 paired P 0.69; dchi -0.029 paired P 0.13
+S1 L=3 AD-Pauli: dacc +0.0081 paired P 0.088; dchi -0.113 paired P 0.0073
+S1 L=4 AD-Pauli: dacc +0.0068 paired P 0.095; dchi -0.183 paired P 0.00065
+S4 AD_flip-AD: dacc -0.0058 paired P 0.096; dchi -0.008 paired P 0.71
+fixedpoint (raw readout) AD_flip-AD dacc -0.0032 paired P 0.21

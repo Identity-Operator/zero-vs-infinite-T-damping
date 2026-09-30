@@ -1,0 +1,29 @@
+  [v5_train_extrema] n_test=3037: clipped 14/12148 test angle values (0.12%)
+angles (300, 4) 0.223 6.256
+L=1 None  rms 1.8735e-01 +- 6.6e-03  (29s)
+L=1 AD    rms 1.0138e-01 +- 2.7e-03  (66s)
+L=1 twirl rms 7.1022e-02 +- 2.9e-03  (117s)
+L=2 None  rms 2.0768e-01 +- 2.9e-03  (161s)
+L=2 AD    rms 7.8567e-02 +- 5.4e-04  (217s)
+L=2 twirl rms 2.1587e-02 +- 5.3e-04  (303s)
+L=3 None  rms 2.2195e-01 +- 1.4e-03  (364s)
+L=3 AD    rms 7.6553e-02 +- 6.1e-04  (443s)
+L=3 twirl rms 6.8968e-03 +- 1.2e-04  (560s)
+L=4 None  rms 2.3105e-01 +- 1.3e-03  (636s)
+L=4 AD    rms 7.4867e-02 +- 6.4e-04  (735s)
+L=4 twirl rms 2.0488e-03 +- 3.0e-05  (884s)
+
+comparison with the T1 chain (n=4):
+L=1 None  brute 1.8735e-01 +- 6.6e-03  chain 1.8765e-01  z = -0.0
+L=1 AD    brute 1.0138e-01 +- 2.7e-03  chain 1.0230e-01  z = -0.3
+L=1 twirl brute 7.1022e-02 +- 2.9e-03  chain 6.9855e-02  z = +0.4
+L=2 None  brute 2.0768e-01 +- 2.9e-03  chain 2.0670e-01  z = +0.3
+L=2 AD    brute 7.8567e-02 +- 5.4e-04  chain 7.8770e-02  z = -0.4
+L=2 twirl brute 2.1587e-02 +- 5.3e-04  chain 2.1340e-02  z = +0.5
+L=3 None  brute 2.2195e-01 +- 1.4e-03  chain 2.2278e-01  z = -0.6
+L=3 AD    brute 7.6553e-02 +- 6.1e-04  chain 7.5528e-02  z = +1.7
+L=3 twirl brute 6.8968e-03 +- 1.2e-04  chain 6.8330e-03  z = +0.5
+L=4 None  brute 2.3105e-01 +- 1.3e-03  chain 2.3042e-01  z = +0.5
+L=4 AD    brute 7.4867e-02 +- 6.4e-04  chain 7.5120e-02  z = -0.4
+L=4 twirl brute 2.0488e-03 +- 3.0e-05  chain 2.1065e-03  z = -1.9
+peak RSS 1157652 KB, wall 890.75 s

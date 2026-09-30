@@ -1,0 +1,12 @@
+# python t1_p_dependence.py 4 5000, started 2026-09-24 21:56
+n=4: sigma_None L=1..30: 0.1879 ... 0.2400  (8s)
+p=0.3    L*=2  L_shot=2  br(L*)=0.0765  br(end)=0.0757  floor_closed=0.0747  Lambda markov=0.29036 tail=None  twirl(L*)=2.133e-02  L_end=6  (9s)
+p=0.2    L*=4  L_shot=3  br(L*)=0.0649  br(end)=0.0647  floor_closed=0.0637  Lambda markov=0.44150 tail=0.4563988610515723  twirl(L*)=1.070e-02  L_end=7  (10s)
+p=0.1    L*=8  L_shot=6  br(L*)=0.0410  br(end)=0.0408  floor_closed=0.0396  Lambda markov=0.66657 tail=0.6677075993154594  twirl(L*)=1.031e-02  L_end=14  (13s)
+p=0.05   L*=18  L_shot=11  br(L*)=0.0236  br(end)=0.0235  floor_closed=0.0219  Lambda markov=0.81721 tail=0.8174809544211613  twirl(L*)=6.708e-03  L_end=29  (16s)
+p=0.03   L*=33  L_shot=18  br(L*)=0.0155  br(end)=0.0155  floor_closed=0.0137  Lambda markov=0.88615 tail=0.8862477123454618  twirl(L*)=4.617e-03  L_end=52  (22s)
+p=0.01   L*=117  L_shot=51  br(L*)=0.0068  br(end)=0.0067  floor_closed=0.0047  Lambda markov=0.96060 tail=0.9606057977132324  twirl(L*)=2.217e-03  L_end=176  (43s)
+p=0.003  L*=453  L_shot=None  br(L*)=0.0031  br(end)=0.0031  floor_closed=0.0014  Lambda markov=0.98802 tail=0.9880216870169397  twirl(L*)=1.034e-03  L_end=648  (115s)
+p=0.001  L*=1508  L_shot=None  br(L*)=0.0017  br(end)=0.0017  floor_closed=0.0005  Lambda markov=0.99599 tail=0.9959919212838425  twirl(L*)=5.680e-04  L_end=2094  (334s)
+wrote code/scale_gauge/theory/t1_p_dependence_n4.json (334s)
+# peak RSS 1194448 kB, wall 334.59 s

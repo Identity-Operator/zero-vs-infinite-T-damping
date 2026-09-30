@@ -1,0 +1,9 @@
+indep Depol  256 train 0.9010 test 0.8765 t250 0.884 loss 0.247166 (330s)
+indep Depol  512 train 0.8840 test 0.8627 t250 0.880 loss 0.253632 (304s)
+indep Depol  768 train 0.8790 test 0.8699 t250 0.892 loss 0.275419 (403s)
+indep Depol 1024 train 0.8940 test 0.8663 t250 0.864 loss 0.254797 (508s)
+indep Depol 1280 train 0.8950 test 0.8683 t250 0.872 loss 0.265582 (149s)
+indep Depol 1536 train 0.8890 test 0.8719 t250 0.876 loss 0.252123 (127s)
+indep Depol 1792 train 0.8820 test 0.8689 t250 0.852 loss 0.275156 (105s)
+indep Depol 2048 train 0.8920 test 0.8732 t250 0.888 loss 0.256769 (119s)
+E1SAVE_DONE indep Depol

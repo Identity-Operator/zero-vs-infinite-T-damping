@@ -1,0 +1,9 @@
+N=0.0: T diag [0.83666 0.83666 0.7    ], offdiag max 0.0e+00, t [0.  0.  0.3] (p(1-2N) = 0.300)
+N=0.25: T diag [0.83666 0.83666 0.7    ], offdiag max 0.0e+00, t [0.   0.   0.15] (p(1-2N) = 0.150)
+N=0.5: T diag [0.83666 0.83666 0.7    ], offdiag max 0.0e+00, t [0. 0. 0.] (p(1-2N) = 0.000)
+N=1.0: T diag [0.83666 0.83666 0.7    ], offdiag max 0.0e+00, t [ 0.   0.  -0.3] (p(1-2N) = -0.300)
+max |z_GAD(N) - [z_tw + (1-2N)(z_AD - z_tw)]| over 20 random circuits (n=3, L=1-3) and N in {0.1,0.25,0.7,1}: 1.2e-01
+
+feature scale over inputs, p=0.3, n=3, 40 random theta, 60 random inputs:
+  L=1: sigma_br(N=0.25)/sigma_br(N=0) = 0.5000  (1-2N = 0.5);  sigma_AD 0.1549, sigma_GAD(0.25) 0.1329, sigma_tw 0.1246
+  L=3: sigma_br(N=0.25)/sigma_br(N=0) = 0.4954  (1-2N = 0.5);  sigma_AD 0.0987, sigma_GAD(0.25) 0.0509, sigma_tw 0.0168

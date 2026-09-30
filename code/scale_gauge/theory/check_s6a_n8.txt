@@ -1,0 +1,4 @@
+# python check_s6a_n8.py (committed file), started 2026-09-24 21:05
+n=8 L=4 Pauli: per-qubit sd, Pauli propagation vs S6a record, max rel diff 6.5e-14; rms of the 5 draws 6.3576e-04 (S6a 6.3576e-04)  (496s)
+n=8 L=6 Pauli: per-qubit sd, Pauli propagation vs S6a record, max rel diff 1.8e-12; rms of the 5 draws 2.4333e-05 (S6a 2.4333e-05)  (1103s)
+# peak RSS 1353692 kB, wall 1103.66 s

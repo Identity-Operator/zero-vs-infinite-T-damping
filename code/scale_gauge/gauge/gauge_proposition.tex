@@ -1,0 +1,208 @@
+% ============================================================================
+% G1: the Pauli-frame / time-reversal gauge for reversed amplitude damping.
+% Evidence: scale_gauge/gauge/test_gauge.py -> results.json; gauge_lib.py.
+%
+% Needs, in the preamble (REVTeX has no theorem environments by default):
+%   \newtheorem{proposition}{Proposition}
+%   \newtheorem{corollary}{Corollary}
+%   \newtheorem{remark}{Remark}
+% and the macros used below:
+%   \newcommand{\N}{\mathcal N}   \newcommand{\Nrev}{\mathcal N^{\mathrm{rev}}}
+% All numbers below are read from results.json (test_gauge.py run of 2026-09-24, 13/13 pass).
+% ============================================================================
+
+% ---------------------------------------------------------------- MAIN TEXT (Sec. IV.A)
+\subsection{When the damping direction is a gauge}
+\label{sec:gauge}
+
+Amplitude damping toward $\ket{1}$ instead of $\ket{0}$,
+$\Nrev=\mathcal X\circ\N\circ\mathcal X$ with $\mathcal X(\rho)=X\rho X$, has the same
+contraction matrix $T=\mathrm{diag}(c,c,c^2)$ as $\N$ and the opposite non-unital vector,
+$\mathbf t=(0,0,-p)$. Whether a circuit can tell the two apart is not a property of the
+channel but of where the circuit lets a Pauli frame travel.
+
+Insert $g_k\circ g_k=\mathrm{id}$ at every cut $k$ between the elements of the circuit,
+where each $g_k$ is either a Pauli conjugation $\rho\mapsto P_k\rho P_k$ or its composition
+with complex conjugation in the computational basis, $\rho\mapsto P_k\bar\rho P_k$ (all $g_k$
+of one type). The reversed circuit becomes $g_m\circ\tilde\Phi\circ g_0$, where $\tilde\Phi$
+has every element replaced by $g_k\circ E_k\circ g_{k-1}$.
+
+\begin{proposition}[Frame gauge]\label{prop:gauge}
+Reversing the damping is a reparametrisation of the model, $y^{\mathrm{rev}}(x;\theta)=s\,y(x;\theta')$
+for all inputs $x$ with $s=\pm1$, whenever a frame assignment of one type exists such that
+(i) at every noise location the frame acts as $X$ or $Y$ on each noisy qubit;
+(ii) every fixed gate maps the incoming frame to a Pauli frame;
+(iii) every data-encoding gate is left invariant;
+(iv) every trainable element is mapped back into its own family;
+(v) the input state is absorbed by the first element on each qubit, and the final frame
+maps each measured observable to $s$ times itself, with $s=-1$ allowed only if the readout
+has a learnable sign.
+\end{proposition}
+
+The antiunitary case contains spin time reversal, $\Theta=\bigotimes_q(-iY_q)K$. Because
+$\Theta\,\sigma\,\Theta^{-1}=-\sigma$ and $\Theta\,i\,\Theta^{-1}=-i$, every single-qubit
+rotation is time-reversal invariant, $\Theta R_{\mathbf n}(a)\Theta^{-1}=R_{\mathbf n}(a)$ for
+any axis $\mathbf n$, while $\Theta\,\N\,\Theta^{-1}=\Nrev$ since the Kraus operators of $\N$
+are real. Condition (iii) therefore never fails for single-qubit encodings, whatever their
+axis: only multi-qubit fixed gates, the placement of noise relative to them, and the two
+boundaries can break the gauge. In our classifier (noise after the whole entangling ring,
+a general trainable layer before it, an affine readout) all five conditions hold for
+$R_X$, $R_Y$, $R_Z$ and a generic encoding axis alike, and the reversal is exact
+reparametrisation to within $4.4\times10^{-16}$ (Table~\ref{tab:gauge}). A unitary Pauli frame suffices only when it
+commutes with the encoding generator and still flips the damping, which singles out $X$ for
+$R_X$ and $Y$ for $R_Y$; for $R_Z$ or a generic axis only the antiunitary frame works. An
+encoding choice therefore never protects the damping direction from being a gauge. The damping-direction control of
+Sec.~\ref{sec:...} is therefore uninformative by construction.
+
+\begin{corollary}[Deterministic frames are gauge]\label{cor:det}
+Under the conditions of Proposition~\ref{prop:gauge}, a deterministic relabelling of the
+noise by a Pauli frame or by time reversal leaves the reachable model class unchanged. A
+difference in trained performance between $\N$ and $\Nrev$ can then only come from
+optimisation, because $\theta\mapsto\theta'$ does not preserve the initialisation measure.
+\end{corollary}
+
+\begin{corollary}[Only randomised frames change the class]\label{cor:rand}
+Pauli twirling replaces $\N$ by $\tfrac14\sum_P P\N P$, a convex mixture of
+frame-equivalent channels. It is not itself frame-equivalent to $\N$: every (anti)unitary
+Pauli frame preserves $\lVert\mathbf t\rVert$, which is $p$ for $\N$ and $0$ for the twirl.
+\end{corollary}
+
+% ---------------------------------------------------------------- TABLE
+\begin{table}[t]
+\caption{Frame gauge for reversed amplitude damping, from an exhaustive search over all
+Pauli frames of each type ($4^n$ strings; $n\le3$), with $p=0.3$. ``Gauge'' means a frame
+assignment satisfying (i)--(v) exists; the explicit identity
+$y^{\mathrm{rev}}(x;\theta)=s\,y(x;\theta')$ is then checked on random parameters and inputs, and
+the largest deviation is quoted. ``None'' means no frame of that type satisfies (i)--(v).}
+\label{tab:gauge}
+\begin{ruledtabular}
+\begin{tabular}{lll}
+model & Pauli frame & time reversal / antiunitary\\
+\colrule
+classifier, $R_X$ encoding, noise after ring  & gauge, $\le2\times10^{-16}$ & gauge, $\le3\times10^{-16}$\\
+classifier, $R_Y$ encoding                     & gauge ($Y$ frame), $\le3\times10^{-16}$ & gauge, $\le2\times10^{-16}$\\
+classifier, $R_Z$ encoding                     & none       & gauge, $\le2\times10^{-16}$\\
+classifier, generic axis                       & none       & gauge, $\le3\times10^{-16}$\\
+classifier, noise inside the ring              & none       & none\\
+classifier, encoding before first trainable layer & none    & none\\
+single-qubit regression, $f=\langle Z\rangle$  & none       & none\\
+\quad with a learnable sign                    & gauge, $s=-1$, $\le1\times10^{-16}$ & gauge, $s=-1$, $\le3\times10^{-16}$\\
+VQE, noise after each $R_{ZZ}$                 & gauge, $\le3\times10^{-16}$ & gauge, $\le4\times10^{-16}$\\
+VQE, noise after each CNOT inside $R_{ZZ}$     & none       & none\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+% (Rows are fixed once results.json exists; if any entry differs from the expectation
+%  in test_gauge.py the suite fails and the table must be revised, not the test.)
+
+The single-qubit regression model of Ref.~\cite{vanrossum2026biased} (general
+single-qubit blocks, $R_X$ encoding, noise after every block and every encoding, output
+$f=\langle Z\rangle$ used directly) fails only condition (v): the frame left after the last
+channel flips the sign of $\langle Z\rangle$ and nothing absorbs it, so
+$f^{\mathrm{rev}}(x;\theta)=-f(x;\theta')$. The two classes are mirror images and differ as sets,
+since the last channel pins the output range to $[2p-1,1]$ under $\N$ and to $[-1,1-2p]$ under
+$\Nrev$; both upper bounds are attained, $1$ and $1-2p=0.400$ at $p=0.3$. A sign-symmetric target ensemble, or a learnable output scale,
+makes them statistically indistinguishable. In the same work's VQE the noise follows each
+CNOT inside $R_{ZZ}=\mathrm{CNOT}\,R_Z\,\mathrm{CNOT}$; no trainable gate between the two CNOTs
+can reset the frame, no frame of either type exists, and the reversed-damping result there
+concerns a genuinely different model. Had the noise followed each whole $R_{ZZ}$ instead, the
+unitary frame $X^{\otimes 3}$ would be a gauge that leaves every $R_X$ and $R_{ZZ}$ angle
+unchanged ($X$ commutes with both generators; $H$ is $X^{\otimes3}$-invariant) and moves only
+the initial $R_Y$ angles, $t\mapsto\pi-t$. The authors' code draws those angles from
+$U[0,\pi]$, which this map preserves, so the initialisation measure is gauge invariant too.
+With an optimiser that is equivariant under coordinate reflections (gradient descent, Adam),
+runs with $\N$ and $\Nrev$ would then be identically distributed, not merely equally
+expressive; their default, COBYLA, is not exactly reflection equivariant (its initial simplex
+steps along $+\hat e_i$), so small residual differences could remain even there.
+% Source: code/old_code/TFIM_VQE_Noise.py (van Rossum et al.'s own code), lines 578-580:
+% z_params ~ U[-pi,pi], x_params ~ U[0,pi], y_param ~ U[0,pi]; noise_model "2" puts the
+% channel after each cx (lines 281-301); AD_reverse = amplitude_damping_error(p,
+% excited_state_population=1) (line 138). Optimiser: scipy minimize, method='COBYLA' by
+% default (density-matrix training); SPSA for shot-based training.
+
+% ---------------------------------------------------------------- APPENDIX
+\section{Proof of the frame gauge}
+\label{app:gauge}
+
+\paragraph{Setting.}
+A model on $n$ qubits prepares $\rho_0=\ket{0}\bra{0}^{\otimes n}$, applies elements
+$E_1,\dots,E_m$ and reads out $y_i=\Tr[O_i\,\Phi(\rho_0)]$, $\Phi=E_m\circ\dots\circ E_1$, possibly
+followed by a learned affine map. Each $E_k$ is a fixed unitary $\mathcal U_G$, a data encoding
+$\mathcal U_{S(x)}$ with $S(x)=\bigotimes_q R_{\mathbf n_q}(x_q)$, a trainable unitary from a
+family $\mathcal W$ (general single-qubit blocks, or Pauli rotations $e^{-i\theta Q/2}$), or a
+layer of the single-qubit channel $\N$ on a set $S_k$ of qubits. The reversed model
+replaces every noise layer by $\Nrev=\mathcal X\N\mathcal X$.
+
+\paragraph{Frames.}
+Let $\mathcal P(\rho)=P\rho P$ for a Pauli string $P$, and $\mathcal K(\rho)=\bar\rho$. On Hermitian
+operators $\mathcal K$ is real-linear, trace preserving and positive, $\mathcal K^2=\mathrm{id}$,
+and for any channel with Kraus operators $\{K_j\}$ one has
+$\mathcal K\circ\mathcal E\circ\mathcal K=\bar{\mathcal E}$, the channel with Kraus operators
+$\{\bar K_j\}$. A frame of unitary type is $g=\mathcal P$; of antiunitary type,
+$g=\mathcal P\circ\mathcal K$. In both cases $g\circ g=\mathrm{id}$, and
+$g\circ\mathcal E\circ g'$ has Kraus operators $\{P\,K_j^{(t)}\,P'\}$ with
+$K^{(t)}=K$ (unitary type) or $\bar K$ (antiunitary type).
+
+\paragraph{Telescoping.}
+For any frames $g_0,\dots,g_m$ of one type,
+\begin{equation}
+\Phi^{\mathrm{rev}}=g_m\circ\big(g_m E^{\mathrm{rev}}_m g_{m-1}\big)\circ\dots\circ
+\big(g_1 E^{\mathrm{rev}}_1 g_0\big)\circ g_0 ,
+\label{eq:telescope}
+\end{equation}
+which is an identity since every inserted $g_k g_k$ is the identity.
+
+\paragraph{The conditions.}
+(i) For a noise layer on $S_k$ with $g_k=g_{k-1}$ acting as $X$ or $Y$ on each $q\in S_k$: the
+Kraus operators of $\N$ (amplitude damping) are real, and $X\N X=Y\N Y=\Nrev$ because
+$Z\N Z=\N$; hence $g_k\Nrev g_{k-1}=\N$ for both types. Off $S_k$ the frame passes unchanged.
+(ii) For a fixed unitary $G$, $g_k\,\mathcal U_G\,g_{k-1}=\mathcal U_{P_kG^{(t)}P_{k-1}}$, which
+equals $\mathcal U_G$ iff $P_k\propto G\,P_{k-1}\,G^{(t)\dagger}$; the frame propagates by
+conjugation and must remain a Pauli string. For Clifford $G$ this holds for every
+$P_{k-1}$ of the unitary type; for real Clifford $G$ (CNOT) also of the antiunitary type.
+(iii) For an encoding, $g_k=g_{k-1}$ and $P_q R^{(t)}_{\mathbf n_q}(x)P_q=R_{\mathbf n_q}(x)$ for
+all $x$. Unitary type: $[P_q,\mathbf n_q\cdot\boldsymbol\sigma]=0$. Antiunitary type:
+$\overline{R_{\mathbf n}(x)}=\exp[+ix\,\overline{\mathbf n\cdot\boldsymbol\sigma}/2]$, so the
+condition is $P_q\,\overline{\mathbf n_q\cdot\boldsymbol\sigma}\,P_q=-\mathbf n_q\cdot\boldsymbol\sigma$,
+which holds for $P_q=Y$ and every $\mathbf n_q$ since $\bar X=X$, $\bar Y=-Y$, $\bar Z=Z$ and
+$Y\sigma_{x,z}Y=-\sigma_{x,z}$, $YYY=Y$.
+(iv) A general single-qubit block $W$ is mapped to $P_{k,q}W^{(t)}P_{k-1,q}\in SU(2)$ for any
+pair of frames: such blocks absorb, and may change, the frame on their qubits. A Pauli
+rotation is mapped to $P e^{\mp i\theta Q^{(t)}/2}P=e^{-i\theta' Q/2}$, $\theta'=\pm\theta$,
+iff $g_k=g_{k-1}$ and $PQ^{(t)}P=\pm Q$; it can carry a frame but not change it.
+(v) By Eq.~\eqref{eq:telescope} the input is $g_0(\rho_0)=P_0\rho_0P_0$ (as $\bar\rho_0=\rho_0$).
+If the first element on qubit $q$ is a general block $W$, the pair $W^{(t)}P_{0,q}$ is itself
+a general block acting on $\ket 0$; if it is $R_X$ or $R_Y$, $X\ket0$ and $Y\ket0$ equal
+$R_{X,Y}(\pi)\ket0$ up to phase and are absorbed by a shift of the angle; otherwise $P_{0,q}$
+must fix $\ket0$, i.e. $P_{0,q}\in\{I,Z\}$. At the output,
+$\Tr[O\,g_m(\sigma)]=\Tr[P_mO^{(t)}P_m\,\sigma]$ (using $\Tr[O\bar\sigma]=\Tr[\bar O\sigma]$
+for Hermitian arguments), which is $s\,\Tr[O\sigma]$ iff $P_mO^{(t)}P_m=sO$.
+
+\paragraph{Conclusion.}
+If (i)--(v) hold, every bracket in Eq.~\eqref{eq:telescope} is an element of the original
+model with reparametrised trainable parameters, the input frame is absorbed by the first
+elements and the output frame contributes the sign $s$; hence
+$y^{\mathrm{rev}}_i(x;\theta)=s_i\,y_i(x;\theta')$ for all $x$. \hfill$\square$
+
+\paragraph{Corollaries.}
+Corollary~\ref{cor:det} follows because $\theta\mapsto\theta'$ is a bijection of the parameter
+space. For Corollary~\ref{cor:rand}, write a qubit channel as $\mathbf r\mapsto T\mathbf r+\mathbf t$.
+Unitary Pauli conjugation maps $(T,\mathbf t)\mapsto(D T D, D\mathbf t)$ with $D$ a diagonal
+sign matrix, and $\mathcal K$ maps $(T,\mathbf t)\mapsto(FTF,F\mathbf t)$ with $F=\mathrm{diag}(1,-1,1)$;
+both preserve $\lVert\mathbf t\rVert$. The Pauli twirl has $\mathbf t=0$, while
+$\lVert\mathbf t\rVert=p$ for amplitude damping.
+
+\paragraph{Time reversal and CNOT.}
+With $\Theta=\bigotimes_q(-iY_q)K$, $\Theta\,\mathrm{CNOT}\,\Theta^{-1}=-\mathrm{CNOT}\,(Z\otimes X)$:
+time reversal leaves a local Pauli residue on the input side of each CNOT. A $Z$ residue
+passes through amplitude damping ($Z\N Z=\N$); an $X$ residue does not. The residue must
+therefore reach a general trainable block without crossing a noise location, which is the
+case in our classifier (the trainable layer immediately precedes the ring) and fails when
+noise is inserted after each CNOT (Table~\ref{tab:gauge}).
+
+\paragraph{Scope.}
+The proposition is a sufficient condition. The rows marked ``none'' in
+Table~\ref{tab:gauge} establish that no frame of either type exists; they do not by
+themselves prove that the classes differ. For the single-qubit regression model the
+output range proves it; for the VQE the lowest energies reached over 12 restarts are equal where the gauge holds (-3.1770 for both) and differ by $1.98$ where it does not (-3.087 against -1.109), reproducing the direction of Ref.~\cite{vanrossum2026biased}'s finding; for the
+classifier with noise inside the ring the difference is measured directly (S4).

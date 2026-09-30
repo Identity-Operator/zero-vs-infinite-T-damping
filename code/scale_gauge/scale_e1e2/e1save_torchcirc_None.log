@@ -1,0 +1,4 @@
+torchcirc None   256 train 0.8950 test 0.8663 t250 0.880 loss 0.244771 (309s)
+torchcirc None   512 train 0.8910 test 0.8716 t250 0.868 loss 0.268051 (272s)
+torchcirc None   768 train 0.8850 test 0.8601 t250 0.884 loss 0.264556 (326s)
+torchcirc None  1024 train 0.8890 test 0.8742 t250 0.884 loss 0.270763 (500s)

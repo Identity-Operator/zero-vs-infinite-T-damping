@@ -1,0 +1,6 @@
+  [v5_train_extrema] n_test=3037: clipped 14/12148 test angle values (0.12%)
+angles (300, 4) 0.223 6.256
+L=4 AD    rms 6.5314e-02 +- 4.4e-04  (106s)
+L=4 twirl rms 5.1411e-02 +- 3.8e-04  (264s)
+L=8 AD    rms 4.2244e-02 +- 3.3e-04  (458s)
+L=8 twirl rms 1.0321e-02 +- 5.1e-05  (753s)

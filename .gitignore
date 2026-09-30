@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+# datasets, downloaded by torchvision
+data/
+# van Rossum et al.'s code, downloaded separately (see README)
+code/old_code/
+# LaTeX build files
+paper/v5_pra/*.aux
+paper/v5_pra/*.log
+paper/v5_pra/*.blg
+paper/v5_pra/*.out
+paper/v5_pra/*.fls
+paper/v5_pra/*.fdb_latexmk
+paper/v5_pra/*.synctex.gz
+paper/v5_pra/*Notes.bib

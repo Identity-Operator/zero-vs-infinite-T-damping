@@ -1,0 +1,219 @@
+{
+ "channels": {
+  "ADrev == X.AD.X": true,
+  "ADrev == Y.AD.Y": true,
+  "AD == Z.AD.Z (phase covariant)": true,
+  "time reversal maps AD to ADrev: Y conj(K) Y": true,
+  "twirl == frame average (1/4) sum_P P.AD.P": true,
+  "time reversal leaves every single-qubit rotation invariant (max err)": 0.0
+ },
+ "cases": {
+  "classifier rx, noise after ring": {
+   "U": {
+    "exists": true,
+    "identity_err": 2.220446049250313e-16,
+    "signs": [
+     -1,
+     -1,
+     -1
+    ],
+    "frame_after_first_block": "IXI"
+   },
+   "A": {
+    "exists": true,
+    "identity_err": 3.3306690738754696e-16,
+    "signs": [
+     -1,
+     -1,
+     -1
+    ],
+    "frame_after_first_block": "IYI"
+   }
+  },
+  "classifier ry, noise after ring": {
+   "U": {
+    "exists": true,
+    "identity_err": 3.3306690738754696e-16,
+    "signs": [
+     -1,
+     -1,
+     -1
+    ],
+    "frame_after_first_block": "IYI"
+   },
+   "A": {
+    "exists": true,
+    "identity_err": 2.220446049250313e-16,
+    "signs": [
+     -1,
+     -1,
+     -1
+    ],
+    "frame_after_first_block": "IYI"
+   }
+  },
+  "classifier rz, noise after ring": {
+   "U": {
+    "exists": false
+   },
+   "A": {
+    "exists": true,
+    "identity_err": 2.220446049250313e-16,
+    "signs": [
+     -1,
+     -1,
+     -1
+    ],
+    "frame_after_first_block": "IXI"
+   }
+  },
+  "classifier generic axis, after ring": {
+   "U": {
+    "exists": false
+   },
+   "A": {
+    "exists": true,
+    "identity_err": 3.3306690738754696e-16,
+    "signs": [
+     -1,
+     -1,
+     -1
+    ],
+    "frame_after_first_block": "IYI"
+   }
+  },
+  "classifier rx, noise INSIDE ring": {
+   "U": {
+    "exists": false
+   },
+   "A": {
+    "exists": false
+   }
+  },
+  "classifier rz, noise INSIDE ring": {
+   "U": {
+    "exists": false
+   },
+   "A": {
+    "exists": false
+   }
+  },
+  "classifier rx, encoding first": {
+   "U": {
+    "exists": false
+   },
+   "A": {
+    "exists": false
+   }
+  },
+  "vanRossum 1q, f=<Z> (no sign freedom)": {
+   "U": {
+    "exists": false
+   },
+   "A": {
+    "exists": false
+   }
+  },
+  "vanRossum 1q, learnable sign": {
+   "U": {
+    "exists": true,
+    "identity_err": 1.1102230246251565e-16,
+    "signs": [
+     -1
+    ],
+    "frame_after_first_block": "X"
+   },
+   "A": {
+    "exists": true,
+    "identity_err": 2.7755575615628914e-16,
+    "signs": [
+     -1
+    ],
+    "frame_after_first_block": "Y"
+   }
+  },
+  "VQE, noise after whole RZZ": {
+   "U": {
+    "exists": true,
+    "identity_err": 2.7755575615628914e-16,
+    "signs": [
+     1
+    ],
+    "frame_after_first_block": "XXX"
+   },
+   "A": {
+    "exists": true,
+    "identity_err": 4.440892098500626e-16,
+    "signs": [
+     1
+    ],
+    "frame_after_first_block": "XXX"
+   }
+  },
+  "VQE, noise after each CNOT": {
+   "U": {
+    "exists": false
+   },
+   "A": {
+    "exists": false
+   }
+  }
+ },
+ "vanrossum_range": {
+  "AD": {
+   "sampled_max": 0.9851884300956305,
+   "sampled_min": -0.28328167307215474
+  },
+  "ADrev": {
+   "sampled_max": 0.3088513364959093,
+   "sampled_min": -0.8689198088403498
+  },
+  "twirl": {
+   "sampled_max": 0.31136412880506736,
+   "sampled_min": -0.3184021704025075
+  },
+  "analytic_bounds": {
+   "AD": [
+    -0.4,
+    1.0
+   ],
+   "ADrev": [
+    -1.0,
+    0.4
+   ],
+   "twirl": [
+    -0.7,
+    0.7
+   ]
+  },
+  "witness_AD_max": 1.0,
+  "witness_ADrev_max": 0.40000000000000013
+ },
+ "vqe_minima": {
+  "post": {
+   "AD": -3.1769969115724153,
+   "ADrev": -3.1769966706024255
+  },
+  "mid": {
+   "AD": -3.0868893828863313,
+   "ADrev": -1.1090887102099218
+  }
+ },
+ "expectations": {
+  "rx after: unitary gauge": true,
+  "rz after: no unitary gauge": true,
+  "rx/ry/rz/generic after: time-reversal gauge": true,
+  "noise inside ring: no gauge of either type": true,
+  "encoding first: no gauge of either type": true,
+  "vanRossum f=<Z>: no gauge": true,
+  "vanRossum with sign: gauge up to f -> -f": true,
+  "VQE post: gauge": true,
+  "VQE mid: no gauge": true,
+  "vanRossum range: AD attains 1; ADrev attains but never exceeds 1-2p": true,
+  "ry after: unitary gauge (Y frame)": true,
+  "VQE post minima equal": true,
+  "channel identities": true
+ },
+ "p": 0.3,
+ "runtime_s": 542.8247239589691
+}
