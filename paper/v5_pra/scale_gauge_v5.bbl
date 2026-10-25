@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{61}%
+\begin{thebibliography}{40}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -181,36 +181,6 @@
   {\bibinfo  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {17}},\
   \bibinfo {pages} {1221} (\bibinfo {year} {2021})},\ \Eprint
   {https://arxiv.org/abs/2009.05532} {arXiv:2009.05532} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Krantz}\ \emph {et~al.}(2019)\citenamefont {Krantz},
-  \citenamefont {Kjaergaard}, \citenamefont {Yan}, \citenamefont {Orlando},
-  \citenamefont {Gustavsson},\ and\ \citenamefont
-  {Oliver}}]{krantz2019quantum}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
-  {Krantz}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Kjaergaard}},
-  \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Yan}}, \bibinfo {author}
-  {\bibfnamefont {T.~P.}\ \bibnamefont {Orlando}}, \bibinfo {author}
-  {\bibfnamefont {S.}~\bibnamefont {Gustavsson}},\ and\ \bibinfo {author}
-  {\bibfnamefont {W.~D.}\ \bibnamefont {Oliver}},\ }\bibfield  {title}
-  {\bibinfo {title} {A quantum engineer's guide to superconducting qubits},\
-  }\href {https://doi.org/10.1063/1.5089550} {\bibfield  {journal} {\bibinfo
-  {journal} {Applied Physics Reviews}\ }\textbf {\bibinfo {volume} {6}},\
-  \bibinfo {pages} {021318} (\bibinfo {year} {2019})},\ \Eprint
-  {https://arxiv.org/abs/1904.06560} {arXiv:1904.06560} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Quek}\ \emph {et~al.}(2024)\citenamefont {Quek},
-  \citenamefont {Stilck~Fran{\c{c}}a}, \citenamefont {Khatri}, \citenamefont
-  {Meyer},\ and\ \citenamefont {Eisert}}]{quek2024exponentially}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
-  {Quek}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
-  {Stilck~Fran{\c{c}}a}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
-  {Khatri}}, \bibinfo {author} {\bibfnamefont {J.~J.}\ \bibnamefont {Meyer}},\
-  and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Eisert}},\
-  }\bibfield  {title} {\bibinfo {title} {Exponentially tighter bounds on
-  limitations of quantum error mitigation},\ }\href
-  {https://doi.org/10.1038/s41567-024-02536-7} {\bibfield  {journal} {\bibinfo
-  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {20}},\ \bibinfo
-  {pages} {1648} (\bibinfo {year} {2024})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Mele}\ \emph {et~al.}(2026)\citenamefont {Mele},
   \citenamefont {Angrisani}, \citenamefont {Ghosh}, \citenamefont {Khatri},
   \citenamefont {Eisert}, \citenamefont {Stilck~Fran{\c{c}}a},\ and\
@@ -228,20 +198,6 @@
   {\bibinfo  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {22}},\
   \bibinfo {pages} {751} (\bibinfo {year} {2026})},\ \Eprint
   {https://arxiv.org/abs/2403.13927} {arXiv:2403.13927} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Fefferman}\ \emph {et~al.}(2024)\citenamefont
-  {Fefferman}, \citenamefont {Ghosh}, \citenamefont {Gullans}, \citenamefont
-  {Kuroiwa},\ and\ \citenamefont {Sharma}}]{fefferman2024effect}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
-  {Fefferman}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Ghosh}},
-  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Gullans}}, \bibinfo
-  {author} {\bibfnamefont {K.}~\bibnamefont {Kuroiwa}},\ and\ \bibinfo {author}
-  {\bibfnamefont {K.}~\bibnamefont {Sharma}},\ }\bibfield  {title} {\bibinfo
-  {title} {Effect of nonunital noise on random-circuit sampling},\ }\href
-  {https://doi.org/10.1103/PRXQuantum.5.030317} {\bibfield  {journal} {\bibinfo
-   {journal} {PRX Quantum}\ }\textbf {\bibinfo {volume} {5}},\ \bibinfo {pages}
-  {030317} (\bibinfo {year} {2024})},\ \Eprint
-  {https://arxiv.org/abs/2306.16659} {arXiv:2306.16659} \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Schumann}\ \emph {et~al.}(2024)\citenamefont
   {Schumann}, \citenamefont {Wilhelm},\ and\ \citenamefont
   {Ciani}}]{schumann2024emergence}%
@@ -266,32 +222,6 @@
   }\textbf {\bibinfo {volume} {9}},\ \bibinfo {pages} {1617} (\bibinfo {year}
   {2025})},\ \Eprint {https://arxiv.org/abs/2402.08721} {arXiv:2402.08721}
   \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Schmitt}\ \emph {et~al.}(2026)\citenamefont
-  {Schmitt}, \citenamefont {Ekstr{\o}m}, \citenamefont {Bottarelli},\ and\
-  \citenamefont {Bonet-Monroig}}]{schmitt2026experimental}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
-  {Schmitt}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Ekstr{\o}m}},
-  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Bottarelli}},\ and\
-  \bibinfo {author} {\bibfnamefont {X.}~\bibnamefont {Bonet-Monroig}},\
-  }\href@noop {} {\bibinfo {title} {Experimental demonstration of the absence
-  of noise-induced barren plateaus using information content landscape
-  analysis}} (\bibinfo {year} {2026}),\ \Eprint
-  {https://arxiv.org/abs/2602.22851} {arXiv:2602.22851} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Sannia}\ \emph {et~al.}(2024)\citenamefont {Sannia},
-  \citenamefont {Tacchino}, \citenamefont {Tavernelli}, \citenamefont
-  {Giorgi},\ and\ \citenamefont {Zambrini}}]{sannia2024engineered}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
-  {Sannia}}, \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Tacchino}},
-  \bibinfo {author} {\bibfnamefont {I.}~\bibnamefont {Tavernelli}}, \bibinfo
-  {author} {\bibfnamefont {G.~L.}\ \bibnamefont {Giorgi}},\ and\ \bibinfo
-  {author} {\bibfnamefont {R.}~\bibnamefont {Zambrini}},\ }\bibfield  {title}
-  {\bibinfo {title} {Engineered dissipation to mitigate barren plateaus},\
-  }\href {https://doi.org/10.1038/s41534-024-00875-0} {\bibfield  {journal}
-  {\bibinfo  {journal} {npj Quantum Information}\ }\textbf {\bibinfo {volume}
-  {10}},\ \bibinfo {pages} {81} (\bibinfo {year} {2024})},\ \Eprint
-  {https://arxiv.org/abs/2310.15037} {arXiv:2310.15037} \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Wallman}\ and\ \citenamefont
   {Emerson}(2016)}]{wallman2016noise}%
   \BibitemOpen
@@ -327,51 +257,6 @@
   {https://doi.org/10.1103/physrevx.11.041039} {\bibfield  {journal} {\bibinfo
   {journal} {Physical Review X}\ }\textbf {\bibinfo {volume} {11}},\ \bibinfo
   {pages} {041039} (\bibinfo {year} {2021})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Temme}\ \emph {et~al.}(2017)\citenamefont {Temme},
-  \citenamefont {Bravyi},\ and\ \citenamefont {Gambetta}}]{temme2017error}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
-  {Temme}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Bravyi}},\ and\
-  \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Gambetta}},\
-  }\bibfield  {title} {\bibinfo {title} {Error mitigation for short-depth
-  quantum circuits},\ }\href {https://doi.org/10.1103/PhysRevLett.119.180509}
-  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
-  }\textbf {\bibinfo {volume} {119}},\ \bibinfo {pages} {180509} (\bibinfo
-  {year} {2017})},\ \Eprint {https://arxiv.org/abs/1612.02058}
-  {arXiv:1612.02058} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Cai}\ \emph {et~al.}(2023)\citenamefont {Cai},
-  \citenamefont {Babbush}, \citenamefont {Benjamin}, \citenamefont {Endo},
-  \citenamefont {Huggins}, \citenamefont {Li}, \citenamefont {McClean},\ and\
-  \citenamefont {O'Brien}}]{cai2023quantum}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Z.}~\bibnamefont
-  {Cai}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Babbush}},
-  \bibinfo {author} {\bibfnamefont {S.~C.}\ \bibnamefont {Benjamin}}, \bibinfo
-  {author} {\bibfnamefont {S.}~\bibnamefont {Endo}}, \bibinfo {author}
-  {\bibfnamefont {W.~J.}\ \bibnamefont {Huggins}}, \bibinfo {author}
-  {\bibfnamefont {Y.}~\bibnamefont {Li}}, \bibinfo {author} {\bibfnamefont
-  {J.~R.}\ \bibnamefont {McClean}},\ and\ \bibinfo {author} {\bibfnamefont
-  {T.~E.}\ \bibnamefont {O'Brien}},\ }\bibfield  {title} {\bibinfo {title}
-  {Quantum error mitigation},\ }\href
-  {https://doi.org/10.1103/RevModPhys.95.045005} {\bibfield  {journal}
-  {\bibinfo  {journal} {Reviews of Modern Physics}\ }\textbf {\bibinfo {volume}
-  {95}},\ \bibinfo {pages} {045005} (\bibinfo {year} {2023})},\ \Eprint
-  {https://arxiv.org/abs/2210.00921} {arXiv:2210.00921} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Dankert}\ \emph {et~al.}(2009)\citenamefont
-  {Dankert}, \citenamefont {Cleve}, \citenamefont {Emerson},\ and\
-  \citenamefont {Livine}}]{dankert2009exact}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
-  {Dankert}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Cleve}},
-  \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Emerson}},\ and\ \bibinfo
-  {author} {\bibfnamefont {E.}~\bibnamefont {Livine}},\ }\bibfield  {title}
-  {\bibinfo {title} {Exact and approximate unitary 2-designs and their
-  application to fidelity estimation},\ }\href
-  {https://doi.org/10.1103/PhysRevA.80.012304} {\bibfield  {journal} {\bibinfo
-  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume} {80}},\ \bibinfo
-  {pages} {012304} (\bibinfo {year} {2009})},\ \Eprint
-  {https://arxiv.org/abs/quant-ph/0606161} {arXiv:quant-ph/0606161}
-  \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {van Rossum}\ \emph
   {et~al.}(2026{\natexlab{a}})\citenamefont {van Rossum}, \citenamefont
   {Shrapnel},\ and\ \citenamefont {Gupta}}]{vanrossum2026biased}%
@@ -385,22 +270,6 @@
   {\bibinfo {volume} {11}},\ \bibinfo {pages} {025047} (\bibinfo {year}
   {2026}{\natexlab{a}})},\ \Eprint {https://arxiv.org/abs/2510.24050}
   {arXiv:2510.24050} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Wang}\ \emph {et~al.}(2024)\citenamefont {Wang},
-  \citenamefont {Czarnik}, \citenamefont {Arrasmith}, \citenamefont {Cerezo},
-  \citenamefont {Cincio},\ and\ \citenamefont
-  {Coles}}]{wang2024errormitigation}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
-  {Wang}}, \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Czarnik}},
-  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Arrasmith}}, \bibinfo
-  {author} {\bibfnamefont {M.}~\bibnamefont {Cerezo}}, \bibinfo {author}
-  {\bibfnamefont {L.}~\bibnamefont {Cincio}},\ and\ \bibinfo {author}
-  {\bibfnamefont {P.~J.}\ \bibnamefont {Coles}},\ }\bibfield  {title} {\bibinfo
-  {title} {Can error mitigation improve trainability of noisy variational
-  quantum algorithms?},\ }\href {https://doi.org/10.22331/q-2024-03-14-1287}
-  {\bibfield  {journal} {\bibinfo  {journal} {Quantum}\ }\textbf {\bibinfo
-  {volume} {8}},\ \bibinfo {pages} {1287} (\bibinfo {year} {2024})}\BibitemShut
-  {NoStop}%
 \bibitem [{\citenamefont {Vovrosh}\ \emph {et~al.}(2021)\citenamefont
   {Vovrosh}, \citenamefont {Khosla}, \citenamefont {Greenaway}, \citenamefont
   {Self}, \citenamefont {Kim},\ and\ \citenamefont
@@ -417,6 +286,22 @@
   {\bibfield  {journal} {\bibinfo  {journal} {Physical Review E}\ }\textbf
   {\bibinfo {volume} {104}},\ \bibinfo {pages} {035309} (\bibinfo {year}
   {2021})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Wang}\ \emph {et~al.}(2024)\citenamefont {Wang},
+  \citenamefont {Czarnik}, \citenamefont {Arrasmith}, \citenamefont {Cerezo},
+  \citenamefont {Cincio},\ and\ \citenamefont
+  {Coles}}]{wang2024errormitigation}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Wang}}, \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Czarnik}},
+  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Arrasmith}}, \bibinfo
+  {author} {\bibfnamefont {M.}~\bibnamefont {Cerezo}}, \bibinfo {author}
+  {\bibfnamefont {L.}~\bibnamefont {Cincio}},\ and\ \bibinfo {author}
+  {\bibfnamefont {P.~J.}\ \bibnamefont {Coles}},\ }\bibfield  {title} {\bibinfo
+  {title} {Can error mitigation improve trainability of noisy variational
+  quantum algorithms?},\ }\href {https://doi.org/10.22331/q-2024-03-14-1287}
+  {\bibfield  {journal} {\bibinfo  {journal} {Quantum}\ }\textbf {\bibinfo
+  {volume} {8}},\ \bibinfo {pages} {1287} (\bibinfo {year} {2024})}\BibitemShut
+  {NoStop}%
 \bibitem [{\citenamefont {Fontana}\ \emph {et~al.}(2022)\citenamefont
   {Fontana}, \citenamefont {Cerezo}, \citenamefont {Arrasmith}, \citenamefont
   {Rungger},\ and\ \citenamefont {Coles}}]{fontana2022nontrivial}%
@@ -440,6 +325,21 @@
   {\bibinfo {title} {Quantum Computation and Quantum Information}}},\ \bibinfo
   {edition} {10th}\ ed.\ (\bibinfo  {publisher} {Cambridge University Press},\
   \bibinfo {year} {2010})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Dankert}\ \emph {et~al.}(2009)\citenamefont
+  {Dankert}, \citenamefont {Cleve}, \citenamefont {Emerson},\ and\
+  \citenamefont {Livine}}]{dankert2009exact}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+  {Dankert}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Cleve}},
+  \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Emerson}},\ and\ \bibinfo
+  {author} {\bibfnamefont {E.}~\bibnamefont {Livine}},\ }\bibfield  {title}
+  {\bibinfo {title} {Exact and approximate unitary 2-designs and their
+  application to fidelity estimation},\ }\href
+  {https://doi.org/10.1103/PhysRevA.80.012304} {\bibfield  {journal} {\bibinfo
+  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume} {80}},\ \bibinfo
+  {pages} {012304} (\bibinfo {year} {2009})},\ \Eprint
+  {https://arxiv.org/abs/quant-ph/0606161} {arXiv:quant-ph/0606161}
+  \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {D{\"u}r}\ \emph {et~al.}(2005)\citenamefont
   {D{\"u}r}, \citenamefont {Hein}, \citenamefont {Cirac},\ and\ \citenamefont
   {Briegel}}]{dur2005standard}%
@@ -455,31 +355,6 @@
   {pages} {052326} (\bibinfo {year} {2005})},\ \Eprint
   {https://arxiv.org/abs/quant-ph/0507134} {arXiv:quant-ph/0507134}
   \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Geller}\ and\ \citenamefont
-  {Zhou}(2013)}]{geller2013efficient}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~R.}\ \bibnamefont
-  {Geller}}\ and\ \bibinfo {author} {\bibfnamefont {Z.}~\bibnamefont {Zhou}},\
-  }\bibfield  {title} {\bibinfo {title} {Efficient error models for
-  fault-tolerant architectures and the {Pauli} twirling approximation},\ }\href
-  {https://doi.org/10.1103/PhysRevA.88.012314} {\bibfield  {journal} {\bibinfo
-  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume} {88}},\ \bibinfo
-  {pages} {012314} (\bibinfo {year} {2013})},\ \Eprint
-  {https://arxiv.org/abs/1305.2021} {arXiv:1305.2021} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Guti{\'e}rrez}\ \emph {et~al.}(2013)\citenamefont
-  {Guti{\'e}rrez}, \citenamefont {Svec}, \citenamefont {Vargo},\ and\
-  \citenamefont {Brown}}]{gutierrez2013approximation}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
-  {Guti{\'e}rrez}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Svec}},
-  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Vargo}},\ and\ \bibinfo
-  {author} {\bibfnamefont {K.~R.}\ \bibnamefont {Brown}},\ }\bibfield  {title}
-  {\bibinfo {title} {Approximation of realistic errors by {Clifford} channels
-  and {Pauli} measurements},\ }\href
-  {https://doi.org/10.1103/PhysRevA.87.030302} {\bibfield  {journal} {\bibinfo
-  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume} {87}},\ \bibinfo
-  {pages} {030302} (\bibinfo {year} {2013})},\ \Eprint
-  {https://arxiv.org/abs/1207.0046} {arXiv:1207.0046} \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {P\'erez-Salinas}\ \emph {et~al.}(2020)\citenamefont
   {P\'erez-Salinas}, \citenamefont {Cervera-Lierta}, \citenamefont
   {Gil-Fuster},\ and\ \citenamefont {Latorre}}]{perezsalinas2020data}%
@@ -517,48 +392,6 @@
   }\href {https://doi.org/10.1109/5.726791} {\bibfield  {journal} {\bibinfo
   {journal} {Proceedings of the IEEE}\ }\textbf {\bibinfo {volume} {86}},\
   \bibinfo {pages} {2278} (\bibinfo {year} {1998})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Kingma}\ and\ \citenamefont
-  {Ba}(2014)}]{kingma2014adam}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.~P.}\ \bibnamefont
-  {Kingma}}\ and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Ba}},\
-  }\href@noop {} {\bibinfo {title} {Adam: A method for stochastic
-  optimization}} (\bibinfo {year} {2014}),\ \Eprint
-  {https://arxiv.org/abs/1412.6980} {arXiv:1412.6980 [cs.LG]} \BibitemShut
-  {NoStop}%
-\bibitem [{\citenamefont {Paszke}\ \emph {et~al.}(2019)\citenamefont {Paszke},
-  \citenamefont {Gross}, \citenamefont {Massa}, \citenamefont {Lerer},
-  \citenamefont {Bradbury}, \citenamefont {Chanan}, \citenamefont {Killeen},
-  \citenamefont {Lin}, \citenamefont {Gimelshein}, \citenamefont {Antiga},
-  \citenamefont {Desmaison}, \citenamefont {K{\"o}pf}, \citenamefont {Yang},
-  \citenamefont {DeVito}, \citenamefont {Raison}, \citenamefont {Tejani},
-  \citenamefont {Chilamkurthy}, \citenamefont {Steiner}, \citenamefont {Fang},
-  \citenamefont {Bai},\ and\ \citenamefont {Chintala}}]{paszke2019pytorch}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
-  {Paszke}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Gross}},
-  \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Massa}}, \bibinfo
-  {author} {\bibfnamefont {A.}~\bibnamefont {Lerer}}, \bibinfo {author}
-  {\bibfnamefont {J.}~\bibnamefont {Bradbury}}, \bibinfo {author}
-  {\bibfnamefont {G.}~\bibnamefont {Chanan}}, \bibinfo {author} {\bibfnamefont
-  {T.}~\bibnamefont {Killeen}}, \bibinfo {author} {\bibfnamefont
-  {Z.}~\bibnamefont {Lin}}, \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
-  {Gimelshein}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Antiga}},
-  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Desmaison}}, \bibinfo
-  {author} {\bibfnamefont {A.}~\bibnamefont {K{\"o}pf}}, \bibinfo {author}
-  {\bibfnamefont {E.}~\bibnamefont {Yang}}, \bibinfo {author} {\bibfnamefont
-  {Z.}~\bibnamefont {DeVito}}, \bibinfo {author} {\bibfnamefont
-  {M.}~\bibnamefont {Raison}}, \bibinfo {author} {\bibfnamefont
-  {A.}~\bibnamefont {Tejani}}, \bibinfo {author} {\bibfnamefont
-  {S.}~\bibnamefont {Chilamkurthy}}, \bibinfo {author} {\bibfnamefont
-  {B.}~\bibnamefont {Steiner}}, \bibinfo {author} {\bibfnamefont
-  {L.}~\bibnamefont {Fang}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
-  {Bai}},\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
-  {Chintala}},\ }\bibfield  {title} {\bibinfo {title} {{PyTorch}: An imperative
-  style, high-performance deep learning library},\ }in\ \href@noop {} {\emph
-  {\bibinfo {booktitle} {Advances in Neural Information Processing Systems
-  32}}}\ (\bibinfo {year} {2019})\ \Eprint {https://arxiv.org/abs/1912.01703}
-  {arXiv:1912.01703} \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Xiao}\ \emph {et~al.}(2017)\citenamefont {Xiao},
   \citenamefont {Rasul},\ and\ \citenamefont {Vollgraf}}]{xiao2017fashion}%
   \BibitemOpen
@@ -568,47 +401,6 @@
   {} {\bibinfo {title} {{Fashion-MNIST}: a novel image dataset for benchmarking
   machine learning algorithms}} (\bibinfo {year} {2017}),\ \Eprint
   {https://arxiv.org/abs/1708.07747} {arXiv:1708.07747} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Javadi-Abhari}\ \emph {et~al.}(2024)\citenamefont
-  {Javadi-Abhari}, \citenamefont {Treinish}, \citenamefont {Krsulich},
-  \citenamefont {Wood}, \citenamefont {Lishman}, \citenamefont {Gacon},
-  \citenamefont {Martiel}, \citenamefont {Nation}, \citenamefont {Bishop},
-  \citenamefont {Cross}, \citenamefont {Johnson},\ and\ \citenamefont
-  {Gambetta}}]{javadiabhari2024quantum}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
-  {Javadi-Abhari}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
-  {Treinish}}, \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Krsulich}},
-  \bibinfo {author} {\bibfnamefont {C.~J.}\ \bibnamefont {Wood}}, \bibinfo
-  {author} {\bibfnamefont {J.}~\bibnamefont {Lishman}}, \bibinfo {author}
-  {\bibfnamefont {J.}~\bibnamefont {Gacon}}, \bibinfo {author} {\bibfnamefont
-  {S.}~\bibnamefont {Martiel}}, \bibinfo {author} {\bibfnamefont {P.~D.}\
-  \bibnamefont {Nation}}, \bibinfo {author} {\bibfnamefont {L.~S.}\
-  \bibnamefont {Bishop}}, \bibinfo {author} {\bibfnamefont {A.~W.}\
-  \bibnamefont {Cross}}, \bibinfo {author} {\bibfnamefont {B.~R.}\ \bibnamefont
-  {Johnson}},\ and\ \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
-  {Gambetta}},\ }\href@noop {} {\bibinfo {title} {Quantum computing with
-  {Qiskit}}} (\bibinfo {year} {2024}),\ \Eprint
-  {https://arxiv.org/abs/2405.08810} {arXiv:2405.08810} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {van Rossum}\ \emph
-  {et~al.}(2026{\natexlab{b}})\citenamefont {van Rossum}, \citenamefont
-  {Shrapnel},\ and\ \citenamefont {Gupta}}]{vanrossum2026code}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {van
-  Rossum}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Shrapnel}},\
-  and\ \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Gupta}},\ }\href
-  {https://doi.org/10.6084/m9.figshare.30123904} {\bibinfo {title} {Code base
-  for exploiting biased noise in variational quantum models}},\ \bibinfo
-  {howpublished} {figshare, version 3} (\bibinfo {year}
-  {2026}{\natexlab{b}})\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Efron}\ and\ \citenamefont
-  {Tibshirani}(1994)}]{efron1994introduction}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
-  {Efron}}\ and\ \bibinfo {author} {\bibfnamefont {R.~J.}\ \bibnamefont
-  {Tibshirani}},\ }\href {https://doi.org/10.1201/9780429246593} {\emph
-  {\bibinfo {title} {An Introduction to the Bootstrap}}}\ (\bibinfo
-  {publisher} {Chapman and Hall/CRC},\ \bibinfo {address} {New York},\ \bibinfo
-  {year} {1994})\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Wecker}\ \emph {et~al.}(2015)\citenamefont {Wecker},
   \citenamefont {Hastings},\ and\ \citenamefont {Troyer}}]{wecker2015progress}%
   \BibitemOpen
@@ -664,20 +456,122 @@
   {volume} {434}},\ \bibinfo {pages} {39} (\bibinfo {year} {2005})},\ \Eprint
   {https://arxiv.org/abs/quant-ph/0410199} {arXiv:quant-ph/0410199}
   \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Fontana}\ \emph {et~al.}(2021)\citenamefont
-  {Fontana}, \citenamefont {Fitzpatrick}, \citenamefont {Ramo}, \citenamefont
-  {Duncan},\ and\ \citenamefont {Rungger}}]{fontana2021evaluating}%
+\bibitem [{\citenamefont {Temme}\ \emph {et~al.}(2017)\citenamefont {Temme},
+  \citenamefont {Bravyi},\ and\ \citenamefont {Gambetta}}]{temme2017error}%
   \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
-  {Fontana}}, \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
-  {Fitzpatrick}}, \bibinfo {author} {\bibfnamefont {D.~M.}\ \bibnamefont
-  {Ramo}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Duncan}},\ and\
-  \bibinfo {author} {\bibfnamefont {I.}~\bibnamefont {Rungger}},\ }\bibfield
-  {title} {\bibinfo {title} {Evaluating the noise resilience of variational
-  quantum algorithms},\ }\href {https://doi.org/10.1103/physreva.104.022403}
-  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review A}\ }\textbf
-  {\bibinfo {volume} {104}},\ \bibinfo {pages} {022403} (\bibinfo {year}
-  {2021})}\BibitemShut {NoStop}%
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Temme}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Bravyi}},\ and\
+  \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Gambetta}},\
+  }\bibfield  {title} {\bibinfo {title} {Error mitigation for short-depth
+  quantum circuits},\ }\href {https://doi.org/10.1103/PhysRevLett.119.180509}
+  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
+  }\textbf {\bibinfo {volume} {119}},\ \bibinfo {pages} {180509} (\bibinfo
+  {year} {2017})},\ \Eprint {https://arxiv.org/abs/1612.02058}
+  {arXiv:1612.02058} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Takagi}\ \emph {et~al.}(2023)\citenamefont {Takagi},
+  \citenamefont {Tajima},\ and\ \citenamefont {Gu}}]{takagi2023universal}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Takagi}}, \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Tajima}},\
+  and\ \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Gu}},\ }\bibfield
+  {title} {\bibinfo {title} {Universal sampling lower bounds for quantum error
+  mitigation},\ }\href {https://doi.org/10.1103/physrevlett.131.210602}
+  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
+  }\textbf {\bibinfo {volume} {131}},\ \bibinfo {pages} {210602} (\bibinfo
+  {year} {2023})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Quek}\ \emph {et~al.}(2024)\citenamefont {Quek},
+  \citenamefont {Stilck~Fran{\c{c}}a}, \citenamefont {Khatri}, \citenamefont
+  {Meyer},\ and\ \citenamefont {Eisert}}]{quek2024exponentially}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+  {Quek}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+  {Stilck~Fran{\c{c}}a}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Khatri}}, \bibinfo {author} {\bibfnamefont {J.~J.}\ \bibnamefont {Meyer}},\
+  and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Eisert}},\
+  }\bibfield  {title} {\bibinfo {title} {Exponentially tighter bounds on
+  limitations of quantum error mitigation},\ }\href
+  {https://doi.org/10.1038/s41567-024-02536-7} {\bibfield  {journal} {\bibinfo
+  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {20}},\ \bibinfo
+  {pages} {1648} (\bibinfo {year} {2024})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Krantz}\ \emph {et~al.}(2019)\citenamefont {Krantz},
+  \citenamefont {Kjaergaard}, \citenamefont {Yan}, \citenamefont {Orlando},
+  \citenamefont {Gustavsson},\ and\ \citenamefont
+  {Oliver}}]{krantz2019quantum}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Krantz}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Kjaergaard}},
+  \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Yan}}, \bibinfo {author}
+  {\bibfnamefont {T.~P.}\ \bibnamefont {Orlando}}, \bibinfo {author}
+  {\bibfnamefont {S.}~\bibnamefont {Gustavsson}},\ and\ \bibinfo {author}
+  {\bibfnamefont {W.~D.}\ \bibnamefont {Oliver}},\ }\bibfield  {title}
+  {\bibinfo {title} {A quantum engineer's guide to superconducting qubits},\
+  }\href {https://doi.org/10.1063/1.5089550} {\bibfield  {journal} {\bibinfo
+  {journal} {Applied Physics Reviews}\ }\textbf {\bibinfo {volume} {6}},\
+  \bibinfo {pages} {021318} (\bibinfo {year} {2019})},\ \Eprint
+  {https://arxiv.org/abs/1904.06560} {arXiv:1904.06560} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nguyen}\ \emph {et~al.}(2026)\citenamefont {Nguyen},
+  \citenamefont {Truong}, \citenamefont {Nguyen},\ and\ \citenamefont
+  {Le}}]{nguyen2026zenodo}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.-Q.-M.}\
+  \bibnamefont {Nguyen}}, \bibinfo {author} {\bibfnamefont {T.-V.}\
+  \bibnamefont {Truong}}, \bibinfo {author} {\bibfnamefont {H.-L.}\
+  \bibnamefont {Nguyen}},\ and\ \bibinfo {author} {\bibfnamefont {T.-K.}\
+  \bibnamefont {Le}},\ }\href {https://doi.org/10.5281/zenodo.23053251}
+  {\bibinfo {title} {Code and results for: {Zero-} versus infinite-temperature
+  damping in variational quantum circuits}},\ \bibinfo {howpublished} {Zenodo,
+  version v1.0.0} (\bibinfo {year} {2026})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Efron}\ and\ \citenamefont
+  {Tibshirani}(1994)}]{efron1994introduction}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+  {Efron}}\ and\ \bibinfo {author} {\bibfnamefont {R.~J.}\ \bibnamefont
+  {Tibshirani}},\ }\href {https://doi.org/10.1201/9780429246593} {\emph
+  {\bibinfo {title} {An Introduction to the Bootstrap}}}\ (\bibinfo
+  {publisher} {Chapman and Hall/CRC},\ \bibinfo {address} {New York},\ \bibinfo
+  {year} {1994})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kingma}\ and\ \citenamefont
+  {Ba}(2014)}]{kingma2014adam}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.~P.}\ \bibnamefont
+  {Kingma}}\ and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Ba}},\
+  }\href@noop {} {\bibinfo {title} {Adam: A method for stochastic
+  optimization}} (\bibinfo {year} {2014}),\ \Eprint
+  {https://arxiv.org/abs/1412.6980} {arXiv:1412.6980 [cs.LG]} \BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Paszke}\ \emph {et~al.}(2019)\citenamefont {Paszke},
+  \citenamefont {Gross}, \citenamefont {Massa}, \citenamefont {Lerer},
+  \citenamefont {Bradbury}, \citenamefont {Chanan}, \citenamefont {Killeen},
+  \citenamefont {Lin}, \citenamefont {Gimelshein}, \citenamefont {Antiga},
+  \citenamefont {Desmaison}, \citenamefont {K{\"o}pf}, \citenamefont {Yang},
+  \citenamefont {DeVito}, \citenamefont {Raison}, \citenamefont {Tejani},
+  \citenamefont {Chilamkurthy}, \citenamefont {Steiner}, \citenamefont {Fang},
+  \citenamefont {Bai},\ and\ \citenamefont {Chintala}}]{paszke2019pytorch}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Paszke}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Gross}},
+  \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Massa}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {Lerer}}, \bibinfo {author}
+  {\bibfnamefont {J.}~\bibnamefont {Bradbury}}, \bibinfo {author}
+  {\bibfnamefont {G.}~\bibnamefont {Chanan}}, \bibinfo {author} {\bibfnamefont
+  {T.}~\bibnamefont {Killeen}}, \bibinfo {author} {\bibfnamefont
+  {Z.}~\bibnamefont {Lin}}, \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+  {Gimelshein}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Antiga}},
+  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Desmaison}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {K{\"o}pf}}, \bibinfo {author}
+  {\bibfnamefont {E.}~\bibnamefont {Yang}}, \bibinfo {author} {\bibfnamefont
+  {Z.}~\bibnamefont {DeVito}}, \bibinfo {author} {\bibfnamefont
+  {M.}~\bibnamefont {Raison}}, \bibinfo {author} {\bibfnamefont
+  {A.}~\bibnamefont {Tejani}}, \bibinfo {author} {\bibfnamefont
+  {S.}~\bibnamefont {Chilamkurthy}}, \bibinfo {author} {\bibfnamefont
+  {B.}~\bibnamefont {Steiner}}, \bibinfo {author} {\bibfnamefont
+  {L.}~\bibnamefont {Fang}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Bai}},\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Chintala}},\ }\bibfield  {title} {\bibinfo {title} {{PyTorch}: An imperative
+  style, high-performance deep learning library},\ }in\ \href@noop {} {\emph
+  {\bibinfo {booktitle} {Advances in Neural Information Processing Systems
+  32}}}\ (\bibinfo {year} {2019})\ \Eprint {https://arxiv.org/abs/1912.01703}
+  {arXiv:1912.01703} \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Powell}(1994)}]{powell1994direct}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~J.~D.}\
@@ -690,6 +584,38 @@
   \bibinfo {editor} {\bibfnamefont {J.-P.}\ \bibnamefont {Hennart}}}\ (\bibinfo
    {publisher} {Springer},\ \bibinfo {address} {Dordrecht},\ \bibinfo {year}
   {1994})\ pp.\ \bibinfo {pages} {51--67}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Javadi-Abhari}\ \emph {et~al.}(2024)\citenamefont
+  {Javadi-Abhari}, \citenamefont {Treinish}, \citenamefont {Krsulich},
+  \citenamefont {Wood}, \citenamefont {Lishman}, \citenamefont {Gacon},
+  \citenamefont {Martiel}, \citenamefont {Nation}, \citenamefont {Bishop},
+  \citenamefont {Cross}, \citenamefont {Johnson},\ and\ \citenamefont
+  {Gambetta}}]{javadiabhari2024quantum}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Javadi-Abhari}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Treinish}}, \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Krsulich}},
+  \bibinfo {author} {\bibfnamefont {C.~J.}\ \bibnamefont {Wood}}, \bibinfo
+  {author} {\bibfnamefont {J.}~\bibnamefont {Lishman}}, \bibinfo {author}
+  {\bibfnamefont {J.}~\bibnamefont {Gacon}}, \bibinfo {author} {\bibfnamefont
+  {S.}~\bibnamefont {Martiel}}, \bibinfo {author} {\bibfnamefont {P.~D.}\
+  \bibnamefont {Nation}}, \bibinfo {author} {\bibfnamefont {L.~S.}\
+  \bibnamefont {Bishop}}, \bibinfo {author} {\bibfnamefont {A.~W.}\
+  \bibnamefont {Cross}}, \bibinfo {author} {\bibfnamefont {B.~R.}\ \bibnamefont
+  {Johnson}},\ and\ \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+  {Gambetta}},\ }\href@noop {} {\bibinfo {title} {Quantum computing with
+  {Qiskit}}} (\bibinfo {year} {2024}),\ \Eprint
+  {https://arxiv.org/abs/2405.08810} {arXiv:2405.08810} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {van Rossum}\ \emph
+  {et~al.}(2026{\natexlab{b}})\citenamefont {van Rossum}, \citenamefont
+  {Shrapnel},\ and\ \citenamefont {Gupta}}]{vanrossum2026code}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {van
+  Rossum}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Shrapnel}},\
+  and\ \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Gupta}},\ }\href
+  {https://doi.org/10.6084/m9.figshare.30123904} {\bibinfo {title} {Code base
+  for exploiting biased noise in variational quantum models}},\ \bibinfo
+  {howpublished} {figshare, version 3} (\bibinfo {year}
+  {2026}{\natexlab{b}})\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Byrd}\ \emph {et~al.}(1995)\citenamefont {Byrd},
   \citenamefont {Lu}, \citenamefont {Nocedal},\ and\ \citenamefont
   {Zhu}}]{byrd1995limited}%
@@ -703,212 +629,4 @@
   {journal} {SIAM Journal on Scientific Computing}\ }\textbf {\bibinfo {volume}
   {16}},\ \bibinfo {pages} {1190} (\bibinfo {year} {1995})}\BibitemShut
   {NoStop}%
-\bibitem [{\citenamefont {Fontana}\ \emph {et~al.}(2025)\citenamefont
-  {Fontana}, \citenamefont {Rudolph}, \citenamefont {Duncan}, \citenamefont
-  {Rungger},\ and\ \citenamefont {C{\^i}rstoiu}}]{fontana2023classical}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
-  {Fontana}}, \bibinfo {author} {\bibfnamefont {M.~S.}\ \bibnamefont
-  {Rudolph}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Duncan}},
-  \bibinfo {author} {\bibfnamefont {I.}~\bibnamefont {Rungger}},\ and\ \bibinfo
-  {author} {\bibfnamefont {C.}~\bibnamefont {C{\^i}rstoiu}},\ }\bibfield
-  {title} {\bibinfo {title} {Classical simulations of noisy variational quantum
-  circuits},\ }\href {https://doi.org/10.1038/s41534-024-00955-1} {\bibfield
-  {journal} {\bibinfo  {journal} {npj Quantum Information}\ }\textbf {\bibinfo
-  {volume} {11}},\ \bibinfo {pages} {84} (\bibinfo {year} {2025})},\ \Eprint
-  {https://arxiv.org/abs/2306.05400} {arXiv:2306.05400} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Thanasilp}\ \emph {et~al.}(2024)\citenamefont
-  {Thanasilp}, \citenamefont {Wang}, \citenamefont {Cerezo},\ and\
-  \citenamefont {Holmes}}]{thanasilp2024exponential}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
-  {Thanasilp}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Wang}},
-  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Cerezo}},\ and\ \bibinfo
-  {author} {\bibfnamefont {Z.}~\bibnamefont {Holmes}},\ }\bibfield  {title}
-  {\bibinfo {title} {Exponential concentration in quantum kernel methods},\
-  }\href {https://doi.org/10.1038/s41467-024-49287-w} {\bibfield  {journal}
-  {\bibinfo  {journal} {Nature Communications}\ }\textbf {\bibinfo {volume}
-  {15}},\ \bibinfo {pages} {5200} (\bibinfo {year} {2024})},\ \Eprint
-  {https://arxiv.org/abs/2208.11060} {arXiv:2208.11060} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Mart{\'i}nez-Pe{\~n}a}\ and\ \citenamefont
-  {Ortega}(2023)}]{martinezpena2023quantum}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
-  {Mart{\'i}nez-Pe{\~n}a}}\ and\ \bibinfo {author} {\bibfnamefont {J.-P.}\
-  \bibnamefont {Ortega}},\ }\bibfield  {title} {\bibinfo {title} {Quantum
-  reservoir computing in finite dimensions},\ }\href
-  {https://doi.org/10.1103/PhysRevE.107.035306} {\bibfield  {journal} {\bibinfo
-   {journal} {Physical Review E}\ }\textbf {\bibinfo {volume} {107}},\ \bibinfo
-  {pages} {035306} (\bibinfo {year} {2023})},\ \Eprint
-  {https://arxiv.org/abs/2212.00396} {arXiv:2212.00396} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Takagi}\ \emph {et~al.}(2023)\citenamefont {Takagi},
-  \citenamefont {Tajima},\ and\ \citenamefont {Gu}}]{takagi2023universal}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
-  {Takagi}}, \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Tajima}},\
-  and\ \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Gu}},\ }\bibfield
-  {title} {\bibinfo {title} {Universal sampling lower bounds for quantum error
-  mitigation},\ }\href {https://doi.org/10.1103/physrevlett.131.210602}
-  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
-  }\textbf {\bibinfo {volume} {131}},\ \bibinfo {pages} {210602} (\bibinfo
-  {year} {2023})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Domingo}\ \emph {et~al.}(2023)\citenamefont
-  {Domingo}, \citenamefont {Carlo},\ and\ \citenamefont
-  {Borondo}}]{domingo2023taking}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
-  {Domingo}}, \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont {Carlo}},\
-  and\ \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Borondo}},\
-  }\bibfield  {title} {\bibinfo {title} {Taking advantage of noise in quantum
-  reservoir computing},\ }\href {https://doi.org/10.1038/s41598-023-35461-5}
-  {\bibfield  {journal} {\bibinfo  {journal} {Scientific Reports}\ }\textbf
-  {\bibinfo {volume} {13}},\ \bibinfo {pages} {8790} (\bibinfo {year}
-  {2023})},\ \Eprint {https://arxiv.org/abs/2301.06814} {arXiv:2301.06814}
-  \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Monzani}\ \emph {et~al.}(2024)\citenamefont
-  {Monzani}, \citenamefont {Ricci}, \citenamefont {Nigro},\ and\ \citenamefont
-  {Prati}}]{monzani2024nonunital}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {F.}~\bibnamefont
-  {Monzani}}, \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Ricci}},
-  \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Nigro}},\ and\ \bibinfo
-  {author} {\bibfnamefont {E.}~\bibnamefont {Prati}},\ }\href@noop {} {\bibinfo
-  {title} {Non-unital noise in a superconducting quantum computer as a
-  computational resource for reservoir computing}} (\bibinfo {year} {2024}),\
-  \Eprint {https://arxiv.org/abs/2409.07886} {arXiv:2409.07886} \BibitemShut
-  {NoStop}%
-\bibitem [{\citenamefont {Zhang}\ \emph {et~al.}(2026)\citenamefont {Zhang},
-  \citenamefont {Jia}, \citenamefont {Li},\ and\ \citenamefont
-  {Dong}}]{zhang2026finitenoise}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Z.}~\bibnamefont
-  {Zhang}}, \bibinfo {author} {\bibfnamefont {Z.}~\bibnamefont {Jia}}, \bibinfo
-  {author} {\bibfnamefont {X.}~\bibnamefont {Li}},\ and\ \bibinfo {author}
-  {\bibfnamefont {Y.}~\bibnamefont {Dong}},\ }\href@noop {} {\bibinfo {title}
-  {A theory of finite-noise optima and generalization in quantum machine
-  learning}} (\bibinfo {year} {2026}),\ \Eprint
-  {https://arxiv.org/abs/2608.24229} {arXiv:2608.24229} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Zhu}\ \emph {et~al.}(2026)\citenamefont {Zhu},
-  \citenamefont {Zhang}, \citenamefont {Dong},\ and\ \citenamefont
-  {Li}}]{zhu2026rethinking}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
-  {Zhu}}, \bibinfo {author} {\bibfnamefont {Z.}~\bibnamefont {Zhang}}, \bibinfo
-  {author} {\bibfnamefont {Y.}~\bibnamefont {Dong}},\ and\ \bibinfo {author}
-  {\bibfnamefont {X.}~\bibnamefont {Li}},\ }\bibfield  {title} {\bibinfo
-  {title} {Rethinking quantum noise in quantum machine learning: When noise
-  improves learning},\ }\href {https://doi.org/10.1063/5.0331090} {\bibfield
-  {journal} {\bibinfo  {journal} {APL Computational Physics}\ }\textbf
-  {\bibinfo {volume} {2}},\ \bibinfo {pages} {030901} (\bibinfo {year}
-  {2026})},\ \Eprint {https://arxiv.org/abs/2601.13275} {arXiv:2601.13275}
-  \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Scala}\ \emph {et~al.}(2025)\citenamefont {Scala},
-  \citenamefont {Guarnieri},\ and\ \citenamefont
-  {Lucchi}}]{scala2025equalization}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {F.}~\bibnamefont
-  {Scala}}, \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont {Guarnieri}},\
-  and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Lucchi}},\
-  }\href@noop {} {\bibinfo {title} {Noise-induced equalization in quantum
-  learning models}} (\bibinfo {year} {2025}),\ \Eprint
-  {https://arxiv.org/abs/2511.09428} {arXiv:2511.09428} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Heyraud}\ \emph {et~al.}(2022)\citenamefont
-  {Heyraud}, \citenamefont {Li}, \citenamefont {Denis}, \citenamefont
-  {Le~Boit{\'e}},\ and\ \citenamefont {Ciuti}}]{heyraud2022noisy}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.}~\bibnamefont
-  {Heyraud}}, \bibinfo {author} {\bibfnamefont {Z.}~\bibnamefont {Li}},
-  \bibinfo {author} {\bibfnamefont {Z.}~\bibnamefont {Denis}}, \bibinfo
-  {author} {\bibfnamefont {A.}~\bibnamefont {Le~Boit{\'e}}},\ and\ \bibinfo
-  {author} {\bibfnamefont {C.}~\bibnamefont {Ciuti}},\ }\bibfield  {title}
-  {\bibinfo {title} {Noisy quantum kernel machines},\ }\href@noop {} {\bibfield
-   {journal} {\bibinfo  {journal} {Physical Review A}\ }\textbf {\bibinfo
-  {volume} {106}},\ \bibinfo {pages} {052421} (\bibinfo {year} {2022})},\
-  \Eprint {https://arxiv.org/abs/2204.12192} {arXiv:2204.12192} \BibitemShut
-  {NoStop}%
-\bibitem [{\citenamefont {Du}\ \emph {et~al.}(2021)\citenamefont {Du},
-  \citenamefont {Hsieh}, \citenamefont {Liu}, \citenamefont {Tao},\ and\
-  \citenamefont {Liu}}]{du2021quantum}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
-  {Du}}, \bibinfo {author} {\bibfnamefont {M.-H.}\ \bibnamefont {Hsieh}},
-  \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Liu}}, \bibinfo {author}
-  {\bibfnamefont {D.}~\bibnamefont {Tao}},\ and\ \bibinfo {author}
-  {\bibfnamefont {N.}~\bibnamefont {Liu}},\ }\bibfield  {title} {\bibinfo
-  {title} {Quantum noise protects quantum classifiers against adversaries},\
-  }\href {https://doi.org/10.1103/PhysRevResearch.3.023153} {\bibfield
-  {journal} {\bibinfo  {journal} {Physical Review Research}\ }\textbf {\bibinfo
-  {volume} {3}},\ \bibinfo {pages} {023153} (\bibinfo {year} {2021})},\ \Eprint
-  {https://arxiv.org/abs/2003.09416} {arXiv:2003.09416} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {T{\"u}ys{\"u}z}\ \emph {et~al.}(2024)\citenamefont
-  {T{\"u}ys{\"u}z}, \citenamefont {Chang}, \citenamefont {Demidik},
-  \citenamefont {Jansen}, \citenamefont {Vallecorsa},\ and\ \citenamefont
-  {Grossi}}]{tuysuz2024symmetry}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
-  {T{\"u}ys{\"u}z}}, \bibinfo {author} {\bibfnamefont {S.~Y.}\ \bibnamefont
-  {Chang}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Demidik}},
-  \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Jansen}}, \bibinfo
-  {author} {\bibfnamefont {S.}~\bibnamefont {Vallecorsa}},\ and\ \bibinfo
-  {author} {\bibfnamefont {M.}~\bibnamefont {Grossi}},\ }\bibfield  {title}
-  {\bibinfo {title} {Symmetry breaking in geometric quantum machine learning in
-  the presence of noise},\ }\href {https://doi.org/10.1103/prxquantum.5.030314}
-  {\bibfield  {journal} {\bibinfo  {journal} {PRX Quantum}\ }\textbf {\bibinfo
-  {volume} {5}},\ \bibinfo {pages} {030314} (\bibinfo {year}
-  {2024})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Ugail}\ and\ \citenamefont
-  {Howard}(2026)}]{ugail2026channel}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
-  {Ugail}}\ and\ \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont {Howard}},\
-  }\bibfield  {title} {\bibinfo {title} {A channel-level diagnostic for
-  symmetry breaking in noisy equivariant quantum neural networks},\ }\href
-  {https://doi.org/10.1109/access.2026.3706394} {\bibfield  {journal} {\bibinfo
-   {journal} {IEEE Access}\ }\textbf {\bibinfo {volume} {14}},\ \bibinfo
-  {pages} {95152} (\bibinfo {year} {2026})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Meyer}\ \emph {et~al.}(2023)\citenamefont {Meyer},
-  \citenamefont {Mularski}, \citenamefont {Gil-Fuster}, \citenamefont {Mele},
-  \citenamefont {Arzani}, \citenamefont {Wilms},\ and\ \citenamefont
-  {Eisert}}]{meyer2023exploiting}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~J.}\ \bibnamefont
-  {Meyer}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Mularski}},
-  \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Gil-Fuster}}, \bibinfo
-  {author} {\bibfnamefont {A.~A.}\ \bibnamefont {Mele}}, \bibinfo {author}
-  {\bibfnamefont {F.}~\bibnamefont {Arzani}}, \bibinfo {author} {\bibfnamefont
-  {A.}~\bibnamefont {Wilms}},\ and\ \bibinfo {author} {\bibfnamefont
-  {J.}~\bibnamefont {Eisert}},\ }\bibfield  {title} {\bibinfo {title}
-  {Exploiting symmetry in variational quantum machine learning},\ }\href
-  {https://doi.org/10.1103/PRXQuantum.4.010328} {\bibfield  {journal} {\bibinfo
-   {journal} {PRX Quantum}\ }\textbf {\bibinfo {volume} {4}},\ \bibinfo {pages}
-  {010328} (\bibinfo {year} {2023})},\ \Eprint
-  {https://arxiv.org/abs/2205.06217} {arXiv:2205.06217} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Larocca}\ \emph {et~al.}(2022)\citenamefont
-  {Larocca}, \citenamefont {Sauvage}, \citenamefont {Sbahi}, \citenamefont
-  {Verdon}, \citenamefont {Coles},\ and\ \citenamefont
-  {Cerezo}}]{larocca2022group}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
-  {Larocca}}, \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Sauvage}},
-  \bibinfo {author} {\bibfnamefont {F.~M.}\ \bibnamefont {Sbahi}}, \bibinfo
-  {author} {\bibfnamefont {G.}~\bibnamefont {Verdon}}, \bibinfo {author}
-  {\bibfnamefont {P.~J.}\ \bibnamefont {Coles}},\ and\ \bibinfo {author}
-  {\bibfnamefont {M.}~\bibnamefont {Cerezo}},\ }\bibfield  {title} {\bibinfo
-  {title} {Group-invariant quantum machine learning},\ }\href
-  {https://doi.org/10.1103/PRXQuantum.3.030341} {\bibfield  {journal} {\bibinfo
-   {journal} {PRX Quantum}\ }\textbf {\bibinfo {volume} {3}},\ \bibinfo {pages}
-  {030341} (\bibinfo {year} {2022})},\ \Eprint
-  {https://arxiv.org/abs/2205.02261} {arXiv:2205.02261} \BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Nguyen}\ \emph {et~al.}(2026)\citenamefont {Nguyen},
-  \citenamefont {Truong}, \citenamefont {Nguyen},\ and\ \citenamefont
-  {Le}}]{nguyen2026zenodo}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.-Q.-M.}\
-  \bibnamefont {Nguyen}}, \bibinfo {author} {\bibfnamefont {T.-V.}\
-  \bibnamefont {Truong}}, \bibinfo {author} {\bibfnamefont {H.-L.}\
-  \bibnamefont {Nguyen}},\ and\ \bibinfo {author} {\bibfnamefont {T.-K.}\
-  \bibnamefont {Le}},\ }\href {https://doi.org/10.5281/zenodo.23053251}
-  {\bibinfo {title} {Code and results for: {Zero-} versus infinite-temperature
-  damping in variational quantum circuits}},\ \bibinfo {howpublished} {Zenodo,
-  version v1.0.0} (\bibinfo {year} {2026})\BibitemShut {NoStop}%
 \end{thebibliography}%
