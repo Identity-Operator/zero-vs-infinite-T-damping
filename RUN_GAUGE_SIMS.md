@@ -8,6 +8,18 @@ We are testing whether a result about noisy QAOA survives beyond depth one. Real
 
 Tiers 1 (n = 8) and 2 (n = 10) are **finished**; their results are in the repo. **Your job is tier 3 (n = 12)**, which was started but not finished, and then a summary.
 
+## Branch
+
+Everything below lives on the **`hoang`** branch, not on `main`:
+
+```bash
+git clone git@github.com:Identity-Operator/zero-vs-infinite-T-damping.git
+cd zero-vs-infinite-T-damping
+git checkout hoang
+```
+
+Commit and push your results to `hoang` as well. Do not merge into `main`.
+
 ## Files
 
 All code and results are in `code/gauge_numerics/`:
@@ -50,7 +62,7 @@ Set `NWORKERS` to the number of free cores (5 was used on a 12-core laptop). Tie
 When tier 3 finishes (or you stop it):
 
 1. Commit `out_tier3.json` and `tier3.log` to `code/gauge_numerics/` and push.
-2. Run `python3 agg.py > SUMMARY.txt`, commit it, and paste the n = 12 rows in your message.
+2. Run `python3 agg.py > SUMMARY.txt`, commit it to `hoang`, and paste the n = 12 rows in your message.
 3. In a short note (a few sentences), say: how many of the 24 points finished; whether the n = 12 rows follow the trend below; anything that looked wrong (negative `pe` at the optimized point, crashes, memory errors, very different run times).
 
 Please do not change `full.py`'s configuration (graph seeds, gauge counts, restarts) without asking. The point is to stay comparable to tiers 1 and 2.
