@@ -8,7 +8,8 @@ nothing is transcribed.
   fig_clf.pdf  noise_structure_mnist/m5_depth (raw readout), m5_readout (standardized; S1)
   fig_width.pdf noise_structure_mnist/m5_width_diag (S6a) and scale_gauge/theory/t1_results.json (T1)
   fig_shots.pdf noise_structure_mnist/m5_shots (S5); scale_gauge/shots/F1_calib_summary.pkl, F1_s5_summary.pkl
-  fig_sep.pdf  scale_gauge/theory/t1_p_dependence_n4.json, _n8.json (T1b)   separation against p
+  fig_sep_main.pdf scale_gauge/theory/t1_p_dependence_n4.json, _n8.json (T1b)   separation depth against p
+  fig_sep_app.pdf  same files: spreads against depth and floor of the AD spread against p
 
 House style: one red family for every noisy channel, with
 the noiseless reference in neutral near-black. Channel identity is carried by
@@ -17,7 +18,7 @@ Each channel keeps its shade in every figure. The three reds pass the dataviz
 CVD (min dE 14.8) and normal-vision (16.6) separation checks, and reversed AD
 (pale red, dashed) passes against AD and the Pauli twirl, the only series
 shown with it. All figures are full text width, with the same row height and
-panel titles.
+panel titles, except the single-column fig_sep_main.
 """
 import pathlib
 import pickle
@@ -128,9 +129,14 @@ def fig_vr():
     a.set_xlabel('noise strength $p$')
     a.set_ylabel('largest converging range')
     a.set_xticks(PS)
-    a.set_xlim(0.03, 0.26)
+    a.set_xlim(0.03, 0.215)
     a.set_ylim(0.3, 1.0)
-    label_ends(a, ends, 0.215, 0.05)
+    # labels inside: noiseless points at its dashed line, AD above its line, twirls left of their falling lines
+    a.annotate(NAME['None'], xy=(0.075, n0), xytext=(0.035, 0.55), va='center', fontsize=7, color=INK,
+               arrowprops=dict(arrowstyle='-', color=MUTED, lw=0.4, shrinkA=1, shrinkB=1))
+    a.text(0.155, 0.835, NAME['AD'], ha='center', va='center', fontsize=7, color=INK)
+    a.text(0.165, 0.45, NAME['Pauli'], ha='right', va='center', fontsize=7, color=INK)
+    a.text(0.165, 0.40, NAME['Cliff'], ha='right', va='center', fontsize=7, color=INK)
     title(a, 'raw output')
     panel(a, '(a)')
 
@@ -154,10 +160,16 @@ def fig_vr():
     b.set_xlabel('noise strength $p$')
     b.set_ylabel('fraction converged (1000 steps)')
     b.set_xticks(PS)
-    b.set_xlim(0.03, 0.26)
+    b.set_xlim(0.03, 0.215)
     b.set_ylim(0.90, 1.02)
     b.set_yticks([0.90, 0.92, 0.94, 0.96, 0.98, 1.00])
-    label_ends(b, ends, 0.215, 0.013)
+    # direct labels as in (a): noiseless points at its dashed line, AD under its line, the twirls
+    # stacked above the cluster in the order of their lines
+    b.annotate(NAME['None'], xy=(0.075, f0), xytext=(0.035, 0.94), va='center', fontsize=7, color=INK,
+               arrowprops=dict(arrowstyle='-', color=MUTED, lw=0.4, shrinkA=1, shrinkB=1))
+    b.text(0.165, 0.958, NAME['AD'], ha='center', va='center', fontsize=7, color=INK)
+    b.text(0.15, 1.0135, NAME['Cliff'], ha='center', va='center', fontsize=7, color=INK)
+    b.text(0.15, 1.006, NAME['Pauli'], ha='center', va='center', fontsize=7, color=INK)
     title(b, 'trained scale and offset')
     panel(b, '(b)')
 
@@ -173,13 +185,15 @@ def fig_vr():
     cc = np.sqrt(1 - pp)
     c.plot(pp, ((2 * cc + cc ** 2) / 3) ** -10, color=MUTED, lw=0.8, ls=':',
            zorder=1)
-    c.text(0.10, 1.25, r'$\lambda_d^{-10}$', fontsize=6.5, color=MUTED)
+    c.text(0.10, 1.25, r'$\lambda_{\rm depol}^{-10}$', fontsize=6.5, color=MUTED)
     c.set_xlabel('noise strength $p$')
     c.set_ylabel(r'shot factor $\kappa$')
     c.set_xticks(PS)
-    c.set_xlim(0.03, 0.26)
+    c.set_xlim(0.03, 0.215)
     c.set_ylim(1, 6.5)
-    label_ends(c, ends, 0.215, 0.45)
+    c.text(0.155, 5.6, NAME['Pauli'], ha='right', va='center', fontsize=7, color=INK)
+    c.text(0.155, 5.1, NAME['Cliff'], ha='right', va='center', fontsize=7, color=INK)
+    c.text(0.17, 2.6, NAME['AD'], ha='center', va='center', fontsize=7, color=INK)
     title(c, 'trained scale and offset')
     panel(c, '(c)')
 
@@ -212,13 +226,20 @@ def fig_vqe():
         ax.set_xlabel(r'noise strength $\gamma$')
         ax.set_xticks(G)
         ax.set_xticklabels([f'{g:g}' for g in G])
-        ax.set_xlim(0.0, 0.27)
+        ax.set_xlim(0.0, 0.215)
         ax.set_yscale('log')
         ax.set_ylim(0.008, 1.5)
         ax.set_yticks([0.01, 0.1, 1])
         ax.set_yticklabels(['0.01', '0.1', '1'])
         globals()['title'](ax, ttl)
-        label_ends(ax, ends, 0.218, 0.16, logy=True)
+        # labels inside the empty regions next to their lines
+        if tag == '(a)':
+            ax.text(0.15, 0.40, NAME['Pauli'], ha='center', va='center', fontsize=7, color=INK)
+            ax.text(0.15, 0.03, 'AD and reversed AD', ha='center', va='center', fontsize=7, color=INK)
+        else:
+            ax.text(0.045, 1.0, NAME['Pauli'], ha='center', va='center', fontsize=7, color=INK)
+            ax.text(0.15, 0.32, NAME['revAD'], ha='center', va='center', fontsize=7, color=INK)
+            ax.text(0.15, 0.017, NAME['AD'], ha='center', va='center', fontsize=7, color=INK)
         panel(ax, tag)
     axes[0].set_ylabel('relative energy error')
     fig.tight_layout(w_pad=1.5)
@@ -243,8 +264,7 @@ def fig_clf():
             c[(r['channel'], r['L'])].append(r)
         return c
     cr, cs = cells(raw), cells(std)
-    fig, axs = plt.subplots(2, 2, figsize=(WIDE, 2 * ROW))
-    (a, b), (c, d) = axs
+    fig, (a, b, d) = plt.subplots(1, 3, figsize=(WIDE, ROW))
     out = {}
     for ax, C, tag, ttl in ((a, cr, '(a)', 'raw readout'), (b, cs, '(b)', 'standardized readout')):
         ends = []
@@ -258,30 +278,19 @@ def fig_clf():
                 ax.scatter([xi + 0.12] * len(vv), vv, s=8, marker=MRK[ch], facecolors='none',
                            edgecolors=COL[ch] if EDGE[ch] == 'white' else EDGE[ch],
                            linewidths=0.5, alpha=0.8, zorder=2)
-                if len(vv) < len(v):
-                    ax.annotate(f'one run at {min(v):.2f}', xy=(xi + 0.12, 0.662), xytext=(xi + 0.35, 0.69),
-                                fontsize=6.3, color=MUTED, arrowprops=dict(arrowstyle='->', color=MUTED, lw=0.5))
             out[(tag, ch)] = m
         ax.set_ylim(0.66, 0.90)
         ax.set_ylabel('test accuracy')
         globals()['title'](ax, ttl)
         if tag == '(a)':
-            label_ends(ax, ends, 4.35, 0.016)
+            ax.text(0.95, 0.881, NAME['None'], ha='left', va='center', fontsize=7, color=INK)
+            ax.text(3.45, 0.829, NAME['AD'], ha='left', va='center', fontsize=7, color=INK)
+            ax.text(3.55, 0.692, NAME['Pauli'], ha='right', va='center', fontsize=7, color=INK)
+            ax.text(3.55, 0.677, NAME['Depol'], ha='right', va='center', fontsize=7, color=INK)
         else:
-            ax.annotate('all four channels', xy=(4.05, 0.873), xytext=(4.15, 0.835), fontsize=7,
+            ax.annotate('all four channels', xy=(3.9, 0.862), xytext=(2.2, 0.825), fontsize=7,
                         color=INK, arrowprops=dict(arrowstyle='-', color=MUTED, lw=0.4))
         panel(ax, tag)
-    ends = []
-    for k, ch in enumerate(CH4):
-        sv = [[r['sensitivity'] for r in cs[(ch, L)]] for L in LS]
-        m, e = med_iqr(sv)
-        ends.append((ch, *line(c, LS, m, ch, e, dx=(k - 1.5) * 0.06)))
-        out[('(c)', ch)] = m
-    c.set_ylabel(r'input sensitivity $\chi$')
-    c.set_ylim(0.5, 1.1)
-    title(c, 'standardized readout')
-    label_ends(c, ends, 4.35, 0.04)
-    panel(c, '(c)')
     ends = []
     for k, ch in enumerate(CH4[1:]):
         kap = []
@@ -290,21 +299,21 @@ def fig_clf():
             s1 = np.mean([np.mean(r['params']['z_std']) for r in cs[(ch, L)]])
             kap.append((s0 / s1) ** 2)
         ends.append((ch, *line(d, LS, kap, ch, dx=(k - 1) * 0.06)))
-        out[('(d)', ch)] = kap
+        out[('(c)', ch)] = kap
     d.set_yscale('log')
     d.set_ylabel(r'shot factor $\kappa$')
     d.set_ylim(1, 5e4)
     title(d, 'standardized readout')
-    for ch, x, y in ends:
-        d.annotate(NAME[ch], xy=(x, y), xytext=(4.3, y * (1.6 if ch == 'Pauli' else 0.62 if ch == 'Depol' else 1.0)),
-                   va='center', fontsize=7, color=INK,
-                   arrowprops=dict(arrowstyle='-', color=MUTED, lw=0.4, shrinkA=1, shrinkB=3))
-    panel(d, '(d)')
-    for ax in (a, b, c, d):
+    # the twirls rise steeply, so their labels sit to the left of the lines; AD is labeled at its end
+    d.text(3.25, 1.5e4, NAME['Pauli'], ha='right', va='center', fontsize=7, color=INK)
+    d.text(3.25, 6e3, NAME['Depol'], ha='right', va='center', fontsize=7, color=INK)
+    xa, ya = next((x, y) for ch, x, y in ends if ch == 'AD')
+    d.text(xa + 0.12, ya, NAME['AD'], ha='left', va='center', fontsize=7, color=INK)
+    panel(d, '(c)')
+    for ax in (a, b, d):
         ax.set_xticks(LS)
         ax.set_xticklabels([f'$L={L}$' for L in LS])
-        ax.set_xlim(0.7, 5.1)
-    for ax in (c, d):
+        ax.set_xlim(0.7, 4.4)   # all labels sit inside the data region
         ax.set_xlabel('number of re-uploading layers')
     fig.tight_layout(w_pad=2.0, h_pad=1.2)
     fig.savefig(OUT / 'fig_clf.pdf')
@@ -313,8 +322,8 @@ def fig_clf():
 
 
 def fig_width():
-    """Feature scale before training against depth at n = 4, 6, 8 (S6a), with the
-    exact theta-averaged prediction of the T1 pair chain. Both are the rms scale
+    """Spread before training against depth at n = 4, 6, 8 (S6a), with the
+    exact theta-averaged prediction of the T1 pair chain. Both are the rms spread
     sqrt(E_theta mean_j Var_a z_j); the measured points use the five theta draws."""
     import json
     W = pickle.load(open(CODE / 'm5_width_diag' / 'results.pkl', 'rb'))
@@ -346,13 +355,26 @@ def fig_width():
             ends.append((ch, 6 + dx, rms[-1]))
         ax.set_yscale('log')
         ax.set_ylim(1e-5, 1)
-        ax.set_xlim(0.6, 8.9)
+        ax.set_xlim(0.6, 6.5)
         ax.set_xticks(Ls)
         ax.set_xlabel('number of re-uploading layers $L$')
         globals()['title'](ax, f'$n={n}$ qubits')
-        label_ends(ax, ends, 6.55, 0.42, logy=True)
+        # labels inside the data region: noiseless above its line on the left, AD just
+        # below its line, and the twirls to the left of their falling lines
+        def cross(v, y):
+            lv, ly = np.log(v), np.log(y)
+            for i in range(len(Ls) - 1):
+                if lv[i] >= ly >= lv[i + 1]:
+                    return Ls[i] + (lv[i] - ly) / (lv[i] - lv[i + 1])
+            return float(Ls[-1])
+        xr = cross(out[(n, 'Pauli', 'chain')], 1e-3) - 0.55
+        ax.text(xr, 1e-3, NAME['Pauli'], ha='right', va='center', fontsize=7, color=INK)
+        ax.text(xr, 3.8e-4, NAME['Depol'], ha='right', va='center', fontsize=7, color=INK)
+        ax.text(0.8, 0.4, NAME['None'], ha='left', va='center', fontsize=7, color=INK)
+        ya = 0.45 * np.exp(np.interp(4.5, Ls, np.log(out[(n, 'AD', 'chain')])))
+        ax.text(4.5, ya, NAME['AD'], ha='center', va='center', fontsize=7, color=INK)
         panel(ax, tag)
-    axes[0].set_ylabel(r'feature scale $\sigma$ before training')
+    axes[0].set_ylabel(r'spread $\sigma$ before training')
     fig.tight_layout(w_pad=1.2)
     fig.savefig(OUT / 'fig_width.pdf')
     fig.savefig(OUT / 'fig_width.png')
@@ -425,13 +447,18 @@ def fig_shots():
         ends.append((ch, xs[-1], m[-1]))
         out[('acc', ch)] = m
     ax.set_xscale('log')
-    ax.set_xlim(60, 1.5e5)
+    ax.set_xlim(70, 1.4e4)
     ax.set_xticks(NS)
     ax.set_ylim(0.3, 0.92)
     ax.set_xlabel(r'shots per image $N_s$')
     ax.set_ylabel('test accuracy')
     globals()['title'](ax, 'fixed shot budget, $L=4$')
-    label_ends(ax, ends, 1.5e4, 0.05)
+    # labels inside the data region: noiseless above its line, AD under its first point,
+    # the twirls below their rising lines
+    ax.text(75, 0.895, NAME['None'], ha='left', va='center', fontsize=7, color=INK)
+    ax.text(100, out[('acc', 'AD')][0] - 0.045, NAME['AD'], ha='center', va='center', fontsize=7, color=INK)
+    ax.text(1.0e4, 0.55, NAME['Pauli'], ha='right', va='center', fontsize=7, color=INK)
+    ax.text(1.0e4, 0.50, NAME['Depol'], ha='right', va='center', fontsize=7, color=INK)
     panel(ax, '(a)')
     R1 = [r for r in pickle.load(open(EVID / 'shots' / 'F1_calib_results.pkl', 'rb')) if r['dataset'] == 'MNIST']
     R5 = [r for r in pickle.load(open(EVID / 'shots' / 'F1_s5_results.pkl', 'rb')) if r['train_shots'] == 1000]
@@ -447,14 +474,19 @@ def fig_shots():
             ends.append((ch, *line(ax, LS, y, ch, [y - lo, hi - y])))
             out[(tag, ch)] = np.array([y, lo, hi])
         ax.axhline(1, color=COL['None'], lw=0.8, ls=(0, (2, 2)), zorder=1)
-        ax.text(4.25, 1.15, 'noiseless', va='bottom', fontsize=7, color=INK)
+        ax.text(4.0, 1.3, 'noiseless', ha='right', va='bottom', fontsize=7, color=INK)
         ax.set_yscale('log')
         ax.set_ylim(0.5, 1e5)
-        ax.set_xlim(0.7, 5.3)
+        ax.set_xlim(0.7, 4.4)
         ax.set_xticks(LS)
         ax.set_xlabel('number of re-uploading layers $L$')
         globals()['title'](ax, ttl)
-        label_ends(ax, ends, 4.25, 0.35, logy=True)
+        # AD just under its line; the twirls to the left of their rising lines
+        xa, xt, yp, yd = (3.5, 2.75, 4e3, 1.5e3) if tag == '(b)' else (2.5, 3.0, 400, 160)
+        ya = 0.45 * np.exp(np.interp(xa, LS, np.log(out[(tag, 'AD')][0])))
+        ax.text(xa, ya, NAME['AD'], ha='center', va='center', fontsize=7, color=INK)
+        ax.text(xt, yp, NAME['Pauli'], ha='right', va='center', fontsize=7, color=INK)
+        ax.text(xt, yd, NAME['Depol'], ha='right', va='center', fontsize=7, color=INK)
         panel(ax, tag)
     axes[1].set_ylabel('shot cost relative to noiseless')
     axes[2].sharey(axes[1])
@@ -464,18 +496,63 @@ def fig_shots():
     return out
 
 
-def fig_sep():
-    """Dependence of the AD-twirl separation on p before training (T1b, t1_p_dependence.py): the
-    exact theta-averaged feature scales against depth, the AD floor and its last-layer part, and
-    the separation depth L* with Eq. (Lstar). The JSON 'br' entry at the last computed depth is
-    sigma_br,inf of Table IV; sigma_None in Eq. (Lstar) is the noiseless scale at L = 30."""
+def sep_data():
     import json
-    D = {n: json.load(open(EVID / 'theory' / f't1_p_dependence_n{n}.json')) for n in (4, 8)}
-    fig, axes = plt.subplots(1, 3, figsize=(WIDE, ROW))
+    return {n: json.load(open(EVID / 'theory' / f't1_p_dependence_n{n}.json')) for n in (4, 8)}
+
+
+def fig_sep_main():
+    """Separation depth L* against p before training, with the estimate of Eq. (Lstar), whose
+    number is read from the LaTeX .aux (T1b, t1_p_dependence.py). Single column, main text."""
+    D = sep_data()
+    fig, ax = plt.subplots(figsize=(NARROW, ROW))
     out = {}
 
-    # (a) feature scales against depth at n = 4
+    # separation depth against p, with Eq. (Lstar); its number is read from the LaTeX .aux
+    import re
+    aux = HERE / 'scale_gauge_v5.aux'
+    if aux.exists():
+        eq = re.search(r'\\newlabel\{eq:Lstar\}\{\{([^}]*)\}', aux.read_text()).group(1)
+    else:  # fresh checkout, paper not built yet: the number in the committed PDF
+        eq = 'C3'
+        print('scale_gauge_v5.aux not found; labelling Eq. (C3) as in the committed PDF')
+    for n, mfc, ls in ((4, COL['AD'], '-'), (8, 'white', (0, (4, 2)))):
+        ps = np.array(sorted(map(float, D[n]['p'])))
+        Lx = np.array([D[n]['p'][k]['L_star'] for k in map(str, ps)])
+        br = np.array([D[n]['p'][k]['br'][-1] for k in map(str, ps)])
+        Leq = np.log(3 * D[n]['None'][-1] / br) / (n * ps)
+        ax.plot(ps, Leq, color=MUTED, lw=1.0, ls=ls, zorder=2,
+                label=f'Eq. ({eq}), $n={n}$')
+        ax.plot(ps, Lx, color=COL['AD'], marker=MRK['AD'], ms=4.2, mfc=mfc, mec=COL['AD'],
+                mew=0.9, ls='none', zorder=3, label=f'$n={n}$')
+        out[('c', n)] = (ps, Lx, Leq)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_xlim(6e-4, 0.5)
+    ax.set_ylim(1, 4e3)
+    ax.set_xlabel('damping strength $p$')
+    ax.set_ylabel('separation depth (layers)')
+    h, l = ax.get_legend_handles_labels()
+    ax.legend(h[1::2] + h[0::2], l[1::2] + l[0::2], loc='lower left', frameon=False,
+              handlelength=1.8, fontsize=6.5)
+
+    ax.grid(True, which='major', axis='both')
+    fig.tight_layout()
+    fig.savefig(OUT / 'fig_sep_main.pdf')
+    fig.savefig(OUT / 'fig_sep_main.png')
+    return out
+
+
+def fig_sep_app():
+    """Spreads before training against depth at n = 4, and the floor of the AD spread with its
+    last-layer part (T1b, t1_p_dependence.py). The JSON 'br' entry at the last computed depth
+    is sigma_br,inf of the appendix table; Appendix C."""
+    D = sep_data()
+    fig, axes = plt.subplots(1, 2, figsize=(WIDE, ROW))
+    out = {}
+
     ax = axes[0]
+    # (a) spreads against depth at n = 4
     d = D[4]
     ax.plot(np.arange(1, len(d['None']) + 1), d['None'], color=COL['None'], lw=1.1, zorder=2)
     ax.annotate(NAME['None'], xy=(30, d['None'][-1]), xytext=(40, 0.32), fontsize=7, va='center',
@@ -498,16 +575,16 @@ def fig_sep():
     ax.set_xlim(0.8, 6e3)
     ax.set_ylim(1e-5, 0.6)
     ax.set_xlabel('number of re-uploading layers $L$')
-    ax.set_ylabel(r'feature scale $\sigma$ before training')
+    ax.set_ylabel(r'spread $\sigma$ before training')
     for ch in ('AD', 'Pauli'):
         ax.plot([], [], color=COL[ch], marker=MRK[ch], ms=3.8, mec=EDGE[ch], mew=0.5, lw=1.1,
                 label=NAME[ch])
     ax.legend(loc='lower left', frameon=False, handlelength=1.8)
-    title(ax, 'feature scales, $n=4$ qubits')
+    title(ax, 'spreads, $n=4$ qubits')
     panel(ax, '(a)')
 
-    # (b) floor of the AD scale and its last-layer part
     ax = axes[1]
+    # (b) floor of the AD spread and its last-layer part
     for n, mfc, ls in ((4, COL['AD'], '-'), (8, 'white', (0, (4, 2)))):
         ps = np.array(sorted(map(float, D[n]['p'])))
         br = np.array([D[n]['p'][k]['br'][-1] for k in map(str, ps)])
@@ -525,47 +602,84 @@ def fig_sep():
     ax.set_xlim(6e-4, 0.5)
     ax.set_ylim(3e-4, 0.2)
     ax.set_xlabel('damping strength $p$')
-    ax.set_ylabel(r'floor of the AD feature scale')
+    ax.set_ylabel(r'floor of the AD spread')
     ax.legend(loc='lower right', frameon=False, handlelength=1.2)
-    title(ax, 'floor of the AD scale at large $L$')
+    title(ax, 'floor of the AD spread at large $L$')
     panel(ax, '(b)')
-
-    # (c) separation depth against p, with Eq. (Lstar); its number is read from the LaTeX .aux
-    ax = axes[2]
-    import re
-    aux = HERE / 'scale_gauge_v5.aux'
-    if aux.exists():
-        eq = re.search(r'\\newlabel\{eq:Lstar\}\{\{([^}]*)\}', aux.read_text()).group(1)
-    else:  # fresh checkout, paper not built yet: the number in the committed PDF
-        eq = '45'
-        print('scale_gauge_v5.aux not found; labelling Eq. (45) as in the committed PDF')
-    for n, mfc, ls in ((4, COL['AD'], '-'), (8, 'white', (0, (4, 2)))):
-        ps = np.array(sorted(map(float, D[n]['p'])))
-        Lx = np.array([D[n]['p'][k]['L_star'] for k in map(str, ps)])
-        br = np.array([D[n]['p'][k]['br'][-1] for k in map(str, ps)])
-        Leq = np.log(3 * D[n]['None'][-1] / br) / (n * ps)
-        ax.plot(ps, Leq, color=MUTED, lw=1.0, ls=ls, zorder=2,
-                label=f'Eq. ({eq}), $n={n}$')
-        ax.plot(ps, Lx, color=COL['AD'], marker=MRK['AD'], ms=4.2, mfc=mfc, mec=COL['AD'],
-                mew=0.9, ls='none', zorder=3, label=f'$n={n}$')
-        out[('c', n)] = (ps, Lx, Leq)
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlim(6e-4, 0.5)
-    ax.set_ylim(1, 4e3)
-    ax.set_xlabel('damping strength $p$')
-    ax.set_ylabel(r'separation depth $L^*$')
-    h, l = ax.get_legend_handles_labels()
-    ax.legend(h[1::2] + h[0::2], l[1::2] + l[0::2], loc='lower left', frameon=False,
-              handlelength=1.8, fontsize=6.5)
-    title(ax, r'$(\sigma_{\rm AD}/\sigma_{\rm Pauli})^2=10$ at $L^*$')
-    panel(ax, '(c)')
 
     for ax in axes:
         ax.grid(True, which='major', axis='both')
-    fig.tight_layout(w_pad=1.2)
-    fig.savefig(OUT / 'fig_sep.pdf')
-    fig.savefig(OUT / 'fig_sep.png')
+    fig.tight_layout(w_pad=2.0)
+    fig.savefig(OUT / 'fig_sep_app.pdf')
+    fig.savefig(OUT / 'fig_sep_app.png')
+    return out
+
+
+def fig_fashion():
+    """Fashion-MNIST classifier at L=4 (S2). (a) Test accuracy with the raw and the
+    standardized readout. (b) Shot factor kappa against the operational shot cost
+    relative to the noiseless circuit, both after exact training (F1_calib)."""
+    raw = pickle.load(open(CODE / 'm5_fashion' / 'results.pkl', 'rb'))
+    std = pickle.load(open(CODE / 'm5_fashion_readout' / 'results.pkl', 'rb'))
+    S1 = [r for r in pickle.load(open(EVID / 'shots' / 'F1_calib_summary.pkl', 'rb'))
+          if r['dataset'] == 'FashionMNIST' and r['L'] == 4]
+    R1 = [r for r in pickle.load(open(EVID / 'shots' / 'F1_calib_results.pkl', 'rb'))
+          if r['dataset'] == 'FashionMNIST']
+    fig, (a, b) = plt.subplots(1, 2, figsize=(WIDE, ROW))
+    out = {}
+
+    # (a) accuracy, raw -> standardized, median and IQR with each run as a hollow marker
+    xs = np.array([0.0, 1.0])
+    for k, ch in enumerate(CH4):
+        acc = [[r['test_acc'] for r in R if r['channel'] == ch and r['L'] == 4] for R in (raw, std)]
+        m, e = med_iqr(acc)
+        dx = (k - 1.5) * 0.05
+        line(a, xs, m, ch, e, dx=dx)
+        for xi, v in zip(xs + dx, acc):
+            a.scatter([xi + 0.1] * len(v), v, s=8, marker=MRK[ch], facecolors='none',
+                      edgecolors=COL[ch] if EDGE[ch] == 'white' else EDGE[ch],
+                      linewidths=0.5, alpha=0.8, zorder=2)
+        out[('acc', ch)] = m
+    a.set_xticks(xs)
+    a.set_xticklabels(['raw readout', 'standardized readout'])
+    a.set_xlim(-0.35, 1.35)
+    a.set_ylim(0.5, 0.82)
+    a.set_ylabel('test accuracy')
+    a.text(0.40, 0.776, NAME['None'], ha='left', va='center', fontsize=7, color=INK)
+    a.text(0.45, 0.735, NAME['AD'], ha='left', va='center', fontsize=7, color=INK)
+    a.text(0.30, 0.565, NAME['Pauli'], ha='left', va='center', fontsize=7, color=INK)
+    a.text(0.30, 0.540, NAME['Depol'], ha='left', va='center', fontsize=7, color=INK)
+    title(a, 'Fashion-MNIST, $L=4$')
+    panel(a, '(a)')
+
+    # (b) shot factor (hollow) and operational shot cost with 95% bootstrap interval (filled)
+    chans = ('AD', 'Pauli', 'Depol')
+    for k, ch in enumerate(chans):
+        y, lo, hi = cost_ratio(R1, 'acc', ch, 4)
+        ref = next(r['calib_ratio'] for r in S1 if r['channel'] == ch)
+        assert np.isclose(y, ref, rtol=1e-6), (ch, y, ref)   # same numbers as the committed summary
+        kap = next(r['kappa'] for r in S1 if r['channel'] == ch)
+        b.errorbar([k + 0.1], [y], yerr=[[y - lo], [hi - y]], color=COL[ch], marker=MRK[ch], ms=5,
+                   mfc=COL[ch], mec=EDGE[ch], mew=0.6, capsize=2, elinewidth=0.8, ls='none', zorder=3)
+        b.plot([k - 0.1], [kap], marker=MRK[ch], ms=5, mfc='white', mec=COL[ch], mew=1.0,
+               ls='none', zorder=3)
+        out[('cost', ch)] = np.array([y, lo, hi])
+        out[('kappa', ch)] = kap
+    b.axhline(1, color=COL['None'], lw=0.8, ls=(0, (2, 2)), zorder=1)
+    b.text(2.3, 1.3, 'noiseless', ha='right', va='bottom', fontsize=7, color=INK)
+    b.text(0.15, 3e3, 'filled: measured shot cost\nhollow: shot factor $\\kappa$',
+           ha='left', va='center', fontsize=7, color=INK)
+    b.set_yscale('log')
+    b.set_ylim(0.5, 1e5)
+    b.set_xticks(range(len(chans)))
+    b.set_xticklabels([NAME[c] for c in chans])
+    b.set_xlim(-0.5, 2.5)
+    b.set_ylabel('shots relative to noiseless')
+    title(b, 'exact training, $L=4$')
+    panel(b, '(b)')
+    fig.tight_layout(w_pad=2.0)
+    fig.savefig(OUT / 'fig_fashion.pdf')
+    fig.savefig(OUT / 'fig_fashion.png')
     return out
 
 
@@ -580,6 +694,10 @@ if __name__ == '__main__':
         print('shots', k, np.array2string(np.asarray(v), precision=3))
     for k, v in fig_width().items():
         print('width', k, np.array2string(np.asarray(v), precision=3))
-    for k, v in fig_sep().items():
+    for k, v in fig_sep_main().items():
         print('sep', k, [np.array2string(np.asarray(x), precision=4) for x in v])
+    for k, v in fig_sep_app().items():
+        print('sep', k, [np.array2string(np.asarray(x), precision=4) for x in v])
+    for k, v in fig_fashion().items():
+        print('fashion', k, np.round(v, 4))
     print('written to', OUT)

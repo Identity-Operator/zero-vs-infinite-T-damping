@@ -1,6 +1,6 @@
 """The classifier comparisons of App. C with paired t tests
 (conditions share initial parameters seed by seed) and a Holm correction over the tests of the
-statistics table (Delta acc and Delta chi against the noiseless circuit, S1, L=1-4). The two-level
+statistics table (Delta acc against the noiseless circuit, S1, L=1-4). The two-level
 bootstrap CIs are unchanged (stats_appendix.py). Also prints the paired P values quoted in the text
 (S2 Fashion-MNIST, S4, fixed-point control, S7/S7b)."""
 import pathlib, sys
@@ -29,19 +29,18 @@ for L in (1, 2, 3, 4):
     for ch in ('AD', 'Pauli', 'Depol'):
         a, b = S[(ch, L)], S[('None', L)]
         m, (lo, hi) = two_level(corr(a, Y), corr(b, Y))
-        pa, _ = paired(a, b, lambda r: r['test_acc']); ps, ds = paired(a, b, lambda r: r['sensitivity'])
-        rows.append((L, ch, m, lo, hi, ds)); P += [pa, ps]
+        pa, _ = paired(a, b, lambda r: r['test_acc'])
+        rows.append((L, ch, m, lo, hi)); P.append(pa)
 H = holm(P)
-print(f'\n% TABLE (paired t, Holm-adjusted over {int(np.isfinite(P).sum())} tests): L & ch & dacc & CI & P_holm & dchi (P_holm)')
-for k, (L, ch, m, lo, hi, ds) in enumerate(rows):
-    pa, ps = H[2 * k], H[2 * k + 1]
-    fa = 'exact' if np.isnan(pa) else pfmt(pa); fs = '--' if np.isnan(ps) else pfmt(ps)
-    print(f'{L} & {ch} & ${f3(m)}$ & $[{f3(lo)},{f3(hi)}]$ & {fa} & ${f3(ds)}$ ({fs})\\\\   % raw P {P[2*k]:.2g} / {P[2*k+1]:.2g}')
-print('surviving at 0.05 after Holm:', [(rows[k // 2][0], rows[k // 2][1], 'acc' if k % 2 == 0 else 'chi') for k in range(len(H)) if np.isfinite(H[k]) and H[k] < 0.05])
+print(f'\n% TABLE (paired t, Holm-adjusted over {int(np.isfinite(P).sum())} tests): L & ch & dacc & CI & P_holm')
+for k, (L, ch, m, lo, hi) in enumerate(rows):
+    fa = 'exact' if np.isnan(H[k]) else pfmt(H[k])
+    print(f'{L} & {ch} & ${f3(m)}$ & $[{f3(lo)},{f3(hi)}]$ & {fa}\\\\   % raw P {P[k]:.2g}')
+print('surviving at 0.05 after Holm:', [(rows[k][0], rows[k][1]) for k in range(len(H)) if np.isfinite(H[k]) and H[k] < 0.05])
 
 def show(tag, a, b):
-    pa, da = paired(a, b, lambda r: r['test_acc']); ps, ds = paired(a, b, lambda r: r['sensitivity'])
-    print(f'{tag}: dacc {da:+.4f} paired P {pa:.2g}; dchi {ds:+.3f} paired P {ps:.2g}')
+    pa, da = paired(a, b, lambda r: r['test_acc'])
+    print(f'{tag}: dacc {da:+.4f} paired P {pa:.2g}')
 F2 = cells(load(CODE / 'm5_fashion_readout' / 'results.pkl'))
 for ch in ('AD', 'Pauli', 'Depol'):
     show(f'S2 Fashion {ch}-None', F2[(ch, 4)], F2[('None', 4)])

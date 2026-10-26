@@ -14,3 +14,12 @@ paper/v5_pra/*.fls
 paper/v5_pra/*.fdb_latexmk
 paper/v5_pra/*.synctex.gz
 paper/v5_pra/*Notes.bib
+paper/v6_scale/*.aux
+paper/v6_scale/*.log
+paper/v6_scale/*.blg
+paper/v6_scale/*.out
+paper/v6_scale/*.fls
+paper/v6_scale/*.fdb_latexmk
+paper/v6_scale/*.synctex.gz
+paper/v6_scale/*Notes.bib
+.DS_Store

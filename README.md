@@ -5,8 +5,7 @@
 Code, result files and LaTeX source for
 
 > V.-Q.-M. Nguyen, T.-V. Truong, H.-L. Nguyen, and T.-K. Le,
-> *Zero- Versus Infinite-Temperature Damping in Variational Quantum Circuits:
-> Feature Scale, Sampling Cost, and Frame Gauge* (2026).
+> *Zero- Versus Infinite-Temperature Damping in Variational Quantum Circuits* (2026).
 
 Every number and figure in the paper is computed from the files here. The
 figures are regenerated from the committed results in a few seconds; the
@@ -32,10 +31,10 @@ code/scale_gauge/
     vr/                        single-qubit fits
     vqe_gauge/                 eigensolver
     gauge/                     frame gauge: proposition, proof, exhaustive frame search
-    theory/                    exact average over parameters: feature scale, separation depth, finite temperature
+    theory/                    exact average over parameters: spread, separation depth, finite temperature
     shots/                     finite-shot evaluation and operational shot cost
     scale_e1e2/                output-scale runs at L = 4 and an independent density-matrix simulator
-    verify/                    independent re-implementations and the statistics of App. C
+    verify/                    independent re-implementations and the statistics of App. B
 ```
 
 The folder names `noise_structure_mnist` and `v5_pra` are historical; the
@@ -47,21 +46,21 @@ scripts refer to each other by these paths, so they are kept.
 |---|---|---|
 | Fig. 1 | drawn in LaTeX (quantikz) | — |
 | Fig. 2 | `code/scale_gauge/vr/vr_test.py` | `vr/vr_results.pkl` |
-| Fig. 3, Table II | `run_phase1.py depth` (raw readout, 100 steps), `run_phase1.py readout` (standardized readout); `scale_e1e2/scale_test.py` mode e2 (raw readout, 1000 steps, L = 4) | `m5_depth/`, `m5_readout/`, `scale_e1e2/scale_e2_*.pkl` |
+| Fig. 3, Table III | `run_phase1.py depth` (raw readout, 100 steps), `run_phase1.py readout` (standardized readout); `scale_e1e2/scale_test.py` mode e2 (raw readout, 1000 steps, L = 4) | `m5_depth/`, `m5_readout/`, `scale_e1e2/scale_e2_*.pkl` |
 | Fig. 4 | `vqe_gauge/vqe_gauge_test.py` | `vqe_gauge/vqe_gauge_results.pkl` |
 | Sign of the coupling in the eigensolver | `vqe_gauge/vqe_sign_test.py`, `vqe_gauge/vqe_sign_identity.py` | `vqe_sign_results.pkl`, `vqe_sign_log.txt`, `vqe_sign_identity_log.txt` |
-| Table III | `gauge/test_gauge.py` | `gauge/results.json` |
+| Table I | `gauge/test_gauge.py` | `gauge/results.json` |
 | Fig. 5 | `run_phase1.py width_diag`; `theory/t1_scale_ratio.py` (exact average) | `m5_width_diag/`, `theory/t1_results.json` |
 | Fig. 6 | `run_phase1.py shots`; `shots/F1_calib.py` + `F1_calib_summary.py`; `shots/F1_s5.py` + `F1_s5_summary.py` | `m5_shots/`, `shots/F1_calib_summary.pkl`, `shots/F1_s5_summary.pkl` |
-| Table IV, Fig. 7 | `theory/t1_p_dependence.py` | `theory/t1_p_dependence_n4.json`, `_n8.json` (logs in `.txt`) |
+| Table VI, Figs. 7 and 9 | `theory/t1_p_dependence.py` | `theory/t1_p_dependence_n4.json`, `_n8.json` (logs in `.txt`) |
 | Table V | `run_phase1.py pdep`, `run_phase1.py pdep_L8`; `shots/F1_pdep.py` | `m5_pdep/`, `m5_pdep_L8/`, `shots/F1_pdep_*.pkl` |
-| Table VI, App. C | `verify/stats_paired_holm.py`, `verify/stats_appendix.py` | `verify/stats_paired_holm.txt` |
+| Table II, App. B | `verify/stats_paired_holm.py`, `verify/stats_appendix.py` | `verify/stats_paired_holm.txt` |
+| Table IV (noise gain $G$) | `shots/F1_gain_check.py` + `F1_gain_table.py` | `shots/F1_gain_check.pkl`, `shots/F1_gain_table.txt` |
 | Finite temperature | `theory/t1_gad_temperature.py`, `verify/gad_linearity_check.py` | the `.txt` files beside them |
 | Reversed-damping null test | `run_phase1.py fixedpoint` | `m5_fixedpoint/` |
 | Channel after every CNOT of the entangler | `run_phase1.py inside` | `m5_inside/` |
-| Fashion-MNIST | `run_phase1.py fashion`, `run_phase1.py fashion_readout` | `m5_fashion/`, `m5_fashion_readout/` |
+| Fashion-MNIST, Fig. 8 | `run_phase1.py fashion`, `run_phase1.py fashion_readout`; `shots/F1_calib.py` + `F1_calib_summary.py` | `m5_fashion/`, `m5_fashion_readout/`, `shots/F1_calib_summary.pkl` |
 | Classical baselines | `run_phase1.py baselines` | `m5_baseline/` |
-| Input sensitivity without the readout gain | `shots/F2_sensitivity.py` + `F2_summary.py` | `shots/F2_*.pkl` |
 
 Independent checks, each sharing no simulation code with what it checks:
 `verify/t1_brute_n4.py` and `t1_brute_n4_p.py` (density-matrix simulation
@@ -152,8 +151,7 @@ resolves to the latest version.
 
 ```bibtex
 @article{nguyen2026damping,
-  title  = {Zero- Versus Infinite-Temperature Damping in Variational Quantum Circuits:
-            Feature Scale, Sampling Cost, and Frame Gauge},
+  title  = {Zero- Versus Infinite-Temperature Damping in Variational Quantum Circuits},
   author = {Nguyen, Vu-Quoc-Minh and Truong, Tuan-Vu and Nguyen, Hoang-Long and Le, Trung-Khanh},
   year   = {2026}
 }

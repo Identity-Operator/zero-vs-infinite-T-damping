@@ -1,0 +1,1639 @@
+% ============================================================
+% Output scale and gauge freedom in comparisons of amplitude damping
+% with its twirls in variational quantum circuits
+% Compile: pdflatex, bibtex, pdflatex, pdflatex.
+% ============================================================
+\documentclass[
+ aps,pra,
+ twocolumn,
+ superscriptaddress,
+ longbibliography,
+ nofootinbib
+]{revtex4-2}
+
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{quantikz}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\usepackage{orcidlink}
+
+\newcommand{\Tr}{\mathrm{Tr}}
+\providecommand{\ket}[1]{\lvert #1 \rangle}
+\providecommand{\bra}[1]{\langle #1 \rvert}
+\newcommand{\AD}{\mathrm{AD}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+% Single contact address, attached to the corresponding author only.
+\newcommand{\authornote}{Contact:
+\href{mailto:ltkhanh@hcmus.edu.vn}{ltkhanh@hcmus.edu.vn}}
+
+\raggedbottom
+\begin{document}
+
+\title{Zero- Versus Infinite-Temperature Damping in Variational Quantum Circuits}
+
+\author{Vu-Quoc-Minh Nguyen\,\orcidlink{0009-0007-2748-5107}}
+\affiliation{Faculty of Electronics and Telecommunications, University of Science,
+Vietnam National University Ho Chi Minh City (VNU-HCM), Ho Chi Minh City 70000,
+Vietnam}
+\affiliation{Identity Quantum Computing JSC, 117 Tran Duy Hung Street, Hanoi 10000,
+Vietnam}
+
+\author{Tuan-Vu Truong\,\orcidlink{0009-0005-6357-6060}}
+\affiliation{Identity Quantum Computing JSC, 117 Tran Duy Hung Street, Hanoi 10000,
+Vietnam}
+
+\author{Hoang-Long Nguyen\,\orcidlink{0009-0005-7922-9266}}
+\affiliation{Identity Quantum Computing JSC, 117 Tran Duy Hung Street, Hanoi 10000,
+Vietnam}
+
+\author{Trung-Khanh Le\,\orcidlink{0000-0003-0935-6743}}
+\thanks{\authornote}
+\affiliation{Faculty of Electronics and Telecommunications, University of Science,
+Vietnam National University Ho Chi Minh City (VNU-HCM), Ho Chi Minh City 70000,
+Vietnam}
+
+\date{\today}
+
+\begin{abstract}
+Randomized compiling makes hardware noise easier to handle by twirling it into
+Pauli noise, but it also removes the pull of amplitude damping toward
+$\ket{0}$. This has been reported to make variational models worse, and
+reversing the direction of the damping to make them worse still. We ask what
+these effects really are. Comparing amplitude damping with its Pauli twirl,
+which is the same damping at infinite temperature, we find that the twirl
+mainly flattens the measured expectation values across inputs. A trained output
+scale undoes most of the loss in accuracy, so the models learn just as well,
+but the price returns as measurement shots. Under the twirl the flattened
+values must be measured far more often, while under amplitude damping a floor
+keeps them resolvable. This floor vanishes as the temperature rises, and at
+realistic damping strengths it matters only in very deep circuits. We also show
+that reversing the damping is usually a gauge freedom that changes only the
+parameters, and that the reported direction effect arises only because the
+damping sits inside a decomposed two-qubit gate.
+\end{abstract}
+
+\maketitle
+
+% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+Variational quantum algorithms and quantum machine learning models are built
+from parameterized circuits and are meant to run on noisy near-term
+devices~\cite{preskill2018nisq,cerezo2021variational,bharti2022noisy}. They can
+only be trained if their outputs change with the parameters. In deep random
+circuits, this change vanishes exponentially with the number of qubits, a
+problem known as a barren
+plateau~\cite{mcclean2018barren,cerezo2021cost,larocca2025barren}, and noise
+makes it worse. Unital noise drives the state toward the maximally mixed state,
+so local expectation values decay exponentially with
+depth~\cite{wang2021noiseinduced,stilckfranca2021limitations}. Non-unital noise
+behaves differently. Amplitude damping (AD) drives the state toward a pure state
+and avoids barren plateaus for local observables~\cite{mele2026noise}, although
+the output then forgets the early
+layers~\cite{schumann2024emergence,singkanipa2025beyond}.
+
+This difference matters in practice, because hardware noise is often made
+unital on purpose. Randomized
+compiling~\cite{wallman2016noise,hashim2021randomized} averages the noise over
+random Pauli gates, which turns AD into its Pauli twirl. The twirl keeps the
+shrinking of AD but removes its pull toward $\ket{0}$, leaving generalized
+amplitude damping at infinite temperature. Comparing AD with its Pauli twirl
+therefore isolates the pull toward $\ket{0}$, the zero-temperature bias of the
+damping. A recent study~\cite{vanrossum2026biased} made this comparison and
+found that twirling degrades eigensolver solutions and reduces the range of
+outputs a model can fit, and that reversed damping performs worse than ordinary
+damping. What these effects mean is less clear. They could reflect a real loss
+in what the model can learn, or only a change in how its outputs must be read
+out. It is also unknown whether the direction of the damping matters in itself.
+
+In this work, we show that in our models the zero-temperature bias acts mainly
+through the spread of the measured expectation values over the inputs. Under
+AD, this spread settles on a floor, whereas under the twirls it keeps shrinking
+with every layer. The floor vanishes as the temperature rises. A trainable
+readout absorbs most of the resulting differences in accuracy, much as
+rescaling methods of error mitigation do~\cite{vovrosh2021simple}, so the
+twirled models lose little in what they can learn. The difference reappears
+instead as a cost in measurement shots~\cite{wang2024errormitigation}: at a
+fixed shot budget, the classifier under AD stays close to its noiseless
+accuracy, while the twirled classifiers fall far below it. At weak damping, the
+two separate only in very deep circuits.
+
+We also show that the direction of the damping is often a gauge freedom.
+Reversing the damping changes the gates, the input state, and the measured
+observables as well. When the damping follows complete entangling layers and
+the circuit has trainable boundaries, these changes are absorbed by a Pauli
+frame or by spin time reversal, and reversing the damping
+amounts to a change of parameters. This extends the parameter symmetries of Fontana
+\textit{et al.}~\cite{fontana2022nontrivial} from one circuit to a pair of
+noise models. Time reversal leaves every single-qubit rotation unchanged, so
+only multi-qubit gates, the placement of the noise, and the circuit boundaries
+can make the direction physical.
+
+We organize the text as follows. Section~\ref{sec:setting} introduces the
+channels and models. Section~\ref{sec:scale} treats the output scale,
+Sec.~\ref{sec:gauge} the gauge, and Sec.~\ref{sec:cost} the spread, the
+sampling cost, and their dependence on the damping strength.
+Section~\ref{sec:conclusion} concludes.
+
+% ============================================================
+\section{Channels and models}
+\label{sec:setting}
+
+In this section, we introduce the noise channels that we compare and the three
+models on which we compare them: single-qubit re-uploading fits, a four-qubit
+classifier, and a three-qubit eigensolver.
+
+\subsection{Channels}
+\label{sec:channels}
+
+We describe each single-qubit channel $\mathcal N$ through its action on the
+Bloch vector, which is an affine map $\mathbf r\mapsto T\mathbf r+\mathbf t$~\cite{nielsen2010quantum}, with
+\begin{equation}
+T_{ij}=\tfrac12\Tr\bigl[P_i\,\mathcal N(P_j)\bigr],\qquad
+t_i=\tfrac12\Tr\bigl[P_i\,\mathcal N(I)\bigr],
+\label{eq:bloch}
+\end{equation}
+where $P_i\in\{X,Y,Z\}$. The matrix $T$ describes how the channel shrinks the
+Bloch vector, and the vector $\mathbf t$ how it pushes it. The channel is
+unital if and only if $\mathbf t=\mathbf 0$.
+
+We compare amplitude damping with two twirled versions of it. Amplitude damping
+of strength $p$ does two things to the Bloch vector. It shrinks the vector, by
+$c=\sqrt{1-p}$ in the transverse directions and by $c^2$ along $z$, and it
+pushes the vector toward $\ket0$ by $p$. The Clifford twirl~\cite{dankert2009exact}
+averages these effects over all directions and leaves depolarizing noise, which
+shrinks every component by the same factor and pushes nowhere. The Pauli
+twirl~\cite{dur2005standard,wallman2016noise} is gentler. It keeps the
+shrinking of AD exactly but removes the push toward $\ket0$, the non-unital
+term.
+
+The Pauli twirl can also be seen as an average over the two directions of the
+damping. Reversed damping, $\AD^{\rm flip}$, is AD conjugated by a bit flip and damps
+toward $\ket1$, and the twirl is
+\begin{equation}
+\AD_{\rm Pauli}=\tfrac12\bigl(\AD+\AD^{\rm flip}\bigr).
+\label{eq:twirl_mix}
+\end{equation}
+This average has a simple physical meaning. Generalized amplitude
+damping~\cite{nielsen2010quantum} with excited-state population $N$ has the
+same $T$ as AD and $t_z=p(1-2N)$. AD, its Pauli twirl, and AD$^{\rm flip}$ are
+the cases $N=0$, $\frac12$, and 1, so comparing AD with its Pauli twirl compares
+damping at zero and at infinite temperature.
+
+We treat the twirled channels as idealized, replacing the channel by its twirl
+at every insertion. No twirling protocol can do this exactly after a
+non-Clifford gate such as the data encoding, so the twirled channels should be
+read as model channels that share the contraction of AD.
+
+\subsection{Single-qubit re-uploading fits}
+\label{sec:model_vr}
+
+Our first model is the single-qubit data re-uploading model of
+Ref.~\cite{vanrossum2026biased}. With $\mathcal U(V)\colon\rho\mapsto V\rho
+V^\dagger$, the encoding $\mathcal S_x=\mathcal U(R_X(x))$, and trainable
+blocks $\mathcal W_\ell=\mathcal U(R_ZR_YR_Z)$ with three parameters each, the
+noisy circuit with $L=2$ layers is
+\begin{equation}
+\Phi_{x,\theta}=\mathcal N\circ\mathcal W_2\circ\mathcal N\circ\mathcal S_x
+\circ\mathcal N\circ\mathcal W_1\circ\mathcal N\circ\mathcal S_x\circ\mathcal N
+\circ\mathcal W_0 ,
+\label{eq:vr_map}
+\end{equation}
+and the raw model outputs
+\begin{equation}
+f(x)=\Tr\bigl[Z\,\Phi_{x,\theta}(\ket0\bra0)\bigr].
+\label{eq:vr_raw}
+\end{equation}
+To measure expressivity, we fit random targets and record the largest range
+$R$ for which Adam reaches a mean squared error below $10^{-5}$ within 150
+steps. As targets, we use 200 random degree-2 trigonometric polynomials, each
+rescaled to range $R$ and the same for every channel. We then compare the raw
+model with a rescaled model $f_{s,b}(x)=s\,f(x)+b$, in which $s$ and $b$ are
+trained together with the circuit. Appendix~\ref{app:training} gives the remaining
+details of the protocol.
+
+\subsection{Four-qubit re-uploading classifier}
+\label{sec:model_clf}
+
+\begin{figure*}[!t]
+\centering
+\begin{quantikz}[column sep=3.2pt, row sep=10pt, thin lines]
+\lstick{$\ket{0}$}
+ & \gate{R_Z}\gategroup[4,steps=10,style={dashed,rounded corners,
+ inner xsep=3pt,inner ysep=3pt},background,
+ label style={label position=below,anchor=north,yshift=-0.35cm}]
+ {\small one layer, repeated $\times L$}
+ & \gate{R_Y} & \gate{R_Z} & \ctrl{1} & & & \targ{}
+ & \gate[4]{\mathcal N^{\otimes n}} & \gate{R_X(a_1)}
+ & \gate[4]{\mathcal N^{\otimes n}}
+ & \gate{R_Z} & \gate{R_Y} & \gate{R_Z}
+ & \gate[4]{\mathcal N^{\otimes n}} & \meter{} & \rstick{$z_1$} \\
+\lstick{$\ket{0}$}
+ & \gate{R_Z} & \gate{R_Y} & \gate{R_Z} & \targ{} & \ctrl{1} & &
+ & & \gate{R_X(a_2)} & & \gate{R_Z} & \gate{R_Y} & \gate{R_Z} & &
+ \meter{} & \rstick{$z_2$} \\
+\lstick{$\ket{0}$}
+ & \gate{R_Z} & \gate{R_Y} & \gate{R_Z} & & \targ{} & \ctrl{1} &
+ & & \gate{R_X(a_3)} & & \gate{R_Z} & \gate{R_Y} & \gate{R_Z} & &
+ \meter{} & \rstick{$z_3$} \\
+\lstick{$\ket{0}$}
+ & \gate{R_Z} & \gate{R_Y} & \gate{R_Z} & & & \targ{} & \ctrl{-3}
+ & & \gate{R_X(a_4)} & & \gate{R_Z} & \gate{R_Y} & \gate{R_Z} & &
+ \meter{} & \rstick{$z_4$}
+\end{quantikz}
+\caption{The classifier at $n=4$, drawn for one layer and the final block.
+Each $R_ZR_YR_Z$ triple carries three trainable angles; the encoding column
+re-uploads the angle vector $\mathbf a$ in each of the $L$ layers. The channel
+acts on every qubit after the entangler, after the encoding, and after the
+final block, giving $2L+1$ insertions per qubit. The expectation values
+$z_j=\langle Z_j\rangle$ enter a trainable affine readout.}
+\label{fig:circuit}
+\end{figure*}
+
+Our second model is a data re-uploading
+classifier~\cite{perezsalinas2020data,schuld2021encoding} on $n=4$ qubits
+(Fig.~\ref{fig:circuit}), which classifies MNIST
+images~\cite{lecun1998gradient} of the digits $\{1,3,5\}$. Each image is
+reduced to four principal components, which are mapped linearly to angles
+$a_j\in[0,2\pi]$. As a second data set, we
+use three classes of Fashion-MNIST~\cite{xiao2017fashion}.
+
+The circuit is built from three ingredients, namely trainable blocks, the
+encoding, and a ring of CNOTs,
+\begin{equation}
+\begin{gathered}
+\mathcal R^{(\ell)}={\textstyle\bigotimes_{j=1}^{n}}R_Z R_Y R_Z,\quad
+S(\mathbf a)={\textstyle\bigotimes_{j=1}^{n}}R_X(a_j),\\
+E=\mathrm{CNOT}_{n,1}\cdots\mathrm{CNOT}_{2,3}\,\mathrm{CNOT}_{1,2},
+\end{gathered}
+\label{eq:blocks}
+\end{equation}
+where $\mathrm{CNOT}_{j,k}$ has control $j$ and target $k$. Each layer applies a
+trainable block and the ring, then the encoding, with the channel acting after
+both,
+\begin{equation}
+\mathcal L^{(\ell)}_{\mathbf a}=\mathcal N^{\otimes n}\circ
+\mathcal U\bigl(S(\mathbf a)\bigr)\circ\mathcal N^{\otimes n}\circ
+\mathcal U\bigl(E\,\mathcal R^{(\ell)}\bigr),
+\label{eq:layer}
+\end{equation}
+and the full circuit is
+\begin{equation}
+\Phi_{\mathbf a,\theta}=\mathcal N^{\otimes n}\circ\mathcal U\bigl(\mathcal R^{(L)}\bigr)
+\circ\mathcal L^{(L-1)}_{\mathbf a}\circ\cdots\circ\mathcal L^{(0)}_{\mathbf a},
+\label{eq:circuit}
+\end{equation}
+with $2L+1$ insertions of the channel per qubit and $\theta$ the $3n(L+1)$
+trainable angles of the blocks. The readout acts on the
+single-qubit expectation values
+\begin{equation}
+z_j(\mathbf a,\theta)=\Tr\bigl[Z_j\,\Phi_{\mathbf a,\theta}
+\bigl(\ket0\bra0^{\otimes n}\bigr)\bigr],
+\label{eq:features}
+\end{equation}
+and the scores of the three classes are
+\begin{equation}
+\ell(\mathbf a)=
+\begin{cases}
+W\mathbf z+\mathbf b & \text{(raw)},\\
+W\,\mathrm{diag}(\boldsymbol\sigma)^{-1}(\mathbf z-\boldsymbol\mu)+\mathbf b
+ & \text{(standardized)},
+\end{cases}
+\label{eq:readout}
+\end{equation}
+where $W$ is a trainable $3\times n$ weight matrix and $\mathbf b$ a trainable
+bias. In the standardized readout, $\boldsymbol\mu$ and $\boldsymbol\sigma$
+collect the means $\mu_j$ and the population standard deviations $\sigma_j$ of
+the $z_j$ over the 1000 training images. We recompute them at every
+training step, with gradients flowing through them, and apply their values at
+the final parameters to the test images. The standardized readout adds no
+parameters to the raw one. It only fixes the scale at which $W$ acts.
+
+Unless stated otherwise, we use $p=0.3$ and simulate the density matrix
+exactly, so the expectation values carry no sampling error. The exception is
+the finite-shot runs, in which each $z_j$ carries the noise of $N_s$
+measurements, in training as well as at test time. For these runs, we define
+the operational shot cost of a trained model as the smallest $N_s$ at which its
+mean test accuracy lies within 0.01 of its accuracy with exact expectation
+values, and we report its geometric mean over the initializations. Training
+settings, classical baselines, and the shot model are given in
+Appendix~\ref{app:training}.
+
+\subsection{Three-qubit variational eigensolver}
+\label{sec:model_vqe}
+
+Our third model is the eigensolver of Ref.~\cite{vanrossum2026biased} for the
+periodic transverse-field Ising chain on three qubits,
+\begin{equation}
+H=-J\sum_{i=1}^{3}Z_iZ_{i+1}-h\sum_{i=1}^{3}X_i ,
+\label{eq:tfim}
+\end{equation}
+with $J=1$, $h=0.5$, and $Z_4\equiv Z_1$, whose ground-state energy is
+$E_0=-3.2321$. The ansatz starts with a trainable $R_Y$ on each qubit, followed
+by four blocks. Each block applies a trainable $R_{ZZ}(\phi)$ to each of the three pairs and a
+trainable $R_X$ to each qubit, and each two-qubit gate is decomposed as
+\begin{equation}
+R_{ZZ}(\phi)=\mathrm{CNOT}_{i,i+1}\,\bigl[I\otimes R_Z(\phi)\bigr]\,
+\mathrm{CNOT}_{i,i+1} .
+\label{eq:rzz}
+\end{equation}
+We treat single-qubit gates as noiseless and write the noise strength of the
+eigensolver as $\gamma$.
+Since the placement of the noise turns out to matter, we compare two placements
+with the same number of insertions. In their \textit{inside}
+placement, the channel acts on both qubits
+after each CNOT. In the \textit{after} placement, it acts twice on both qubits
+after the complete $R_{ZZ}$. For each noise strength and placement, we minimize
+the energy from 50 initializations, the same for every channel, and report the
+relative error of the energy of the output state $\rho(\theta)$ with respect
+to $E_0$. Optimizer settings and a cross-check against their code are given in Appendix~\ref{app:training}.
+
+% ============================================================
+\section{Output scale}
+\label{sec:scale}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_vr}
+\caption{Single-qubit re-uploading fits of Ref.~\cite{vanrossum2026biased}
+(200 targets). (a) Largest converging output range of the raw model
+$f=\langle Z\rangle$, with a free target offset. (b) Fraction of targets of range $R=1$ that
+converge within 1000 steps when an output scale $s$ and offset $b$ are
+trained. (c) Shot factor $\kappa=(s/s_{\rm None})^2$ at $R=1$ from the median
+fitted scale; the dotted line is the exact depolarizing value $\lambda_{\rm depol}^{-10}$. Bars
+are 95\% confidence intervals of the mean over targets in (a) and Wilson 95\%
+intervals in (b).}
+\label{fig:vr}
+\end{figure*}
+
+We begin with the simplest way in which noise can change a variational model:
+by changing the scale of its output. AD and its Pauli twirl, damping at zero
+and at infinite temperature, share the same contraction matrix $T$. Any
+difference in scale between them must therefore come from the non-unital vector
+$\mathbf t$, which carries the zero-temperature bias (Sec.~\ref{sec:cost}). In this section, we ask
+how much of the effect of the noise a trainable output scale can undo, and what
+it costs to undo it.
+
+\subsection{Scale and sampling cost}
+
+Consider first the simplest case, in which the noise only rescales and shifts
+each expectation value,
+\begin{equation}
+\tilde z_j=s\,z_j+b_j ,
+\label{eq:affine}
+\end{equation}
+with constants $s\neq0$ and $b_j$ that depend on neither the input nor the
+parameters. A trainable affine readout can then undo the noise completely:
+every classifier that it can build from the noiseless $\mathbf z$, it
+can also build from the noisy $\tilde{\mathbf z}$, so the noise leaves
+the model class unchanged. A single qubit under depolarizing noise is an exact
+example. Because this channel commutes with every unitary, $N_{\rm ins}$
+insertions simply multiply the output by a constant,
+\begin{equation}
+\tilde f=\lambda_{\rm depol}^{N_{\rm ins}}f ,
+\label{eq:depol_scale}
+\end{equation}
+where $\lambda_{\rm depol}=\frac13(2c+c^2)$ is the factor by which depolarizing
+noise shrinks each Bloch component, the average of those of AD.
+For anisotropic or non-unital channels, or on more than one qubit, the noisy
+model is no longer a rescaled copy of the noiseless one. Whether the scale
+still accounts for most of the difference then becomes an empirical question,
+which we test in the rest of this section. The average behavior of the spread
+on several qubits, its per-layer decay under the twirls and its floor under
+AD, is derived in Sec.~\ref{sec:floor} and Appendix~\ref{app:width}.
+
+On hardware, however, rescaling is not free. The number of shots is one of the
+main costs of variational algorithms~\cite{wecker2015progress,gonthier2022measurements},
+and an expectation value estimated from $N_s$ shots, $\hat z_j$, has the variance
+\begin{equation}
+\mathrm{Var}(\hat z_j)=\frac{1-z_j^2}{N_s}\le\frac1{N_s} .
+\label{eq:shotvar}
+\end{equation}
+The standardized readout divides each $z_j$ by its spread $\sigma_j$, so the
+shot noise of the standardized $z_j$ has variance
+$(1-z_j^2)/(N_s\sigma_j^2)\le1/(N_s\sigma_j^2)$. The smaller the spread, the more
+the shot noise is amplified. Keeping the class scores equally precise therefore
+requires $N_s\propto1/\sigma^2$, and a channel $\mathcal N$ needs about
+$\kappa(\mathcal N)$ times the shots of the noiseless circuit, with the shot
+factor
+\begin{equation}
+\kappa(\mathcal N)=\biggl(\frac{\sigma(\text{None})}{\sigma(\mathcal N)}\biggr)^{2},
+\label{eq:kappa}
+\end{equation}
+where $\sigma$ is the spread $\sigma_j$ at the trained parameters, averaged over
+the qubits and the initializations.
+For the single-qubit fits, we use $1/\lvert s\rvert$ in place of $\sigma$, with
+$s$ the median fitted output scale, so that $\kappa=(s/s_{\rm None})^2$. In the language of error
+mitigation, the trained readout performs a
+rescaling~\cite{vovrosh2021simple,urbanek2021mitigating}. Such a rescaling
+cannot undo an exponential concentration without an exponential number of
+shots~\cite{wang2024errormitigation}. In Sec.~\ref{sec:shots}, we test how well
+$\kappa$ predicts the operational shot cost of Sec.~\ref{sec:model_clf}, the
+number of shots that a trained classifier actually needs.
+
+\subsection{Single-qubit fits}
+\label{sec:vr}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_clf}
+\caption{Four-qubit classifier on MNIST against the number of re-uploading
+layers. (a) Test accuracy with the raw readout and (b) with the
+standardized readout, both after 100 steps, and (c) shot factor $\kappa$ of
+Eq.~\eqref{eq:kappa} with the standardized readout. Panels (a) and (b) show the
+median and interquartile range over eight initializations, with hollow markers
+for the individual runs; one Pauli run at $L=1$ in (b) diverged and lies below
+the axis.}
+\label{fig:clf}
+\end{figure*}
+
+We now examine the single-qubit fits. With
+the raw output and a free target offset, we recover the reported ordering at
+$p\ge0.1$ [Fig.~\ref{fig:vr}(a)]. At $p=0.1$, for example, the largest
+converging range is 0.86 for AD, compared with 0.77 and 0.75 for the Pauli and
+Clifford twirls. This range is not a clean measure of expressivity,
+however. The noiseless model reaches only 0.65, below every noisy channel at
+$p\le0.1$. The metric therefore measures how quickly the model converges within
+the 150-step budget as much as the range it can reach. Indeed, when we center
+the targets on zero, the ordering at $p=0.1$ reverses (Appendix~\ref{app:stats}).
+
+Once the model can train its own scale and offset, the difference between the
+channels disappears [Fig.~\ref{fig:vr}(b)]. We train at two fixed ranges, $R=1$
+and $R=0.468$, the latter being the median largest range of the noiseless raw
+model. At $R=1$, AD converges within 1000 steps on 96.5 to 99.0\% of the
+targets for $p=0.05$ to 0.2, compared with 98.5 to 99.0\% for the Pauli twirl
+and 98.5\% for the noiseless model. None of the paired differences is
+significant at either range. Within 150 steps, the only significant difference
+appears at $R=0.468$, and it favors the Pauli twirl (Appendix~\ref{app:stats}).
+
+What the twirl changes instead is the scale [Fig.~\ref{fig:vr}(c)]. At $p=0.2$,
+the Pauli twirl needs 1.24 to 1.57 times the shots of AD, depending on the
+range. The Clifford twirl needs 0.92 to 1.16 times the shots of AD, and its
+shot factor follows the exact depolarizing value $\lambda_{\rm depol}^{-10}$,
+since by Eq.~\eqref{eq:depol_scale} the five insertions shrink the output by
+$\lambda_{\rm depol}^5$. On a single qubit, the cost of twirling is therefore
+modest. As we show next, it becomes large in the classifier, where it compounds
+over qubits and layers.
+
+\subsection{Classifier}
+\label{sec:clf}
+
+We now turn to the four-qubit classifier, where the effect of the scale is much
+stronger. With the raw readout and 100 training steps, the unital channels at
+first seem to lose trainability as the circuit gets deeper
+[Fig.~\ref{fig:clf}(a) and Table~\ref{tab:clf} in Appendix~\ref{app:stats}]. Between $L=1$ and $L=4$, the test
+accuracy falls from 0.847 to 0.715 for the Pauli twirl and from 0.851 to 0.695
+for depolarizing noise, and the training accuracy falls with it, to 0.700 and
+0.672. AD stays at 0.84, and the noiseless circuit at 0.86. Taken at face
+value, this would suggest that the non-unital term keeps the deep circuit
+trainable.
+
+A closer look shows that the drop comes from the readout, not from the
+circuit. If we train the same raw readout for 1000 steps, the unital channels
+recover to 0.837 and 0.826 at $L=4$. Over these extra steps, the norm of their
+readout weights grows from about 19 to 106 and 109, while for the noiseless
+circuit it grows only from 8 to 20. The reason is that, after 100 steps, the
+unital channels have shrunk the spread to about 5 and 4 percent of the
+noiseless spread, and to below 1 percent before training. With a spread this
+small, the raw readout cannot grow its weights fast enough. The circuit itself
+remains trainable. With the standardized readout, every channel reaches the
+accuracy of the noiseless circuit at every depth [Fig.~\ref{fig:clf}(b)], and
+the Pauli and depolarizing channels are statistically indistinguishable from it
+(Table~\ref{tab:stats}).
+
+We see the same behavior on Fashion-MNIST at $L=4$. With the raw readout, the
+unital channels fall 16 and 17 points below the noiseless circuit (0.765), and
+AD falls 5 points below it. With the standardized readout, all three channels
+come within two points of the noiseless circuit [Fig.~\ref{fig:fashion} in
+Appendix~\ref{app:stats}],
+while their shot factors are 34 for AD and $9.9\times10^3$ and
+$8.2\times10^3$ for the Pauli and depolarizing channels.
+
+The depolarizing channel at $L=1$ gives an exact check of this picture. Each
+$z_j$ then crosses all three noise insertions as a weight-one Pauli string,
+so the channel multiplies every $z_j$ by the same factor
+$\lambda_{\rm depol}^3$, whatever the parameters. Since the standardized
+readout removes a uniform scale, the depolarizing and noiseless classifiers
+should make identical predictions, and indeed they do, on every test image. AD
+is not a pure rescaling, yet with the standardized readout it too stays within
+one percentage point of the noiseless accuracy at every depth
+(Table~\ref{tab:stats}).
+
+What the standardized readout cannot remove is the difference in spread
+[Fig.~\ref{fig:clf}(c)]. At the end of training, the shot factor of the unital
+channels grows by a factor of about 14 per layer, from 4.1 at $L=1$ to
+$1.1\times10^4$ at $L=4$ for depolarizing noise and to $1.6\times10^4$ for the
+Pauli twirl. For AD, it grows by only about 2.4 per layer, from 3.6 to 50. Note
+that the shot factor is not a property of the channel alone. It also depends on
+what the model is trained for. With the raw readout, the optimizer moves the
+parameters toward less contracted expectation values, and after 1000 steps at $L=4$ the
+shot factors are 11 for AD, 320 for the Pauli twirl, and 470 for depolarizing
+noise.
+
+In summary, the zero-temperature bias acts in our models mainly through the spread of
+the expectation values, and the reported loss of expressivity is a loss of
+scale. A trained readout absorbs
+this loss, but at a cost in shots that grows with depth.
+
+% ============================================================
+\section{Gauge freedom of the damping direction}
+\label{sec:gauge}
+
+So far, we have compared AD with its twirls, which remove the non-unital term
+altogether. A simpler comparison only reverses the term, by damping toward
+$\ket1$ instead of $\ket0$. In this section, we ask when such a reversal
+changes the model at all, and we test the answer in the classifier and in the
+eigensolver.
+
+\subsection{When the damping direction is a gauge}
+\label{sec:gauge_def}
+
+Amplitude damping toward $\ket{1}$, $\AD^{\rm flip}$ of
+Sec.~\ref{sec:channels}, differs from $\AD$ only in the sign of $\mathbf t$. As we
+show next, whether a circuit can tell the two apart depends on how a Pauli
+frame propagates through it.
+
+To see how, we write the reversed circuit as a sequence of elements,
+$\Phi^{\rm rev}=E^{\rm rev}_m\circ\dots\circ E^{\rm rev}_1$, where the
+elements $E^{\rm rev}_k$ are its gates, encodings, and noise layers. The idea
+is to insert the identity, in the form $g_k\circ g_k=\mathrm{id}$, at every cut
+$k=0,\dots,m$, that is, before the first element, between neighboring
+elements, and after the last one. Each $g_k$ is a Pauli
+frame~\cite{knill2005quantum}, either a Pauli conjugation or a Pauli
+conjugation combined with complex conjugation in the computational basis,
+\begin{equation}
+g_k(\rho)=
+\begin{cases}
+P_k\,\rho\,P_k & \text{(unitary type)},\\
+P_k\,\bar\rho\,P_k & \text{(antiunitary type)},
+\end{cases}
+\label{eq:frame}
+\end{equation}
+where $P_k$ is a Pauli string and all $g_k$ are of the same type. Grouping
+each element with its two neighboring frames, we can rewrite the reversed
+circuit as
+\begin{align}
+\Phi^{\rm rev}&=g_m\circ\tilde E_m\circ\dots\circ\tilde E_1\circ g_0,
+\label{eq:framed}\\
+\tilde E_k&=g_k\circ E^{\rm rev}_k\circ g_{k-1} .
+\label{eq:framed_k}
+\end{align}
+If every $\tilde E_k$ turns out to be an element of the original model,
+possibly with different parameters, the reversed model is the original one in
+disguise. Whether this happens can be checked element by element. To state the
+conditions precisely, we write $y(x;\theta)$ for the outputs of
+the model for an input $x$ and parameters $\theta$, that is, the expectation
+values it measures, and $y^{\rm rev}(x;\theta)$ for those of the reversed
+model.
+
+\begin{proposition}[Frame gauge]\label{prop:gauge}
+Reversing the damping is a reparametrization of the model,
+\begin{equation}
+y^{\mathrm{rev}}(x;\theta)=\eta\,y(x;\theta')
+\label{eq:reparam}
+\end{equation}
+for all inputs $x$, with a sign $\eta=\pm1$ for each output and $\theta'$ depending only on $\theta$, whenever a frame assignment of one type exists such that
+\begin{itemize}
+\item[(i)] at every noise location the frame acts as $X$ or $Y$ on each noisy qubit;
+\item[(ii)] every fixed gate maps the incoming frame to a Pauli frame;
+\item[(iii)] every data-encoding gate is left invariant;
+\item[(iv)] every trainable element is mapped back into its own family;
+\item[(v)] the input state is absorbed by the first element on each qubit, and the final frame
+maps each measured observable to $\eta$ times itself, with $\eta=-1$ allowed only if the readout
+has a learnable sign.
+\end{itemize}
+\end{proposition}
+\noindent The proof is given in Appendix~\ref{app:gauge}.
+
+\begin{corollary}[Deterministic frames are gauge]\label{cor:det}
+Under the conditions of Proposition~\ref{prop:gauge}, two statements follow:
+\begin{itemize}
+\item[(a)] a deterministic relabeling of the noise by a Pauli frame or by time
+reversal leaves the reachable model class unchanged;
+\item[(b)] if, in addition, $\theta\mapsto\theta'$ preserves the distribution of
+the initial parameters and the optimizer is equivariant under it, the trained
+models under $\AD$ and $\AD^{\rm flip}$ are identically distributed.
+\end{itemize}
+\end{corollary}
+
+The idea of propagating Pauli operators through a parametrized circuit is not
+new. Fontana \textit{et al.}~\cite{fontana2022nontrivial} used it, as the
+$\sigma$-pulse method, to find parameter symmetries of a single model. They
+showed that these symmetries survive unital Pauli noise but can be broken by
+non-unital noise such as amplitude damping, because a frame that crosses the
+channel as $X$ or $Y$ maps $\AD$ onto $\AD^{\rm flip}$.
+Proposition~\ref{prop:gauge} turns this observation around. Instead of relating
+two parameter settings of one noise model, it uses the same propagation to
+relate two noise models. It also adds the antiunitary frames and states the
+conditions on the encoding, the input, and the readout under which the map is
+a reparametrization.
+
+The most useful antiunitary frame is spin time reversal,
+\begin{equation}
+\Theta=\bigotimes_q(-iY_q)\,K ,
+\label{eq:theta}
+\end{equation}
+with $K$ the complex conjugation of Eq.~\eqref{eq:frame}. Time reversal flips
+the sign of every Pauli matrix and of the imaginary unit. As a result, it
+leaves every single-qubit rotation
+$R_{\mathbf n}(a)=e^{-ia\,\mathbf n\cdot\boldsymbol\sigma_q/2}$, with
+$\boldsymbol\sigma_q=(X_q,Y_q,Z_q)$ the Pauli matrices of qubit $q$, unchanged.
+The damping, on the other hand, is reversed, because the Kraus operators of
+$\AD$ are real:
+\begin{equation}
+\Theta R_{\mathbf n}(a)\,\Theta^{-1}=R_{\mathbf n}(a),\qquad
+\Theta\,\AD\,\Theta^{-1}=\AD^{\rm flip},
+\label{eq:theta_inv}
+\end{equation}
+for any axis $\mathbf n$. This has a strong consequence. Condition (iii) holds
+for every single-qubit encoding, whatever its axis, so only the multi-qubit
+fixed gates, the placement of the noise relative to them, and the two
+boundaries of the circuit can break the gauge.
+
+\begin{table*}[t]
+\caption{Frame gauge for reversed amplitude damping, from an exhaustive search over all
+Pauli frames of each type ($4^n$ strings; $n\le3$), with $p=0.3$. ``Gauge'' means a frame
+assignment satisfying (i)--(v) exists; the explicit identity
+$y^{\mathrm{rev}}(x;\theta)=\eta\,y(x;\theta')$ is then checked on random parameters and inputs, and
+the largest deviation is quoted. ``None'' means no frame of that type satisfies (i)--(v). The eigensolver rows place the channel once after each whole $R_{ZZ}$ or after each CNOT; applying it twice after each $R_{ZZ}$, as in Fig.~\ref{fig:vqe}(a), leaves the frame assignment unchanged.}
+\label{tab:gauge}
+\begin{ruledtabular}
+\begin{tabular}{lll}
+model & Pauli frame & time reversal / antiunitary\\
+\colrule
+classifier, $R_X$ encoding, noise after ring  & gauge, $2.2\times10^{-16}$ & gauge, $3.3\times10^{-16}$\\
+classifier, $R_Y$ encoding                     & gauge ($Y$ frame), $3.3\times10^{-16}$ & gauge, $2.2\times10^{-16}$\\
+classifier, $R_Z$ encoding                     & none       & gauge, $2.2\times10^{-16}$\\
+classifier, generic axis                       & none       & gauge, $3.3\times10^{-16}$\\
+classifier, noise inside the ring              & none       & none\\
+classifier, encoding before first trainable layer & none    & none\\
+single-qubit fits, $f=\langle Z\rangle$  & none       & none\\
+\quad with a learnable sign                    & gauge, $\eta=-1$, $1.1\times10^{-16}$ & gauge, $\eta=-1$, $2.8\times10^{-16}$\\
+eigensolver, noise after each $R_{ZZ}$         & gauge, $2.8\times10^{-16}$ & gauge, $4.4\times10^{-16}$\\
+eigensolver, noise after each CNOT            & none       & none\\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+The single-qubit fits of Sec.~\ref{sec:vr} show what happens when one of the conditions fails. These fits use general
+single-qubit blocks, an $R_X$ encoding, noise after every gate, and the output
+$f=\langle Z\rangle$ directly. They satisfy every condition except (v). The
+frame left after the last channel flips the sign of $\langle Z\rangle$, and
+nothing in the model can absorb it. Reversing the damping therefore flips the
+sign of the output, up to the parameter map $\theta\mapsto\theta'$. The two
+model classes are mirror images of each other, and they differ as sets,
+because the last channel confines the output under AD and under reversed AD
+to
+\begin{equation}
+f(x;\theta)\in[2p-1,\,1],\qquad f^{\mathrm{rev}}(x;\theta)\in[-1,\,1-2p] ,
+\label{eq:vr_ranges}
+\end{equation}
+and both upper bounds are attained. The difference is nevertheless easy to
+remove: a target ensemble that is symmetric under $f\to-f$, or a trainable
+output scale, makes the two channels statistically indistinguishable.
+
+\begin{corollary}[The Pauli twirl is not frame-equivalent to AD]\label{cor:rand}
+Pauli twirling replaces $\AD$ by $\frac14\sum_{P\in\{I,X,Y,Z\}}P\,\AD\,P$, which by
+Eq.~\eqref{eq:twirl_mix} is a convex mixture of frame-equivalent channels. It is not itself frame-equivalent to $\AD$: every (anti)unitary
+Pauli frame preserves $\lVert\mathbf t\rVert$, which is $p$ for $\AD$ and $0$ for the twirl.
+\end{corollary}
+
+\noindent The frame gauge therefore cannot remove the difference between AD and
+its twirl. That difference is set by the non-unital term, of length
+$\lVert\mathbf t\rVert=p$, and we quantify its effect in Sec.~\ref{sec:cost}.
+
+\subsection{Classifier}
+\label{sec:gauge_clf}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_vqe}
+\caption{Relative energy error $(E-E_0)/\lvert E_0\rvert$ of the three-qubit
+eigensolver against the noise strength, where $E=\Tr[H\rho(\theta)]$ is the
+energy of the optimized state, for AD, reversed AD (hollow markers), and the Pauli twirl
+(logarithmic vertical axis). Points are the median of 50 initializations and bars the
+interquartile range. (a) The channel acts after the complete $R_{ZZ}$; AD and reversed
+AD coincide. (b) The channel acts after each CNOT inside $R_{ZZ}$, as in
+Ref.~\cite{vanrossum2026biased}. At $\gamma=0.01$, 20 (a) and 26 (b) of the 50
+AD runs end in a higher local minimum, which widens the bars and in (b) raises
+the median above its value at $\gamma=0.05$; from small initial angles, AD
+reaches 0.016 in (b).}
+\label{fig:vqe}
+\end{figure*}
+
+We now look at the classifier of Fig.~\ref{fig:circuit} in more detail.
+Besides the damping itself, time reversal changes three parts of it: the input
+state, the readout, and the ring of CNOTs. Each CNOT of the ring is mapped to
+\begin{equation}
+\Theta\,\mathrm{CNOT}\,\Theta^{-1}=-\mathrm{CNOT}\,(Z\otimes X),
+\label{eq:theta_cnot}
+\end{equation}
+that is, to itself up to a local Pauli residue on its input side, with $Z$ on
+the control and $X$ on the target. Because the noise acts only after the
+complete ring, these residues can be moved in front of the ring, where the
+preceding trainable blocks absorb them. The first block also absorbs
+$\Theta\ket0$, and the readout absorbs the sign of the expectation values.
+All five conditions of Proposition~\ref{prop:gauge} therefore hold for $R_X$,
+$R_Y$, and $R_Z$ encodings and for a generic encoding axis alike, and reversing
+the damping is an exact reparametrization, as we confirm to machine precision
+(Table~\ref{tab:gauge}). Interestingly, a unitary Pauli frame is enough only when it commutes with
+the encoding generator and still flips the damping, which singles out $X$ for
+$R_X$ and $Y$ for $R_Y$. For $R_Z$ or a generic axis, only the antiunitary frame
+works. If the noise acts after each CNOT of the ring
+instead, the $X$ residues would have to cross a noise location, and the
+exhaustive search of Table~\ref{tab:gauge} finds no frame of either type.
+
+Both conditions of Corollary~\ref{cor:det}(b) also hold. For each frame of
+Table~\ref{tab:gauge}, every Euler angle of the trainable layers maps as
+$\theta_k\mapsto\pm\theta_k+m_k\pi$ with $m_k\in\{0,1\}$, and the readout maps
+as $W\mapsto-W$ and $\mathbf b\mapsto\mathbf b$. These maps leave the
+initialization unchanged, because the model depends on each angle only modulo
+$2\pi$ and the Gaussian initialization of $W$ is symmetric. The standardized
+readout maps $\boldsymbol\mu\mapsto-\boldsymbol\mu$ and
+$\boldsymbol\sigma\mapsto\boldsymbol\sigma$, and Adam without weight decay is
+equivariant under sign flips and translations of the coordinates. Trained
+classifiers under $\AD$ and $\AD^{\rm flip}$ are therefore identically
+distributed over initializations, and the same holds with shot noise, whose
+distribution is symmetric under $z\mapsto-z$. Comparing the two damping
+directions in our classifier thus carries no information about the sign of the
+non-unital term.
+
+The training results agree with this. With the raw readout at $L=4$,
+AD$^{\rm flip}$ and AD reach nearly the same accuracy, and 96.7\% of their
+individual predictions agree. The expected difference in accuracy is exactly
+zero. Their individual
+predictions differ only because each pair of runs starts from the same
+$\theta$ under both channels, rather than from $\theta$ and $\theta'$. This
+makes the comparison a useful null test, because we know the answer in
+advance. A two-level bootstrap interval, which resamples both the
+initializations and the test images, includes zero, as it should, whereas
+an interval that resamples only the test images excludes it
+(Appendix~\ref{app:stats}). Resampling the test set alone would therefore
+understate the uncertainty.
+
+To find out what happens when the gauge is broken, we place the noise after
+each CNOT of the ring, where no frame exists, and train both directions with
+the standardized readout at $L=4$. Since this variant applies the channel more
+often, we compare its two directions only with each other. They still agree
+within the uncertainty in accuracy (Appendix~\ref{app:stats}) and on 94.6\% of
+the test images. Breaking the gauge thus allows a direction effect, but it does
+not guarantee a large one. In the classifier, the trainable layers and the
+readout may compensate for it. The eigensolver, with its fixed observable,
+cannot, as we show next.
+
+\subsection{Eigensolver}
+\label{sec:gauge_vqe}
+
+Finally, we turn to the eigensolver, where the direction effect was
+reported. Here the relevant symmetry is the global flip $X^{\otimes3}$,
+which leaves the Hamiltonian $H$ invariant. When the noise follows the complete
+$R_{ZZ}$, the pair flip $X^{\otimes2}$ commutes with the gate. The flip then
+passes through every block, all the way back to the initial $R_Y$ rotations,
+where it becomes a simple change of parameters,
+\begin{equation}
+E_{\AD^{\rm flip}}(\theta)=E_{\AD}(\theta'),\qquad \theta'_q=\pi-\theta_q ,
+\label{eq:vqe_gauge}
+\end{equation}
+where $\theta_q$ is the initial $R_Y$ angle on qubit $q$ and all other angles
+are unchanged. As a result, the optimized energies under AD and reversed AD
+coincide [Fig.~\ref{fig:vqe}(a)].
+
+The situation changes when the
+noise acts after each CNOT. No frame can
+then flip the damping after both CNOTs of an $R_{ZZ}$. A frame that acts as $X$
+or $Y$ on both qubits after the first CNOT acts as $I$ or $Z$ on the target
+qubit after the second, so the map fails (Table~\ref{tab:gauge}). The
+optimized energies then separate [Fig.~\ref{fig:vqe}(b)], and the gap grows
+with $\gamma$, reaching 0.65 in relative error at $\gamma=0.2$.
+We checked that this gap is a property of the
+energy landscape and not a failure of the optimizer. It persists for small
+initial angles, for the best of the 50 initializations, and for a second
+optimizer on an independent simulator (Appendix~\ref{app:training}).
+This
+reproduces the reported direction effect and traces
+it to where the noise sits inside the decomposed gate. It is also the case
+that matters in practice: on hardware whose native two-qubit gate is the CNOT,
+the damping acts at exactly this location.
+
+Two further checks support
+this picture. On an open chain, flipping one sublattice maps $J$ to $-J$ and is
+absorbed by the final $R_X$ layer, so the sign of the coupling is itself a
+gauge. At $h=2$ on the ring, the ground state is paramagnetic and far from
+every state that the final layer can prepare from $\ket{000}$. Even there,
+reversed AD still trails AD with the damping inside the gate, and AD still
+beats its twirl. Neither effect therefore rests
+on the ground state. Finally, the eigensolver shows
+the limit of rescaling. Unlike a classifier output, the energy cannot be
+rescaled freely, so here the twirl costs accuracy unless a mitigation step
+restores the scale~\cite{vovrosh2021simple}.
+
+% ============================================================
+\section{What the non-unital term changes}
+\label{sec:cost}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_width}
+\caption{Spread $\sigma$ of the expectation values before training against the number of
+re-uploading layers at $p=0.3$, for (a) four, (b) six, and (c) eight qubits,
+with $n$ principal components as inputs. Markers are the root-mean-square
+spread over 300 training images and five parameter draws, shared across depths,
+for all four channels. Lines are the exact average over parameters for the
+noiseless circuit, AD, and the Pauli twirl (Appendix~\ref{app:width}).}
+\label{fig:width}
+\end{figure*}
+
+Sections~\ref{sec:scale} and \ref{sec:gauge} showed that a trainable scale
+removes most of the difference between AD and its twirls, and that the
+direction of the damping is often a gauge. What remains, by
+Corollary~\ref{cor:rand}, is the size of the non-unital term. In this section, we show what it changes: the spread of the
+expectation values before training, the number of shots needed after training, and how
+both depend on the damping strength.
+
+\subsection{Floor of the spread}
+\label{sec:floor}
+
+We start before training, where the effect is cleanest, and ask why the
+spread under AD behaves differently from that under the twirls. Here we
+measure the spread as
+\begin{equation}
+\sigma^2=\mathbb E_\theta\,\frac1n\sum_{j=1}^n\mathrm{Var}_{\mathbf a}\,z_j ,
+\label{eq:sigma_rms}
+\end{equation}
+the variance of the $z_j$ over the inputs, averaged over the qubits and over
+random parameters, and we write $\sigma_{\AD}$, $\sigma_{\rm Pauli}$, and
+$\sigma_{\rm None}$ for its values under AD, the Pauli twirl, and no noise. At
+$p=0.3$, the spread separates the channels with both depth and width
+(Fig.~\ref{fig:width}). Under the unital channels, the spread shrinks by a nearly constant factor
+per layer at every width. Under AD, in contrast, it settles on a floor after
+two or three layers. As the circuit gets wider,
+the noiseless spread falls, as expected for a scrambling circuit, but the floor
+barely moves. At $n=8$ and $L\ge4$, the AD spread is therefore as large as
+the noiseless one.
+
+The floor comes from the
+non-unital term. To see this, consider a $Z$ component propagated backward
+from the readout. Under AD it becomes $c^2Z+t_zI$, with $t_z=p$, whereas the
+Pauli twirl keeps only $c^2Z$. The identity part behaves very differently from
+the rest. Its expectation value is 1 in every state, so it reaches the readout
+no matter what the earlier layers do. The twirl has no such part, and every
+component keeps shrinking from layer to layer. At strong damping, the
+branching into the identity after the last entangler sets the floor. Averaging
+its contribution over the parameters (Appendix~\ref{app:width}), we obtain the
+closed form
+\begin{multline}
+\sigma_\infty^2=\frac{p^2(1-p)^2}{n}\sum_j\Bigl[\frac{(1-p)^2}{2}\,
+\mathrm{Var}(\cos a_j)\\
++\frac{1-p}{4}\,\mathrm{Var}(\sin a_j)\Bigr],
+\label{eq:floor_var}
+\end{multline}
+which at $p=0.3$ matches the floor of the AD spread to within 0.5\% for $n\ge4$.
+
+This floor fits well with what is known about noise-induced concentration.
+Unital noise concentrates local expectation values exponentially in
+depth~\cite{wang2021noiseinduced,schumann2024emergence}, whereas under
+non-unital noise their variance over random circuits stays bounded from below
+by an amount set by the non-unital term~\cite{mele2026noise}.
+Equation~\eqref{eq:floor_var} is the counterpart of that bound for the
+variance over inputs, and both scale as $\lVert\mathbf t\rVert^2=p^2$ without
+decaying with depth.
+
+The floor also sets how the zero-temperature bias depends on temperature. At
+finite temperature, the damping of a qubit with splitting $\hbar\omega$ relaxes
+toward the thermal excited-state population
+$N=(e^{\hbar\omega/k_BT}+1)^{-1}$, and at fixed $p$, that is, at fixed
+measured $T_1$, Sec.~\ref{sec:channels} gives
+\begin{equation}
+t_z=p(1-2N)=p\tanh\frac{\hbar\omega}{2k_BT} .
+\label{eq:tz}
+\end{equation}
+The floor therefore falls linearly in $1-2N$ as the temperature rises and
+vanishes at $N=\frac12$, the Pauli twirl (Appendix~\ref{app:width}). In
+summary, the identity part of the non-unital term keeps the AD spread on a
+floor at every depth and width, whereas the twirled spreads keep shrinking.
+
+\subsection{Sampling cost}
+\label{sec:shots}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_shots}
+\caption{Finite shots in the MNIST classifier at $p=0.3$. (a) Test accuracy at
+$L=4$ of models trained and tested with $N_s$ shots per image (median and
+interquartile range over eight initializations). (b), (c) Operational shot
+cost relative to the noiseless circuit (geometric mean over initializations,
+with 95\% bootstrap intervals over initializations) for models trained with
+exact expectation values (b) and with $N_s=10^3$ shots (c).}
+\label{fig:shots}
+\end{figure*}
+
+We next ask whether the floor matters for the number of shots that a trained
+classifier needs, the operational shot cost of Sec.~\ref{sec:model_clf}. To
+answer this, we train under shot noise [Fig.~\ref{fig:shots}(a) and (c)].
+Trained and tested with $10^3$ shots per image, AD stays within 1.5 percentage
+points of the noiseless accuracy at every depth, while the twirled channels
+lose up to 33 points at $L=4$. Part of this loss already arises in training.
+Evaluated without shot noise, the twirled models trained with shots remain
+clearly less accurate than those trained exactly, whereas AD loses almost
+nothing. After training with shots, the operational cost of AD stays close to
+its shot factor $\kappa$, whereas for the twirls it still grows by a factor of
+3 to 5 per layer [Fig.~\ref{fig:shots}(c)].
+
+The reason is that training under shot noise moves the circuit toward
+expectation values whose spread exceeds the shot noise $1/\sqrt{N_s}$. Under
+AD, the smallest spread rises to the floor of Sec.~\ref{sec:floor}, above the
+shot noise, while under the twirls it stays below it
+(Appendix~\ref{app:stats}).
+
+Without shot noise in training, $\kappa$ follows the cost of the unital
+channels but misses that of AD [Fig.~\ref{fig:shots}(b)]. At $L=4$, AD then
+needs 19 times more shots than its shot factor predicts, because the exactly
+trained readout relies on expectation values of very small spread, as a
+readout-weighted noise gain shows (Table~\ref{tab:gain} in
+Appendix~\ref{app:stats}). Even so, the Pauli twirl still needs 18 times the
+shots of AD. The floor thus matters for the shot budget. It lets a model
+trained under shot noise keep a cost close to $\kappa$, while the twirled
+models pay a cost that grows with every layer.
+
+\subsection{Dependence on the damping strength}
+\label{sec:pdep}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_sep_main}
+\caption{Separation depth, at which the Pauli twirl needs ten times the shots
+of AD before training, against the damping strength $p$ for four (filled) and
+eight (hollow) qubits. Markers are the exact average over parameters (5000
+image pairs at $n=4$, 700 at $n=8$, computed for $p\ge0.01$ at $n=8$). Gray
+lines are the estimate of Eq.~\eqref{eq:Lstar} in Appendix~\ref{app:width}.}
+\label{fig:sep}
+\end{figure}
+
+So far we have worked at strong damping, $p=0.3$. We now turn to weaker
+damping, closer to current hardware, and ask at which depth the difference
+between AD and its twirls appears. Both sides of the comparison change with
+$p$. The twirled spread decays more slowly per layer, and the floor of the AD
+spread gains a contribution from earlier layers (Appendix~\ref{app:width}).
+To quantify when the two spreads separate, we define the separation depth as
+the depth at which the squared ratio of the AD and Pauli-twirl spreads first
+reaches 10. There, the twirl needs ten times the shots of AD before training.
+At weak damping, the separation depth grows roughly as $p^{-1}\ln(1/p)$
+(Fig.~\ref{fig:sep}), in close agreement with a simple estimate that we derive
+in Appendix~\ref{app:width}.
+
+Trained classifiers follow this picture (Table~\ref{tab:pdep_trained} in
+Appendix~\ref{app:stats}). Well below the separation depth, AD and its twirls
+reach the same accuracy at nearly the same shot cost, and at the separation
+depth the twirls need about four times the shots of AD.
+
+This has a clear consequence for real devices. On superconducting hardware,
+the damping
+is of order $10^{-3}$ per two-qubit gate, for gate times of 30 to 400~ns and
+$T_1$ of order $100~\mu$s~\cite{krantz2019quantum}. In our model, one of the
+two insertions per layer follows a ring of $n$ CNOTs, so $p$ per insertion
+corresponds to several gate durations. At $p=10^{-3}$, the separation needs
+about 1500 layers at $n=4$ (Table~\ref{tab:pdep} in Appendix~\ref{app:width}). At realistic damping, the
+difference between AD and its twirls therefore appears only in very deep
+circuits.
+
+% ============================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have compared amplitude damping with its twirls, in particular with the
+Pauli twirl, which is damping at infinite temperature. In our models, the
+zero-temperature bias acts mainly through the spread of the expectation values.
+Under AD, the spread stops at a floor fixed at strong damping by the last layer,
+and at fixed $T_1$ this floor falls linearly in $1-2N$ as the temperature
+rises. Under the twirls, it keeps shrinking by a constant factor per layer at
+every width up to eight qubits. Training an output scale removes most of the
+resulting differences in fit and accuracy in exact simulation. What it removes reappears as a sampling cost: at a fixed shot budget, the
+classifier under AD stays close to its noiseless accuracy, while the twirled
+classifiers fall far behind. At weak damping, the two channels separate only
+after many layers, so the difference matters at strong damping or in very deep
+circuits.
+
+The direction of the damping is a gauge, that is, reversing it changes only
+the parameters, whenever the damping follows complete entangling layers and
+trainable elements at both ends of the circuit absorb the flip. With a symmetric initialization and an
+equivariant optimizer, the trained models under the two directions are then
+identically distributed, as in our classifier. The direction can matter only
+where no frame can be absorbed, as in the eigensolver with the damping inside
+the decomposed two-qubit gate.
+
+These results suggest three practices for comparing noise structures in
+variational models. First, report the output scale, or train one, together
+with the shot budget it implies. Second, before attributing an effect to the
+direction of the noise, check whether the model class is invariant under the
+relevant frames. Third, state where the noise acts relative to the
+decomposition of the gates.
+
+Several questions remain open. Our simulations are exact and small: one qubit
+for the fits, four for the classifier, and three for the eigensolver. We
+established the width dependence before training, up to eight qubits, but
+training beyond four qubits was out of reach of exact simulation, and our shot
+model in training neglects the correlations between qubits. It also remains
+to be seen whether trained models follow the temperature dependence of the
+floor, and whether the results hold on hardware, where damping comes with
+dephasing.
+
+\begin{acknowledgments}
+
+We thank Vietnam National University Ho Chi Minh City (VNU-HCM) for its support.
+Claude Opus 5.5 (Anthropic) was used throughout the preparation of this work: to
+search and survey the literature, and to
+check its numerical claims and its characterizations of prior work against the
+underlying data and sources.
+
+\end{acknowledgments}
+
+\section*{Data availability}
+The code, the result files, and the scripts that reproduce every number and
+figure in this paper are available at
+\url{https://github.com/Identity-Operator/zero-vs-infinite-T-damping} and archived
+on Zenodo at \href{https://doi.org/10.5281/zenodo.23053251}{doi:10.5281/zenodo.23053251}~\cite{nguyen2026zenodo}.
+
+% ============================================================
+\appendix
+
+\section{Proof of the frame gauge}
+\label{app:gauge}
+
+\begin{table}[t]
+\caption{Standardized-readout classifier on MNIST: difference from the
+noiseless circuit in test accuracy. $P$ values from paired $t$ tests over the
+eight initializations, Holm-adjusted over the 11 tests of the table.}
+\label{tab:stats}
+\begin{ruledtabular}
+\begin{tabular}{llccc}
+$L$ & channel & $\Delta$acc & 95\% CI & $P$\\
+\colrule
+1 & AD & $+0.001$ & $[-0.003,+0.005]$ & 1\\
+1 & Pauli & $-0.059$ & $[-0.178,+0.001]$ & 1\\
+1 & Depol & $0$ & exact & --\\
+2 & AD & $+0.003$ & $[-0.003,+0.009]$ & 1\\
+2 & Pauli & $+0.004$ & $[-0.003,+0.010]$ & 1\\
+2 & Depol & $+0.000$ & $[-0.004,+0.004]$ & 1\\
+3 & AD & $+0.009$ & $[+0.003,+0.015]$ & 0.02\\
+3 & Pauli & $+0.001$ & $[-0.007,+0.008]$ & 1\\
+3 & Depol & $+0.000$ & $[-0.007,+0.007]$ & 1\\
+4 & AD & $+0.008$ & $[+0.002,+0.013]$ & 0.004\\
+4 & Pauli & $+0.001$ & $[-0.007,+0.009]$ & 1\\
+4 & Depol & $+0.001$ & $[-0.006,+0.008]$ & 1\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\paragraph{Setting.}
+A model on $n$ qubits prepares $\rho_0=\ket{0}\bra{0}^{\otimes n}$, applies elements
+$E_1,\dots,E_m$, and reads out
+\begin{equation}
+y_i=\Tr\bigl[O_i\,\Phi(\rho_0)\bigr],\qquad \Phi=E_m\circ\dots\circ E_1 ,
+\label{eq:app_model}
+\end{equation}
+possibly followed by a learned affine map. Each $E_k$ is a fixed unitary $\mathcal U(U)$, a data encoding
+$\mathcal U\bigl(S(x)\bigr)$ with $S(x)=\bigotimes_q R_{\mathbf n_q}(x_q)$, a trainable unitary from a
+family $\mathcal V$ (general single-qubit blocks, or Pauli rotations $e^{-i\theta Q/2}$), or a
+layer of the single-qubit channel $\AD$ on a set $S_k$ of qubits. The reversed model
+replaces every noise layer by $\AD^{\rm flip}$.
+
+\paragraph{Frames.}
+Let $\mathcal P(\rho)=P\rho P$ for a Pauli string $P$, and $\mathcal K(\rho)=\bar\rho$. On Hermitian
+operators $\mathcal K$ is real-linear, trace preserving and positive, $\mathcal K^2=\mathrm{id}$,
+and for any channel $\mathcal E$ with Kraus operators $\{K_j\}$ one has
+$\mathcal K\circ\mathcal E\circ\mathcal K=\bar{\mathcal E}$, the channel with Kraus operators
+$\{\bar K_j\}$. The frames of Eq.~\eqref{eq:frame} are $g=\mathcal P$ for the unitary type and
+$g=\mathcal P\circ\mathcal K$ for the antiunitary type. In both cases $g\circ g=\mathrm{id}$, and
+\begin{equation}
+g\circ\mathcal E\circ g'\colon\ \{K_j\}\mapsto\bigl\{P\,K_j^{(t)}\,P'\bigr\},
+\label{eq:app_frame}
+\end{equation}
+with $K^{(t)}=K$ for the unitary type and $K^{(t)}=\bar K$ for the antiunitary type.
+
+\paragraph{Telescoping.}
+Eqs.~\eqref{eq:framed} and \eqref{eq:framed_k} hold for any frames
+$g_0,\dots,g_m$ of one type, since every inserted $g_k\circ g_k$ is the identity.
+
+\paragraph{The conditions.}
+(i) Consider a noise layer on $S_k$ with $g_k=g_{k-1}$ acting as $X$ or $Y$ on each
+$q\in S_k$. The Kraus operators of $\AD$ are real, and
+$X\AD X=Y\AD Y=\AD^{\rm flip}$ (Sec.~\ref{sec:channels}), so for both types
+\begin{equation}
+g_k\circ\AD^{\rm flip}\circ g_{k-1}=\AD .
+\label{eq:app_i}
+\end{equation}
+Off $S_k$ the frame passes unchanged.
+
+(ii) For a fixed unitary $U$, $g_k\circ\mathcal U(U)\circ g_{k-1}=\mathcal U\bigl(P_kU^{(t)}P_{k-1}\bigr)$, which
+equals $\mathcal U(U)$ if and only if
+\begin{equation}
+P_k\propto U\,P_{k-1}\,U^{(t)\dagger} .
+\label{eq:app_ii}
+\end{equation}
+The frame thus propagates by conjugation and must remain a Pauli string. For Clifford $U$ this
+holds for every $P_{k-1}$ of the unitary type; for real Clifford $U$ (CNOT) also of the
+antiunitary type.
+
+(iii) For an encoding, $g_k=g_{k-1}$ and $P_q R^{(t)}_{\mathbf n_q}(x)P_q=R_{\mathbf n_q}(x)$ for
+all $x$. For the unitary type this requires $[P_q,\mathbf n_q\cdot\boldsymbol\sigma_q]=0$. For
+the antiunitary type, $\overline{R_{\mathbf n_q}(x)}=\exp[+ix\,\overline{\mathbf n_q\cdot\boldsymbol\sigma_q}/2]$,
+so the condition is
+\begin{equation}
+P_q\,\overline{\mathbf n_q\cdot\boldsymbol\sigma_q}\,P_q=-\mathbf n_q\cdot\boldsymbol\sigma_q ,
+\label{eq:app_iii}
+\end{equation}
+which holds for $P_q=Y$ and every $\mathbf n_q$, since $\bar X=X$, $\bar Y=-Y$, $\bar Z=Z$,
+$YXY=-X$, $YZY=-Z$, and $YYY=Y$.
+
+(iv) A general single-qubit block $V$ is mapped to $P_{k,q}V^{(t)}P_{k-1,q}\in SU(2)$ for any
+pair of frames: such blocks absorb, and may change, the frame on their qubits. A Pauli
+rotation is mapped to
+\begin{equation}
+P\,e^{\mp i\theta Q^{(t)}/2}\,P=e^{-i\theta' Q/2},\qquad \theta'=\pm\theta ,
+\label{eq:app_iv}
+\end{equation}
+if and only if $g_k=g_{k-1}$ and $PQ^{(t)}P=\pm Q$; it can carry a frame but not change it.
+
+(v) By Eq.~\eqref{eq:framed} the input is $g_0(\rho_0)=P_0\rho_0P_0$ (as $\bar\rho_0=\rho_0$).
+If the first element on qubit $q$ is a general block $V$, the pair $V^{(t)}P_{0,q}$ is itself
+a general block acting on $\ket 0$; if it is $R_X$ or $R_Y$, $X\ket0$ and $Y\ket0$ equal
+$R_{X,Y}(\pi)\ket0$ up to phase and are absorbed by a shift of the angle; otherwise $P_{0,q}$
+must fix $\ket0$, i.e. $P_{0,q}\in\{I,Z\}$. At the output, using
+$\Tr[O\bar\tau]=\Tr[\bar O\tau]$ for Hermitian arguments,
+\begin{equation}
+\Tr\bigl[O\,g_m(\tau)\bigr]=\Tr\bigl[P_mO^{(t)}P_m\,\tau\bigr],
+\label{eq:app_v}
+\end{equation}
+for any state $\tau$, which is $\eta\,\Tr[O\tau]$ if and only if $P_mO^{(t)}P_m=\eta O$.
+
+\paragraph{Completing the proof.}
+If (i)--(v) hold, every $\tilde E_k$ in Eq.~\eqref{eq:framed} is an element of the original
+model with reparametrized trainable parameters, the input frame is absorbed by the first
+elements and the output frame contributes the sign $\eta$; hence
+\begin{equation}
+y^{\mathrm{rev}}_i(x;\theta)=\eta_i\,y_i(x;\theta')
+\end{equation}
+for all $x$, which is Eq.~\eqref{eq:reparam}. \hfill$\square$
+
+\paragraph{Corollaries.}
+Statement (a) of Corollary~\ref{cor:det} follows because $\theta\mapsto\theta'$ is a
+bijection of the parameter space. For (b), write the map as
+$\theta'=D_\theta\theta+\pi\mathbf m$, with $D_\theta$ a diagonal sign matrix and
+$\mathbf m$ an integer vector, as for every frame of Table~\ref{tab:gauge},
+together with $W\mapsto W\,\mathrm{diag}(\boldsymbol\eta)$ for the readout, where
+$\boldsymbol\eta$ collects the signs $\eta_i$. The training losses $\mathcal C$
+under $\AD$ and $\mathcal C^{\rm flip}$ under $\AD^{\rm flip}$ then satisfy
+$\mathcal C^{\rm flip}(D_\theta\theta+\pi\mathbf m,\,W\mathrm{diag}(\boldsymbol\eta),\,\mathbf b)=\mathcal C(\theta,W,\mathbf b)$,
+so their gradients transform with $D_\theta$ and $\mathrm{diag}(\boldsymbol\eta)$.
+An optimizer whose update commutes with these maps (gradient descent and Adam
+without weight decay exactly, SPSA in distribution) carries the trajectory from
+$(\theta_0,W_0,\mathbf b_0)$ under $\AD$ onto the trajectory from
+$(D_\theta\theta_0+\pi\mathbf m,\,W_0\mathrm{diag}(\boldsymbol\eta),\,\mathbf b_0)$
+under $\AD^{\rm flip}$. If the map preserves the distribution of
+$(\theta_0,W_0,\mathbf b_0)$, the trained models are identically distributed.
+
+For Corollary~\ref{cor:rand}, write a qubit channel as in Eq.~\eqref{eq:bloch}.
+Unitary Pauli conjugation and complex conjugation act on $(T,\mathbf t)$ as
+\begin{align}
+\mathcal P\colon&\ (T,\mathbf t)\mapsto(DTD,\,D\mathbf t),
+\label{eq:app_D}\\
+\mathcal K\colon&\ (T,\mathbf t)\mapsto(FTF,\,F\mathbf t),
+\label{eq:app_F}
+\end{align}
+with $D$ a diagonal sign matrix and $F=\mathrm{diag}(1,-1,1)$; both preserve
+$\lVert\mathbf t\rVert$. The Pauli twirl has $\mathbf t=0$, while
+$\lVert\mathbf t\rVert=p$ for amplitude damping.
+
+\paragraph{Time reversal and CNOT.}
+A $Z$ residue of Eq.~\eqref{eq:theta_cnot}
+passes through amplitude damping ($Z\AD Z=\AD$); an $X$ residue does not. The residue must
+therefore reach a general trainable block without crossing a noise location, which is the
+case in our classifier (the trainable layer immediately precedes the ring) and fails when
+noise is inserted after each CNOT (Table~\ref{tab:gauge}).
+
+\paragraph{Scope.}
+The proposition is a sufficient condition. The rows marked ``none'' in
+Table~\ref{tab:gauge} establish that no frame of either type exists; they do not by
+themselves prove that the classes differ. For the single-qubit fits, the output
+ranges of Eq.~\eqref{eq:vr_ranges} prove it. For the eigensolver at $\gamma=0.3$, with L-BFGS-B
+from 12 random initializations and the channel applied once after each
+$R_{ZZ}$ or after each CNOT, the lowest energies are equal where the gauge
+holds ($-3.1770$ for both) and differ by 1.98 where it does not ($-3.087$
+against $-1.109$), which reproduces the direction of the reported effect. For the
+classifier with noise inside the
+ring, Sec.~\ref{sec:gauge_clf} measures the difference directly.
+
+\section{Statistical tests}
+\label{app:stats}
+
+\begin{table*}[t]
+\caption{Test accuracy of the classifier on 3037 MNIST images (mean $\pm$ SD
+over eight initializations) against the number of re-uploading layers $L$.
+The raw readout is trained for 100 steps and, at $L=4$, for 1000 steps; the
+standardized readout of Eq.~\eqref{eq:readout} for 100 steps.
+$^\dagger$One of the eight runs diverged (test accuracy 0.382); the other seven
+lie between 0.860 and 0.865.}
+\label{tab:clf}
+\begin{ruledtabular}
+\begin{tabular}{lccccccccc}
+ & \multicolumn{5}{c}{raw readout} & \multicolumn{4}{c}{standardized readout}\\
+ & $L=1$ & $L=2$ & $L=3$ & $L=4$ & $L=4$, 1000 steps & $L=1$ & $L=2$ & $L=3$ & $L=4$\\
+\colrule
+None & $.861\pm.003$ & $.866\pm.005$ & $.865\pm.009$ & $.863\pm.004$ & $.862\pm.007$ & $.860\pm.005$ & $.869\pm.007$ & $.868\pm.006$ & $.869\pm.005$\\
+AD & $.842\pm.010$ & $.835\pm.032$ & $.839\pm.005$ & $.841\pm.004$ & $.872\pm.003$ & $.861\pm.003$ & $.872\pm.003$ & $.877\pm.004$ & $.876\pm.005$\\
+Pauli & $.847\pm.003$ & $.817\pm.039$ & $.787\pm.044$ & $.715\pm.057$ & $.837\pm.013$ & $.802\pm.170^\dagger$ & $.873\pm.005$ & $.869\pm.009$ & $.870\pm.007$\\
+Depol & $.851\pm.003$ & $.814\pm.041$ & $.778\pm.034$ & $.695\pm.041$ & $.826\pm.012$ & $.860\pm.005$ & $.869\pm.006$ & $.869\pm.010$ & $.870\pm.004$\\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+We collect here the hypothesis tests behind the comparisons in the main text.
+Classifier results are given as the mean and standard deviation (SD) over
+eight initializations with fixed data. Because all runs share one finite test
+set, a difference between two conditions is uncertain through both the
+initializations and the test images. Accuracy differences therefore come with
+a 95\% confidence interval (CI) from a two-level
+bootstrap~\cite{efron1994introduction} ($2\times10^4$ resamples) that
+resamples both, with the initializations resampled jointly for the two
+conditions since they share their initial parameters. They also come with the
+$P$ value of the paired $t$ test across the eight initializations. To avoid
+confusion with the noise strength $p$, we denote $P$ values by a capital $P$. The $P$ values of
+Table~\ref{tab:stats} are Holm-adjusted over its 11 tests. Two remain below
+0.05, both for AD, at $L=3$ and 4.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_fashion}
+\caption{Four-qubit classifier on Fashion-MNIST at $L=4$ and $p=0.3$. (a) Test
+accuracy with the raw and the standardized readout, as the median and
+interquartile range over eight initializations, with each run as a hollow
+marker. (b) Shot factor $\kappa$ (hollow) and operational shot cost relative to
+the noiseless circuit (filled; geometric mean over initializations with 95\%
+bootstrap intervals), both after exact training.}
+\label{fig:fashion}
+\end{figure*}
+
+\paragraph{Classifier on Fashion-MNIST.}
+These results are shown in Fig.~\ref{fig:fashion}. At $L=4$, the differences from the noiseless circuit are $+0.017$, CI
+$[+0.007,+0.029]$, $P=0.03$, for AD; $+0.005$, CI $[-0.004,+0.014]$, $P=0.28$,
+for the Pauli twirl; and $+0.009$, CI $[-0.0001,+0.018]$, $P=0.08$, for
+depolarizing noise (paired $t$, Holm-adjusted over the three channels).
+
+\paragraph{Shot cost.}
+At $L=4$ with exact training, the operational shot cost of AD exceeds its shot
+factor 19-fold, with a 95\% bootstrap interval over initializations of 12 to
+30. The Pauli twirl needs 18 times the shots of AD on MNIST (10 to 29) and 36
+times on Fashion-MNIST (17 to 85). Trained and tested with $10^3$ shots, AD lies 0.7, 0.9, 1.2, and 1.5 points
+below the noiseless accuracy at $L=1$ to 4, and at $L=4$ it stays within 1.5
+points also with $10^4$ shots. Evaluated with exact expectation values, the
+twirled models trained with $10^3$ shots are about 0.11 less accurate than
+those trained exactly, and AD about 0.01. At $L=4$ and $N_s=10^3$, the geometric
+mean of the smallest spread is 0.075 for AD, compared with 0.0065 under exact
+training and 0.24 for the noiseless circuit, and 0.005 and 0.003 for the Pauli and depolarizing channels.
+
+The extra cost of AD after exact training comes from the readout. The shot
+factor only looks at the average spread of the $z_j$, whereas the readout
+amplifies the shot noise of each $z_j$ by its own weight. Exact training lets
+the AD readout rely on expectation values whose spread is far smaller than in
+the noiseless circuit. We capture this effect with the readout-weighted noise
+gain
+\begin{equation}
+G=\Bigl\langle\sum_j\lVert\mathbf w_j\rVert^2\,\frac{1-z_j^2}{\sigma_j^2}\Bigr\rangle ,
+\label{eq:gain}
+\end{equation}
+where $\mathbf w_j$ is the column of $W$ that multiplies $z_j$ and the average
+runs over the test images. If the shot noise of different qubits is
+uncorrelated, $G$ is $N_s$ times the total shot-noise variance of the class
+scores. Table~\ref{tab:gain} compares the exact-training costs with $G$ and
+with the shot factor. For $L\ge2$, $G$ reproduces the measured cost ratios to
+within a factor of 1.6.
+
+\begin{table*}[t]
+\caption{Readout-weighted noise gain $G$ of Eq.~\eqref{eq:gain} compared with the
+operational shot cost of the classifiers trained with exact expectation values at
+$p=0.3$. All entries are relative to the noiseless circuit and are geometric means
+over initializations. For $L\ge2$, $G$ matches the shot cost to within a factor of
+1.6, whereas the shot factor $\kappa$ underestimates the cost of AD by up to 19 times.}
+\label{tab:gain}
+\begin{ruledtabular}
+\begin{tabular}{llrrrrrrrrr}
+ & & \multicolumn{3}{c}{shot cost / noiseless} & \multicolumn{3}{c}{$G/G_{\rm None}$} & \multicolumn{3}{c}{$\kappa$}\\
+dataset & $L$ & AD & Pauli & Depol & AD & Pauli & Depol & AD & Pauli & Depol\\
+\colrule
+MNIST & 1 & 3.3 & 5.6 & 4.5 & 0.9 & 1.3 & 4.3 & 3.6 & 6.5 & 4.1\\
+MNIST & 2 & 17 & 125 & 60 & 14 & 125 & 58 & 7.9 & 79 & 52\\
+MNIST & 3 & 263 & $1.6\times10^3$ & $1.2\times10^3$ & 277 & $2.0\times10^3$ & $1.6\times10^3$ & 22 & $1.5\times10^3$ & $1.2\times10^3$\\
+MNIST & 4 & 967 & $1.7\times10^4$ & $1.4\times10^4$ & 983 & $2.4\times10^4$ & $1.5\times10^4$ & 50 & $1.6\times10^4$ & $1.1\times10^4$\\
+Fashion-MNIST & 4 & 603 & $2.2\times10^4$ & $1.8\times10^4$ & 400 & $1.6\times10^4$ & $1.2\times10^4$ & 34 & $9.9\times10^3$ & $8.2\times10^3$\\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}[t]
+\caption{Trained classifiers at weaker damping (MNIST, standardized readout,
+exact expectation values, eight initializations): test accuracy (mean $\pm$ SD), operational
+shot cost relative to the noiseless circuit at the same depth, shot factor
+$\kappa$, and the squared ratio of the AD and Pauli-twirl spreads before
+training, $(\sigma_{\AD}/\sigma_{\rm Pauli})^2$, from the exact average over
+parameters of Table~\ref{tab:pdep}. The row $p=0.3$ repeats
+Secs.~\ref{sec:clf} and \ref{sec:shots}.}
+\label{tab:pdep_trained}
+\begin{ruledtabular}
+\begin{tabular}{llccccccccccc}
+ & & \multicolumn{4}{c}{test accuracy} & \multicolumn{3}{c}{shot cost / noiseless} & \multicolumn{3}{c}{$\kappa$} & before\\
+$p$ & $L$ & None & AD & Pauli & Depol & AD & Pauli & Depol & AD & Pauli & Depol & training\\
+\colrule
+0.3 & 4 & $.869\pm.005$ & $.876\pm.005$ & $.870\pm.007$ & $.870\pm.004$ & 967 & $1.7\times10^4$ & $1.4\times10^4$ & 50 & $1.6\times10^4$ & $1.1\times10^4$ & $1.3\times10^3$\\
+0.05 & 4 & $.869\pm.005$ & $.866\pm.005$ & $.866\pm.007$ & $.864\pm.004$ & 4.7 & 4.8 & 4.1 & 4.6 & 4.7 & 4.4 & 1.06\\
+0.1 & 4 & $.869\pm.005$ & $.872\pm.005$ & $.863\pm.004$ & $.863\pm.003$ & 13.1 & 21.5 & 14.9 & 15.6 & 21.2 & 17.5 & 1.69\\
+0.1 & 8 & $.831\pm.012$ & $.866\pm.006$ & $.840\pm.009$ & $.838\pm.007$ & 115 & 466 & 495 & 62 & 484 & 459 & 16.8\\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\paragraph{Weaker damping.}
+Table~\ref{tab:pdep_trained} lists the trained classifiers at weaker damping,
+with the separation depth $L^*$ of Appendix~\ref{app:width}.
+Well below it, at $p=0.05$ and $L=4$ ($L^*=18$), AD and its
+twirls reach the same accuracy at nearly the same shot cost, as $\kappa$
+predicts. Closer to it, at $p=0.1$ and $L=4$ ($L^*=8$), the twirls already
+need more shots than AD. At $L=L^*=8$, the channels finally separate. The
+twirls then need about four times the shots of AD, in the same direction as the
+spread ratios before and after training. At this depth, AD is also more
+accurate than the Pauli twirl, by $+0.026$ in accuracy, CI $[+0.017,+0.035]$.
+It is not, however, more accurate than the best noiseless circuit (0.869 at
+$L=2$ to 4). Evaluated with $10^3$ shots per image, AD reaches 0.69 against
+0.83 for the noiseless circuit.
+
+\paragraph{Damping direction.}
+With the noise after the whole ring and the raw readout, AD$^{\rm flip}$ minus AD is
+$-0.003$ in accuracy, CI $[-0.008,+0.002]$, $P=0.21$; an interval that
+resamples only the test images, $[-0.0056,-0.0009]$, excludes zero. With the
+noise after each CNOT of the ring (Sec.~\ref{sec:gauge_clf}), AD$^{\rm flip}$
+minus AD is $-0.006$ in accuracy, CI $[-0.013,+0.001]$, $P=0.10$.
+
+\paragraph{Single-qubit fits.}
+Convergence of AD and of the Pauli twirl on the same 200 targets is compared
+with McNemar's exact test. Within 1000 steps, no difference is significant at
+either range ($P\ge0.34$). Within 150 steps, the only significant difference is
+$-13.5$ percentage points at $p=0.2$ and $R=0.468$ ($P=0.0013$), in favor of
+the Pauli twirl. All others have $P\ge0.077$. For the raw model, the largest converging ranges of AD and
+the Pauli twirl are compared with the paired Wilcoxon test: with a free target
+offset, $P=0.71$, 0.049, and $6\times10^{-14}$ at $p=0.05$, 0.1, and 0.2; with a
+centered target, $P=0.19$, $9\times10^{-7}$, and 0.04.
+
+\paragraph{Eigensolver.}
+The relative errors of reversed AD and AD over the 50 initializations are
+compared with the Mann--Whitney test. With the noise inside $R_{ZZ}$,
+$P<10^{-16}$ at every $\gamma$; with the noise after it, $P\ge0.69$.
+
+\section{Spread before training}
+\label{app:width}
+
+In this appendix, we derive the floor of the AD spread and its dependence on
+the damping strength, and we define the separation depth used in
+Sec.~\ref{sec:pdep}.
+
+\paragraph{Exact average.}
+The lines in Fig.~\ref{fig:width} are exact averages, over parameters drawn
+uniformly from $[0,2\pi)$, of Eq.~\eqref{eq:sigma_rms}, where the variance
+runs over the first 300 training images. We compute them in
+the Heisenberg picture from the second moments of the Pauli-string
+coefficients of $Z_j$, with the parameters shared between two images. Every
+uniformly random $R_ZR_YR_Z$ block removes the cross moments between different
+strings because, averaged over its angles, the entries $R_{bc}$ of its
+adjoint action have vanishing first moments and different columns are
+uncorrelated, $\mathbb E_\theta[R_{ab}R_{a'c}]=0$ for $b\neq c$. Between two
+blocks the circuit acts site by site (channel, $R_X(a_j)$, channel), so the
+second moments of two images propagate through the elementwise product of the
+two composite site maps, followed by the entangling ring, which permutes the
+strings up to a sign. The second moments therefore obey a closed recursion, which is exact up
+to the sampling of image pairs: all pairs for $n\le5$, and 5000 random pairs
+for $n\ge6$. Against brute-force averages of the density-matrix simulation,
+the recursion agrees within one to two standard errors in all 18 cells at
+$n=2$ and 3 and $L=1$ to 3. An independent density-matrix simulation at $n=4$, with 200 parameter draws, agrees within two standard errors in all 12 cells for the noiseless circuit, AD, and the Pauli twirl at $L=1$ to 4, and in all four cells for AD and the Pauli twirl at $p=0.1$ and $L=4$ and 8.
+
+The measured points in
+Fig.~\ref{fig:width} use five parameter draws, the same parameter vectors at
+every depth (those of depth $L$ are the leading entries of those of depth 6),
+so their deviations are correlated across $L$. The distribution over the
+parameters is heavy-tailed, and five draws tend to fall below the average, as
+for the Pauli twirl at $n=8$ and $L\ge4$. An independent Pauli-path simulation
+reproduces these five draws to $2\times10^{-12}$ and, over 120 further draws
+at $L=4$, agrees with the exact average within one standard error. In this
+exact average, the ratio of the AD and Pauli-twirl spreads grows by a factor
+of 3.3 per layer at $n=4$ and 4.5 for $n\ge6$, and its square, the ratio of
+their shot factors, by 11 and 20. At $n=4$, the squared ratio is 2.1 at $L=1$
+and $1.3\times10^3$ at $L=4$.
+
+\paragraph{Floor at strong damping.}
+Under AD the adjoint channel maps $Z$ to $c^2Z+pI$. The next random block
+averages the cross moments between the $I$ and $Z$ branches to zero. The AD
+spread therefore splits into the twirled part and a branching part,
+\begin{equation}
+\sigma_{\AD}^2=\sigma_{\rm Pauli}^2+\sigma_{\rm br}^2 ,
+\label{eq:split}
+\end{equation}
+where $\sigma_{\rm br}$ collects the paths through at least one branching into
+the identity. The damping after the last entangler branches the $Z$ component
+of each $z_j$ into the identity and adds
+\begin{equation}
+\delta z_j=p(1-p)\bigl[(1-p)\,v_z\cos a_j-c\,v_y\sin a_j\bigr]
+\label{eq:floor}
+\end{equation}
+to $z_j$, where $(v_x,v_y,v_z)$ is the direction into which the final
+trainable block rotates $Z_j$. Averaged over the final block, with
+$\mathbb E\,v_z^2=\frac12$, $\mathbb E\,v_y^2=\frac14$, and
+$\mathbb E\,v_zv_y=0$, Eq.~\eqref{eq:floor} yields Eq.~\eqref{eq:floor_var}.
+The agreement within 0.5\% quoted in Sec.~\ref{sec:floor} uses all image
+pairs. For uniformly distributed angles, $\sigma_\infty=0.096$. At strong
+damping, branchings in earlier layers are attenuated by the rest of the
+circuit, so the last layer alone sets the floor.
+
+\paragraph{Weak damping.}
+At weak damping, the twirled spread decays per layer as $e^{-np}$. This is
+because a scrambled Pauli string has about $3n/4$ non-identity sites, and each
+of the two insertions per layer shrinks such a site by a factor of about
+$1-2p/3$ on average. This decay rate agrees with $np$ within 1\% for
+$p\le0.05$ at $n=4$ and 8. The floor of the AD spread at large depth,
+$\sigma_{\rm br,\infty}$, changes as well (Table~\ref{tab:pdep} and
+Fig.~\ref{fig:sep_app}). Its square has two parts,
+$\sigma_{\rm br,\infty}^2\approx\sigma_\infty^2+b_{\rm br}\,p$. The first is
+proportional to $p^2$ [Eq.~\eqref{eq:floor_var}]. The second comes from
+branchings in the roughly $1/(np)$ earlier layers that the damping does not yet
+suppress. It acts on the input dependence of those layers, which concentrates
+with width. For $p\le0.03$, $b_{\rm br}$ is
+$(1.8$--$2.7)\times10^{-3}$ at $n=4$ and $(1.0$--$2.4)\times10^{-4}$ at
+$n=8$, about an order of magnitude smaller.
+
+\paragraph{Separation depth.}
+We define the separation depth $L^*$ as the depth at which
+$(\sigma_{\AD}/\sigma_{\rm Pauli})^2$ first reaches 10. There, the twirl needs
+ten times the shots of AD before training. By Eq.~\eqref{eq:split}, this
+happens when $\sigma_{\rm br}=3\,\sigma_{\rm Pauli}$. With
+$\sigma_{\rm br}\approx\sigma_{\rm br,\infty}$ and
+$\sigma_{\rm Pauli}\approx\sigma_{\rm None}\,e^{-npL}$, we obtain the estimate
+\begin{equation}
+L^*\approx\frac{1}{np}\,\ln\frac{3\,\sigma_{\rm None}}{\sigma_{\rm br,\infty}},
+\label{eq:Lstar}
+\end{equation}
+where $\sigma_{\rm None}$ is taken at large depth (0.24 at $n=4$ and 0.062 at
+$n=8$). Equation~\eqref{eq:Lstar} agrees with the exact separation depth
+within 1\% for $p\le0.01$ and within one layer for larger $p$ at $n=4$, and
+within two layers for $p\le0.03$ at $n=8$ (Fig.~\ref{fig:sep}). Since
+$\sigma_{\rm br,\infty}$ falls roughly as a power of $p$ and enters only
+through the logarithm, $L^*$ grows roughly as $p^{-1}\ln(1/p)$.
+
+\paragraph{Finite temperature.}
+At finite temperature, the branching part of the
+spread at $n=4$ follows $\lvert1-2N\rvert$ within 0.4\% for every $N$ and
+$L\le8$ at $p=0.3$, and within 0.2\% at $p=0.1$. It is thus symmetric under
+$N\leftrightarrow1-N$, as the frame gauge of Sec.~\ref{sec:gauge} requires.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_sep_app}
+\caption{Spread before training at weaker damping, from the exact average over
+parameters (5000 image pairs at $n=4$, 700 at $n=8$). (a) Spread against depth
+at $n=4$ for AD (squares) and the Pauli twirl (triangles) at three values of
+$p$, and for the noiseless circuit up to $L=30$; vertical segments mark $L^*$.
+(b) Floor $\sigma_{\rm br,\infty}$ of the AD spread (markers) and its
+last-layer part $\sigma_\infty$ [Eq.~\eqref{eq:floor_var}, lines] for $n=4$
+(filled, solid) and $n=8$ (hollow, dashed); the dotted line is the shot noise
+$1/\sqrt{N_s}$ at $N_s=10^3$. At $n=8$ the exact average was computed for
+$p\ge0.01$.}
+\label{fig:sep_app}
+\end{figure*}
+
+\begin{table}[t]
+\caption{Dependence on the damping strength $p$ before training, from the
+exact average over parameters: the depth $L^*$ at which
+$(\sigma_{\AD}/\sigma_{\rm Pauli})^2$ first reaches 10, the floor
+$\sigma_{\rm br,\infty}$ of the AD spread and its last-layer part $\sigma_\infty$
+[Eq.~\eqref{eq:floor_var}], and the number of shots
+$1/\sigma_{\rm br,\infty}^2$ that resolves the floor. The floor is estimated from 5000 ($n=4$) and 700 ($n=8$) random image pairs, with a sampling error of about 1\%.}
+\label{tab:pdep}
+\begin{ruledtabular}
+\begin{tabular}{lccccc}
+ & \multicolumn{4}{c}{$n=4$} & $n=8$\\
+$p$ & $L^*$ & $\sigma_{\rm br,\infty}$ & $\sigma_\infty$ & $1/\sigma_{\rm br,\infty}^2$ & $L^*$\\
+\colrule
+0.001 & 1508 & 0.0017 & 0.0005 & $3.4\times10^5$ & --\\
+0.003 & 453 & 0.0031 & 0.0014 & $1.0\times10^5$ & --\\
+0.01 & 117 & 0.0067 & 0.0047 & $2.2\times10^4$ & 49\\
+0.03 & 33 & 0.0155 & 0.0137 & $4.2\times10^3$ & 13\\
+0.05 & 18 & 0.0235 & 0.0219 & $1.8\times10^3$ & 8\\
+0.1 & 8 & 0.0408 & 0.0396 & 600 & 5\\
+0.2 & 4 & 0.0647 & 0.0637 & 240 & 3\\
+0.3 & 2 & 0.0757 & 0.0747 & 170 & 2\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\section{Training details and numerical checks}
+\label{app:training}
+
+\paragraph{Single-qubit fits.}
+Where Ref.~\cite{vanrossum2026biased} leaves a choice, we chose as follows. The
+250 inputs lie on a uniform grid over $[-2\pi,2\pi]$, and the target
+coefficients are drawn uniformly from $[-1,1]$. Each target is shifted to zero
+mid-range and rescaled to range $R$ on this grid. A step is one Adam update on a
+batch of 25 inputs, with a seeded shuffle renewed every ten steps and shared by
+all channels, and with their settings for $L=2$
+(learning rate 0.20, $\beta_1=0.45$, $\beta_2=0.95$). Initial parameters are
+drawn uniformly from $[0,2\pi)$, the same for every channel. The largest
+converging range is found by bisection on $[0,2]$ with ten halvings. Their free
+target offset is equivalent to a trainable
+$b$ in $f=\langle Z\rangle+b$. The rescaled model starts from $s=1$ and $b=0$
+and is trained for up to 1000 steps with the same Adam settings.
+
+\paragraph{Classifier training.}
+To prepare the inputs, we standardize the pixel values, compute four principal
+components, and map each component linearly to an angle, sending its minimum
+to 0 and its maximum to $2\pi$. The standardization, the principal components,
+and the extrema are fitted on 1000 training images and applied unchanged to all
+3037 test images of the three digits. Training minimizes the softmax cross-entropy with Adam~\cite{kingma2014adam} at
+learning rate $0.05$ for 100 full-batch steps unless stated otherwise, without
+weight decay. The circuit angles start uniformly in $[0,2\pi)$, the readout
+weights from a zero-mean normal distribution with standard deviation 0.5, and
+the bias at zero. The density matrix
+is simulated exactly in PyTorch~\cite{paszke2019pytorch}. No regularizing
+constant is added to $\boldsymbol\sigma$ in the standardized readout. In one
+run, the spread of one $z_j$ fell to $5\times10^{-5}$, and the training diverged
+(Table~\ref{tab:clf}). The Fashion-MNIST classes are T-shirt, pullover, and
+coat, with 3000 test images. For reference, logistic regression, a
+$k$-nearest-neighbor classifier ($k=15$), and a support-vector machine with a
+radial kernel, trained on the same angles, reach 0.856, 0.879, and 0.886 on
+MNIST and 0.733, 0.758, and 0.748 on Fashion-MNIST. With the explicit parameter maps of
+Sec.~\ref{sec:gauge_clf}, the identity $y^{\rm rev}(x;\theta)=\eta\,y(x;\theta')$
+holds to $9.4\times10^{-16}$ for $n=2$ to 4 and $L=1$ to 4.
+
+\paragraph{Shot model.}
+For the finite-shot runs, each image is measured $N_s$ times in the
+computational basis, and the estimate $\hat z_j$ of Eq.~\eqref{eq:shotvar} is the
+mean of the outcomes $\pm1$ of qubit $j$. At test time we sample the outcomes from the exact distribution of
+the measured state, five times per model, and in every draw we re-estimate
+$\boldsymbol\mu$ and $\boldsymbol\sigma$ from $N_s$ shots of each training
+image, as one would on hardware. In training we replace each $z_j$ by
+\begin{equation}
+\hat z_j=z_j+\sqrt{\frac{1-z_j^2}{N_s}}\;\varepsilon_j ,
+\label{eq:shot_train}
+\end{equation}
+where $\varepsilon_j$ is a standard normal random number, redrawn at every step
+and for every image, and compute $\boldsymbol\mu$ and
+$\boldsymbol\sigma$ from the noisy $\hat z_j$; gradients flow through $z_j$. This
+Gaussian model has the exact shot variance of each $z_j$ but neglects the
+correlations between qubits and the shot noise of parameter-shift gradients. We train with
+$N_s=10^3$ at $L=1$ to 4, and with $N_s=10^2$ and $10^4$ at $L=4$. The
+operational shot cost is interpolated in $\log N_s$ on a grid from 10 to
+$10^8$. It is undefined for three exactly trained models at $L=1$, which we
+omit: the diverged Pauli run, and one noiseless and one depolarizing model
+whose accuracy stays more than 0.01 below its exact value up to $10^8$ shots.
+
+\paragraph{Eigensolver.}
+The eigensolver is trained with Adam at learning rate 0.05 for 500 steps, from
+parameters drawn uniformly from $[0,2\pi)$. The reflection of Eq.~\eqref{eq:vqe_gauge} preserves
+the uniform initialization of the $R_Y$ angles on $[0,\pi]$ used in
+Ref.~\cite{vanrossum2026biased}, but their optimizer,
+COBYLA~\cite{powell1994direct}, builds its first simplex along the positive
+coordinate axes and is not equivariant under it, so for that optimizer only the
+reachable energies are guaranteed to coincide. For the inside placement, our
+implementation reproduces the energies of the open
+Qiskit~\cite{javadiabhari2024quantum} code~\cite{vanrossum2026code} of
+Ref.~\cite{vanrossum2026biased} to
+$4\times10^{-14}$ for the noiseless circuit, AD, reversed AD, and both twirls,
+at $\gamma\in\{0.01,0.05,0.1,0.2\}$.
+With the damping after each complete $R_{ZZ}$, the two
+sides of Eq.~\eqref{eq:vqe_gauge} agree to $1.4\times10^{-15}$ over 50 random
+parameter sets at every $\gamma$, and trajectories started from mapped initial
+parameters end at energies that agree to $6\times10^{-15}$. With the damping
+after each CNOT, the energies of the two channels at mapped parameters differ
+by 0.10 to 0.66 between $\gamma=0.01$ and 0.2, and the median relative error of
+reversed AD exceeds that of AD by 0.06, 0.38, 0.56, and 0.65 at $\gamma=0.01$,
+0.05, 0.1, and 0.2. Small initial angles, with standard deviation 0.1 about zero,
+give the same gaps within 0.01 at $\gamma\ge0.05$. The best of the 50
+initializations for reversed AD lies within 0.01 of its median and above the
+median for AD at every $\gamma$. L-BFGS-B~\cite{byrd1995limited} from six
+further random initializations, run on an independently written simulator,
+reaches the same minima at $\gamma=0.2$ (relative errors 0.0370 for AD and
+0.6881 for reversed AD).
+
+\paragraph{Coupling sign and field strength.}
+On the open chain, with $B$ the middle qubit, the energies of the two couplings
+agree at the mapped parameters to $2\times10^{-15}$ for every channel and
+placement, and with $h=0.5$ and $\gamma=0.1$ reversed AD reaches a median
+relative error of 0.367 against 0.063 for AD for both $J=\pm1$. At $h=2$ on the
+ring and $\gamma=0.1$, every state that the final $R_X$ layer can prepare from
+$\ket{000}$ has a relative error of at least 0.54. There, AD reaches 0.29 and
+0.23 with the damping inside and after the gate, against 0.59 inside the gate
+for reversed AD and 0.66 and 0.59 for the twirl. On the ring at $h=0.5$ and $\gamma=0.1$, the Pauli
+twirl gives the largest error in both placements, 0.74 inside and 0.70 after.
+
+\bibliography{refs}
+
+\end{document}

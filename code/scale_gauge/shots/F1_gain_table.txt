@@ -1,0 +1,16 @@
+MNIST        L=1 AD    cost/None      3.301  G/G_None     0.8623  cost/G  3.83  kappa      3.621
+MNIST        L=1 Pauli cost/None      5.569  G/G_None      1.319  cost/G  4.22  kappa      6.539
+MNIST        L=1 Depol cost/None      4.525  G/G_None      4.294  cost/G  1.05  kappa      4.079
+MNIST        L=2 AD    cost/None      16.74  G/G_None      13.83  cost/G  1.21  kappa      7.917
+MNIST        L=2 Pauli cost/None      125.3  G/G_None      125.3  cost/G  1.00  kappa      78.68
+MNIST        L=2 Depol cost/None      59.97  G/G_None      57.93  cost/G  1.04  kappa      52.14
+MNIST        L=3 AD    cost/None      263.4  G/G_None      276.8  cost/G  0.95  kappa      22.18
+MNIST        L=3 Pauli cost/None       1573  G/G_None       1965  cost/G  0.80  kappa       1494
+MNIST        L=3 Depol cost/None       1199  G/G_None       1623  cost/G  0.74  kappa       1171
+MNIST        L=4 AD    cost/None      966.7  G/G_None      982.6  cost/G  0.98  kappa         50
+MNIST        L=4 Pauli cost/None  1.692e+04  G/G_None  2.353e+04  cost/G  0.72  kappa  1.619e+04
+MNIST        L=4 Depol cost/None  1.371e+04  G/G_None  1.496e+04  cost/G  0.92  kappa  1.145e+04
+FashionMNIST L=4 AD    cost/None      603.4  G/G_None      399.6  cost/G  1.51  kappa      33.74
+FashionMNIST L=4 Pauli cost/None  2.172e+04  G/G_None  1.581e+04  cost/G  1.37  kappa       9917
+FashionMNIST L=4 Depol cost/None  1.846e+04  G/G_None  1.167e+04  cost/G  1.58  kappa       8231
+largest factor between cost and G for L >= 2: 1.58
