@@ -8,7 +8,8 @@ nothing is transcribed.
   fig_clf.pdf  noise_structure_mnist/m5_depth (raw readout), m5_readout (standardized; S1)
   fig_width.pdf noise_structure_mnist/m5_width_diag (S6a) and scale_gauge/theory/t1_results.json (T1)
   fig_shots.pdf noise_structure_mnist/m5_shots (S5); scale_gauge/shots/F1_calib_summary.pkl, F1_s5_summary.pkl
-  fig_sep.pdf  scale_gauge/theory/t1_p_dependence_n4.json, _n8.json (T1b)   separation against p
+  fig_sep_main.pdf scale_gauge/theory/t1_p_dependence_n4.json, _n8.json (T1b)   separation depth against p
+  fig_sep_app.pdf  same files: spreads against depth and floor of the AD spread against p
 
 House style: one red family for every noisy channel, with
 the noiseless reference in neutral near-black. Channel identity is carried by
@@ -17,7 +18,7 @@ Each channel keeps its shade in every figure. The three reds pass the dataviz
 CVD (min dE 14.8) and normal-vision (16.6) separation checks, and reversed AD
 (pale red, dashed) passes against AD and the Pauli twirl, the only series
 shown with it. All figures are full text width, with the same row height and
-panel titles.
+panel titles, except the single-column fig_sep_main.
 """
 import pathlib
 import pickle
@@ -495,18 +496,63 @@ def fig_shots():
     return out
 
 
-def fig_sep():
-    """Dependence of the AD-twirl separation on p before training (T1b, t1_p_dependence.py): the
-    exact theta-averaged spreads against depth, the AD floor and its last-layer part, and
-    the separation depth L* with Eq. (Lstar). The JSON 'br' entry at the last computed depth is
-    sigma_br,inf of Table IV; sigma_None in Eq. (Lstar) is the noiseless spread at L = 30."""
+def sep_data():
     import json
-    D = {n: json.load(open(EVID / 'theory' / f't1_p_dependence_n{n}.json')) for n in (4, 8)}
-    fig, axes = plt.subplots(1, 3, figsize=(WIDE, ROW))
+    return {n: json.load(open(EVID / 'theory' / f't1_p_dependence_n{n}.json')) for n in (4, 8)}
+
+
+def fig_sep_main():
+    """Separation depth L* against p before training, with the estimate of Eq. (Lstar), whose
+    number is read from the LaTeX .aux (T1b, t1_p_dependence.py). Single column, main text."""
+    D = sep_data()
+    fig, ax = plt.subplots(figsize=(NARROW, ROW))
     out = {}
 
-    # (a) spreads against depth at n = 4
+    # separation depth against p, with Eq. (Lstar); its number is read from the LaTeX .aux
+    import re
+    aux = HERE / 'scale_gauge_v5.aux'
+    if aux.exists():
+        eq = re.search(r'\\newlabel\{eq:Lstar\}\{\{([^}]*)\}', aux.read_text()).group(1)
+    else:  # fresh checkout, paper not built yet: the number in the committed PDF
+        eq = 'C3'
+        print('scale_gauge_v5.aux not found; labelling Eq. (C3) as in the committed PDF')
+    for n, mfc, ls in ((4, COL['AD'], '-'), (8, 'white', (0, (4, 2)))):
+        ps = np.array(sorted(map(float, D[n]['p'])))
+        Lx = np.array([D[n]['p'][k]['L_star'] for k in map(str, ps)])
+        br = np.array([D[n]['p'][k]['br'][-1] for k in map(str, ps)])
+        Leq = np.log(3 * D[n]['None'][-1] / br) / (n * ps)
+        ax.plot(ps, Leq, color=MUTED, lw=1.0, ls=ls, zorder=2,
+                label=f'Eq. ({eq}), $n={n}$')
+        ax.plot(ps, Lx, color=COL['AD'], marker=MRK['AD'], ms=4.2, mfc=mfc, mec=COL['AD'],
+                mew=0.9, ls='none', zorder=3, label=f'$n={n}$')
+        out[('c', n)] = (ps, Lx, Leq)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_xlim(6e-4, 0.5)
+    ax.set_ylim(1, 4e3)
+    ax.set_xlabel('damping strength $p$')
+    ax.set_ylabel('separation depth (layers)')
+    h, l = ax.get_legend_handles_labels()
+    ax.legend(h[1::2] + h[0::2], l[1::2] + l[0::2], loc='lower left', frameon=False,
+              handlelength=1.8, fontsize=6.5)
+
+    ax.grid(True, which='major', axis='both')
+    fig.tight_layout()
+    fig.savefig(OUT / 'fig_sep_main.pdf')
+    fig.savefig(OUT / 'fig_sep_main.png')
+    return out
+
+
+def fig_sep_app():
+    """Spreads before training against depth at n = 4, and the floor of the AD spread with its
+    last-layer part (T1b, t1_p_dependence.py). The JSON 'br' entry at the last computed depth
+    is sigma_br,inf of the appendix table; Appendix C."""
+    D = sep_data()
+    fig, axes = plt.subplots(1, 2, figsize=(WIDE, ROW))
+    out = {}
+
     ax = axes[0]
+    # (a) spreads against depth at n = 4
     d = D[4]
     ax.plot(np.arange(1, len(d['None']) + 1), d['None'], color=COL['None'], lw=1.1, zorder=2)
     ax.annotate(NAME['None'], xy=(30, d['None'][-1]), xytext=(40, 0.32), fontsize=7, va='center',
@@ -537,8 +583,8 @@ def fig_sep():
     title(ax, 'spreads, $n=4$ qubits')
     panel(ax, '(a)')
 
-    # (b) floor of the AD spread and its last-layer part
     ax = axes[1]
+    # (b) floor of the AD spread and its last-layer part
     for n, mfc, ls in ((4, COL['AD'], '-'), (8, 'white', (0, (4, 2)))):
         ps = np.array(sorted(map(float, D[n]['p'])))
         br = np.array([D[n]['p'][k]['br'][-1] for k in map(str, ps)])
@@ -561,42 +607,11 @@ def fig_sep():
     title(ax, 'floor of the AD spread at large $L$')
     panel(ax, '(b)')
 
-    # (c) separation depth against p, with Eq. (Lstar); its number is read from the LaTeX .aux
-    ax = axes[2]
-    import re
-    aux = HERE / 'scale_gauge_v5.aux'
-    if aux.exists():
-        eq = re.search(r'\\newlabel\{eq:Lstar\}\{\{([^}]*)\}', aux.read_text()).group(1)
-    else:  # fresh checkout, paper not built yet: the number in the committed PDF
-        eq = '30'
-        print('scale_gauge_v5.aux not found; labelling Eq. (30) as in the committed PDF')
-    for n, mfc, ls in ((4, COL['AD'], '-'), (8, 'white', (0, (4, 2)))):
-        ps = np.array(sorted(map(float, D[n]['p'])))
-        Lx = np.array([D[n]['p'][k]['L_star'] for k in map(str, ps)])
-        br = np.array([D[n]['p'][k]['br'][-1] for k in map(str, ps)])
-        Leq = np.log(3 * D[n]['None'][-1] / br) / (n * ps)
-        ax.plot(ps, Leq, color=MUTED, lw=1.0, ls=ls, zorder=2,
-                label=f'Eq. ({eq}), $n={n}$')
-        ax.plot(ps, Lx, color=COL['AD'], marker=MRK['AD'], ms=4.2, mfc=mfc, mec=COL['AD'],
-                mew=0.9, ls='none', zorder=3, label=f'$n={n}$')
-        out[('c', n)] = (ps, Lx, Leq)
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlim(6e-4, 0.5)
-    ax.set_ylim(1, 4e3)
-    ax.set_xlabel('damping strength $p$')
-    ax.set_ylabel(r'separation depth $L^*$')
-    h, l = ax.get_legend_handles_labels()
-    ax.legend(h[1::2] + h[0::2], l[1::2] + l[0::2], loc='lower left', frameon=False,
-              handlelength=1.8, fontsize=6.5)
-    title(ax, r'$(\sigma_{\rm AD}/\sigma_{\rm Pauli})^2=10$ at $L^*$')
-    panel(ax, '(c)')
-
     for ax in axes:
         ax.grid(True, which='major', axis='both')
-    fig.tight_layout(w_pad=1.2)
-    fig.savefig(OUT / 'fig_sep.pdf')
-    fig.savefig(OUT / 'fig_sep.png')
+    fig.tight_layout(w_pad=2.0)
+    fig.savefig(OUT / 'fig_sep_app.pdf')
+    fig.savefig(OUT / 'fig_sep_app.png')
     return out
 
 
@@ -679,7 +694,9 @@ if __name__ == '__main__':
         print('shots', k, np.array2string(np.asarray(v), precision=3))
     for k, v in fig_width().items():
         print('width', k, np.array2string(np.asarray(v), precision=3))
-    for k, v in fig_sep().items():
+    for k, v in fig_sep_main().items():
+        print('sep', k, [np.array2string(np.asarray(x), precision=4) for x in v])
+    for k, v in fig_sep_app().items():
         print('sep', k, [np.array2string(np.asarray(x), precision=4) for x in v])
     for k, v in fig_fashion().items():
         print('fashion', k, np.round(v, 4))

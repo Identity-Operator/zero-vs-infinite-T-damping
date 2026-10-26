@@ -59,25 +59,21 @@ Vietnam}
 \date{\today}
 
 \begin{abstract}
-The Pauli twirl of amplitude damping (AD) is generalized amplitude damping at
-infinite temperature, so comparing the two isolates the zero-temperature bias of
-the damping. In this work, we show in exact simulations of
-single-qubit fits, a four-qubit classifier, and a three-qubit eigensolver that
-this bias acts mainly through the spread of the measured expectation values
-over the inputs. A trainable output
-scale removes most of the resulting differences in accuracy. We
-also prove that the damping direction is a gauge freedom whenever it follows
-complete entangling layers in a circuit with trainable
-boundaries. What remains is the size of the non-unital term.
-Under AD, this spread stops at a floor that vanishes at infinite
-temperature, while under the twirls it keeps shrinking with every
-layer. Rescaling therefore costs measurement shots: at a fixed shot budget, the
-classifier under AD stays close to its noiseless accuracy, while the twirled
-classifiers fall far below it. At weak damping, the two separate only in very deep
-circuits. These results explain recent reports that twirling
-degrades variational algorithms, including an eigensolver direction effect
-arising only because the damping sits inside a decomposed two-qubit
-gate.
+Randomized compiling makes hardware noise easier to handle by twirling it into
+Pauli noise, but it also removes the pull of amplitude damping toward
+$\ket{0}$. This has been reported to make variational models worse, and
+reversing the direction of the damping to make them worse still. We ask what
+these effects really are. Comparing amplitude damping with its Pauli twirl,
+which is the same damping at infinite temperature, we find that the twirl
+mainly flattens the measured expectation values across inputs. A trained output
+scale undoes most of the loss in accuracy, so the models learn just as well,
+but the price returns as measurement shots. Under the twirl the flattened
+values must be measured far more often, while under amplitude damping a floor
+keeps them resolvable. This floor vanishes as the temperature rises, and at
+realistic damping strengths it matters only in very deep circuits. We also show
+that reversing the damping is usually a gauge freedom that changes only the
+parameters, and that the reported direction effect arises only because the
+damping sits inside a decomposed two-qubit gate.
 \end{abstract}
 
 \maketitle
@@ -88,12 +84,12 @@ gate.
 
 Variational quantum algorithms and quantum machine learning models are built
 from parameterized circuits and are meant to run on noisy near-term
-devices~\cite{preskill2018nisq,cerezo2021variational,bharti2022noisy}. Whether
-such a model can be trained depends on how strongly its outputs vary with the
-parameters. In deep random circuits, this variation vanishes exponentially with
-the number of qubits, a phenomenon known as a barren
-plateau~\cite{mcclean2018barren,cerezo2021cost,larocca2025barren}, and noise can
-make it worse. Unital noise drives the state toward the maximally mixed state,
+devices~\cite{preskill2018nisq,cerezo2021variational,bharti2022noisy}. They can
+only be trained if their outputs change with the parameters. In deep random
+circuits, this change vanishes exponentially with the number of qubits, a
+problem known as a barren
+plateau~\cite{mcclean2018barren,cerezo2021cost,larocca2025barren}, and noise
+makes it worse. Unital noise drives the state toward the maximally mixed state,
 so local expectation values decay exponentially with
 depth~\cite{wang2021noiseinduced,stilckfranca2021limitations}. Non-unital noise
 behaves differently. Amplitude damping (AD) drives the state toward a pure state
@@ -105,16 +101,15 @@ This difference matters in practice, because hardware noise is often made
 unital on purpose. Randomized
 compiling~\cite{wallman2016noise,hashim2021randomized} averages the noise over
 random Pauli gates, which turns AD into its Pauli twirl. The twirl keeps the
-contraction of AD but removes its non-unital term, the pull toward $\ket{0}$,
-and leaves generalized amplitude damping at infinite temperature. Comparing AD
-with its Pauli twirl therefore isolates the zero-temperature bias of the
-damping. A recent study~\cite{vanrossum2026biased} made
-this comparison and found that twirling shrinks gradients, degrades eigensolver
-solutions, and reduces the range of outputs a model can fit. They also found
-that reversed damping performs worse than ordinary damping. What these effects
-mean is less clear. They could reflect a real loss in what the model can learn,
-or only a change in how its outputs must be read out, and it is not known
-whether the direction of the damping matters in itself.
+shrinking of AD but removes its pull toward $\ket{0}$, leaving generalized
+amplitude damping at infinite temperature. Comparing AD with its Pauli twirl
+therefore isolates the pull toward $\ket{0}$, the zero-temperature bias of the
+damping. A recent study~\cite{vanrossum2026biased} made this comparison and
+found that twirling degrades eigensolver solutions and reduces the range of
+outputs a model can fit, and that reversed damping performs worse than ordinary
+damping. What these effects mean is less clear. They could reflect a real loss
+in what the model can learn, or only a change in how its outputs must be read
+out. It is also unknown whether the direction of the damping matters in itself.
 
 In this work, we show that in our models the zero-temperature bias acts mainly
 through the spread of the measured expectation values over the inputs. Under
@@ -410,7 +405,7 @@ model is no longer a rescaled copy of the noiseless one. Whether the scale
 still accounts for most of the difference then becomes an empirical question,
 which we test in the rest of this section. The average behavior of the spread
 on several qubits, its per-layer decay under the twirls and its floor under
-AD, is derived in Secs.~\ref{sec:floor} and \ref{sec:pdep}.
+AD, is derived in Sec.~\ref{sec:floor} and Appendix~\ref{app:width}.
 
 On hardware, however, rescaling is not free. The number of shots is one of the
 main costs of variational algorithms~\cite{wecker2015progress,gonthier2022measurements},
@@ -484,14 +479,6 @@ since by Eq.~\eqref{eq:depol_scale} the five insertions shrink the output by
 $\lambda_{\rm depol}^5$. On a single qubit, the cost of twirling is therefore
 modest. As we show next, it becomes large in the classifier, where it compounds
 over qubits and layers.
-
-The same scale also explains the reported smaller gradient magnitudes. Under
-Pauli noise, the loss gradients carry the same attenuation factors as the
-output~\cite{vanrossum2026biased}. For a rescaled
-output, $\partial(sf)/\partial\theta=s\,\partial f/\partial\theta$, so a trained
-$s$ restores the size of the gradients. It does not restore their
-signal-to-noise ratio under shot noise, which it amplifies by the same factor,
-so estimating the gradients to a fixed precision still costs $\kappa$.
 
 \subsection{Classifier}
 \label{sec:clf}
@@ -871,6 +858,68 @@ both depend on the damping strength.
 \subsection{Floor of the spread}
 \label{sec:floor}
 
+We start before training, where the effect is cleanest, and ask why the
+spread under AD behaves differently from that under the twirls. Here we
+measure the spread as
+\begin{equation}
+\sigma^2=\mathbb E_\theta\,\frac1n\sum_{j=1}^n\mathrm{Var}_{\mathbf a}\,z_j ,
+\label{eq:sigma_rms}
+\end{equation}
+the variance of the $z_j$ over the inputs, averaged over the qubits and over
+random parameters, and we write $\sigma_{\AD}$, $\sigma_{\rm Pauli}$, and
+$\sigma_{\rm None}$ for its values under AD, the Pauli twirl, and no noise. At
+$p=0.3$, the spread separates the channels with both depth and width
+(Fig.~\ref{fig:width}). Under the unital channels, the spread shrinks by a nearly constant factor
+per layer at every width. Under AD, in contrast, it settles on a floor after
+two or three layers. As the circuit gets wider,
+the noiseless spread falls, as expected for a scrambling circuit, but the floor
+barely moves. At $n=8$ and $L\ge4$, the AD spread is therefore as large as
+the noiseless one.
+
+The floor comes from the
+non-unital term. To see this, consider a $Z$ component propagated backward
+from the readout. Under AD it becomes $c^2Z+t_zI$, with $t_z=p$, whereas the
+Pauli twirl keeps only $c^2Z$. The identity part behaves very differently from
+the rest. Its expectation value is 1 in every state, so it reaches the readout
+no matter what the earlier layers do. The twirl has no such part, and every
+component keeps shrinking from layer to layer. At strong damping, the
+branching into the identity after the last entangler sets the floor. Averaging
+its contribution over the parameters (Appendix~\ref{app:width}), we obtain the
+closed form
+\begin{multline}
+\sigma_\infty^2=\frac{p^2(1-p)^2}{n}\sum_j\Bigl[\frac{(1-p)^2}{2}\,
+\mathrm{Var}(\cos a_j)\\
++\frac{1-p}{4}\,\mathrm{Var}(\sin a_j)\Bigr],
+\label{eq:floor_var}
+\end{multline}
+which at $p=0.3$ matches the floor of the AD spread to within 0.5\% for $n\ge4$.
+
+This floor fits well with what is known about noise-induced concentration.
+Unital noise concentrates local expectation values exponentially in
+depth~\cite{wang2021noiseinduced,schumann2024emergence}, whereas under
+non-unital noise their variance over random circuits stays bounded from below
+by an amount set by the non-unital term~\cite{mele2026noise}.
+Equation~\eqref{eq:floor_var} is the counterpart of that bound for the
+variance over inputs, and both scale as $\lVert\mathbf t\rVert^2=p^2$ without
+decaying with depth.
+
+The floor also sets how the zero-temperature bias depends on temperature. At
+finite temperature, the damping of a qubit with splitting $\hbar\omega$ relaxes
+toward the thermal excited-state population
+$N=(e^{\hbar\omega/k_BT}+1)^{-1}$, and at fixed $p$, that is, at fixed
+measured $T_1$, Sec.~\ref{sec:channels} gives
+\begin{equation}
+t_z=p(1-2N)=p\tanh\frac{\hbar\omega}{2k_BT} .
+\label{eq:tz}
+\end{equation}
+The floor therefore falls linearly in $1-2N$ as the temperature rises and
+vanishes at $N=\frac12$, the Pauli twirl (Appendix~\ref{app:width}). In
+summary, the identity part of the non-unital term keeps the AD spread on a
+floor at every depth and width, whereas the twirled spreads keep shrinking.
+
+\subsection{Sampling cost}
+\label{sec:shots}
+
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{fig_shots}
@@ -883,216 +932,64 @@ exact expectation values (b) and with $N_s=10^3$ shots (c).}
 \label{fig:shots}
 \end{figure*}
 
-We start before training, where the effect is cleanest. Here we measure the
-spread as
-\begin{equation}
-\sigma^2=\mathbb E_\theta\,\frac1n\sum_{j=1}^n\mathrm{Var}_{\mathbf a}\,z_j ,
-\label{eq:sigma_rms}
-\end{equation}
-the variance of the $z_j$ over the inputs, averaged over the qubits and over
-random parameters, and we write $\sigma_{\AD}$, $\sigma_{\rm Pauli}$, and
-$\sigma_{\rm None}$ for its values under AD, the Pauli twirl, and no noise. At
-$p=0.3$, the spread separates the channels with both depth and width
-(Fig.~\ref{fig:width}). Under the unital channels, the spread shrinks by a nearly constant factor
-per layer at every width. Under AD, in contrast, it settles on a floor after
-two or three layers. The ratio $\sigma_{\AD}/\sigma_{\rm Pauli}$ therefore
-grows geometrically, by a factor of about 3.3 per layer at $n=4$, and its
-square, which is the ratio of their shot factors, grows by about 11 per layer.
-As the circuit gets wider,
-the noiseless spread falls, as expected for a scrambling circuit, but the floor
-barely moves. At $n=8$ and $L\ge4$, the AD spread is therefore as large as
-the noiseless one.
+We next ask whether the floor matters for the number of shots that a trained
+classifier needs, the operational shot cost of Sec.~\ref{sec:model_clf}. To
+answer this, we train under shot noise [Fig.~\ref{fig:shots}(a) and (c)].
+Trained and tested with $10^3$ shots per image, AD stays within 1.5 percentage
+points of the noiseless accuracy at every depth, while the twirled channels
+lose up to 33 points at $L=4$. Part of this loss already arises in training.
+Evaluated without shot noise, the twirled models trained with shots remain
+clearly less accurate than those trained exactly, whereas AD loses almost
+nothing. After training with shots, the operational cost of AD stays close to
+its shot factor $\kappa$, whereas for the twirls it still grows by a factor of
+3 to 5 per layer [Fig.~\ref{fig:shots}(c)].
 
-The floor comes from the
-non-unital term. To see this, consider a $Z$ component propagated backward
-from the readout. Under AD it becomes $c^2Z+t_zI$, with $t_z=p$, whereas the
-Pauli twirl keeps only $c^2Z$. The identity part behaves very differently from
-the rest. Its expectation value is 1 in every state, so it reaches the readout
-no matter what the earlier layers do. The twirl has no such part, and every
-component keeps shrinking from layer to layer. Under AD, the damping after the last entangler
-branches the $Z$ component of each $z_j$ into the identity and adds
-\begin{equation}
-\delta z_j=p(1-p)\bigl[(1-p)\,v_z\cos a_j-c\,v_y\sin a_j\bigr]
-\label{eq:floor}
-\end{equation}
-to $z_j$, where $(v_x,v_y,v_z)$ is the direction into which the final
-trainable block rotates $Z_j$. Averaging over the parameters,
-we obtain a closed form for this last-layer
-contribution,
-\begin{multline}
-\sigma_\infty^2=\frac{p^2(1-p)^2}{n}\sum_j\Bigl[\frac{(1-p)^2}{2}\,
-\mathrm{Var}(\cos a_j)\\
-+\frac{1-p}{4}\,\mathrm{Var}(\sin a_j)\Bigr],
-\label{eq:floor_var}
-\end{multline}
-which at $p=0.3$ matches the floor of the AD spread to within 0.5\% for $n\ge4$.
+The reason is that training under shot noise moves the circuit toward
+expectation values whose spread exceeds the shot noise $1/\sqrt{N_s}$. Under
+AD, the smallest spread rises to the floor of Sec.~\ref{sec:floor}, above the
+shot noise, while under the twirls it stays below it
+(Appendix~\ref{app:stats}).
 
-This floor fits well with what is
-known about noise-induced concentration. Unital noise concentrates local
-expectation values exponentially in
-depth~\cite{wang2021noiseinduced,schumann2024emergence}. Under non-unital
-noise, by contrast, the variance of local expectation values over random
-circuits stays bounded from below by an amount set by the non-unital
-term~\cite{mele2026noise}. Equation~\eqref{eq:floor_var} is the counterpart of
-that bound for the variance over inputs. After the average over parameters,
-branchings in different layers are uncorrelated, so
-$\sigma_{\AD}^2\ge\sigma_\infty^2$ at every depth. Both bounds scale as
-$\lVert\mathbf t\rVert^2=p^2$ and do not decay with depth. At weak damping, the
-branchings of earlier layers raise the floor above this bound, as we show in
-Sec.~\ref{sec:pdep}. At $p=0.3$, however, the last
-layer alone sets the spread under AD. This is in line with the
-effective shallowness of noisy circuits~\cite{mele2026noise}: only the last few
-layers before the readout shape the output.
-
-The floor also shows how the zero-temperature bias
-depends on temperature. At finite temperature, the damping of a qubit with
-splitting $\hbar\omega$ relaxes toward the thermal excited-state population
-$N=(e^{\hbar\omega/k_BT}+1)^{-1}$, and Sec.~\ref{sec:channels} gives
-\begin{equation}
-t_z=p(1-2N)=p\tanh\frac{\hbar\omega}{2k_BT}
-\label{eq:tz}
-\end{equation}
-at fixed $p$, that is, at fixed measured $T_1$. At fixed coupling to the bath,
-$1/T_1$ itself grows as $\coth(\hbar\omega/2k_BT)$. At weak damping, $t_z$ is
-then independent of temperature to first order in $p$, and the temperature
-acts through the contraction instead. At fixed $T_1$, the picture is simple. The last-layer term,
-Eq.~\eqref{eq:floor}, is linear in $t_z$, so it scales exactly as $1-2N$.
-Strings of higher Pauli weight can branch into the identity on several qubits
-and add higher powers of $t_z$, but in the exact average over parameters they
-change this scaling by less than half a percent.
-The branching part of the spread
-is also exactly symmetric under $N\leftrightarrow1-N$, as the frame gauge of
-Sec.~\ref{sec:gauge} requires. The floor therefore vanishes linearly in $1-2N$
-as the temperature rises, and it reaches zero at the Pauli twirl,
-$N=\frac12$.
-
-\subsection{Sampling cost}
-\label{sec:shots}
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{fig_sep}
-\caption{Dependence of the separation on the damping strength, from the exact
-average over parameters before training (5000 image pairs at $n=4$, 700 at
-$n=8$). (a) Spread against depth at $n=4$ for AD (squares) and the
-Pauli twirl (triangles) at three values of $p$, and for the noiseless circuit
-up to $L=30$; vertical segments mark $L^*$. (b) Floor $\sigma_{\rm br,\infty}$
-of the AD spread (markers) and its last-layer part $\sigma_\infty$
-[Eq.~\eqref{eq:floor_var}, lines] for $n=4$ (filled, solid) and $n=8$ (hollow,
-dashed); the dotted line is the shot noise $1/\sqrt{N_s}$ at $N_s=10^3$.
-(c) Separation depth $L^*$ (markers) and Eq.~\eqref{eq:Lstar} (gray lines).
-At $n=8$ the exact average was computed for $p\ge0.01$.}
-\label{fig:sep}
-\end{figure*}
-
-We next test whether the shot factor predicts the number of shots that a
-trained classifier actually needs, by comparing it with the operational shot
-cost of Sec.~\ref{sec:model_clf}. After training with exact expectation values,
-this cost follows $\kappa$ for the unital channels but not for AD
-[Fig.~\ref{fig:shots}(b) and Table~\ref{tab:pdep_trained}]. At $L=4$, AD needs
-19 times more shots than its shot factor predicts. Even so, the Pauli twirl
-still needs 18 times the shots of AD. The extra cost of AD comes from the
-readout. The shot factor only looks at the average spread of the $z_j$, whereas
-the readout amplifies the shot noise of each $z_j$ by its own weight. Exact
-training lets the AD readout rely on expectation values whose spread is far
-smaller than in the noiseless circuit. We capture this effect with the
-readout-weighted noise gain
-$G=\bigl\langle\sum_j\lVert\mathbf w_j\rVert^2(1-z_j^2)/\sigma_j^2\bigr\rangle$,
-where $\mathbf w_j$ is the column of $W$ that multiplies $z_j$ and the average
-runs over the test images. If the shot noise of different qubits is
-uncorrelated, $G$ is $N_s$ times the total shot-noise variance of the class
-scores. It reproduces the measured cost ratios to within a factor of 1.6 for
-$L\ge2$ (Table~\ref{tab:gain} in Appendix~\ref{app:stats}).
-
-The picture changes when we also train under shot noise
-[Fig.~\ref{fig:shots}(a) and (c)]. Trained and tested with $10^3$ shots per
-image, AD stays within 1.5 percentage points of the noiseless accuracy at every
-depth, while the twirled channels lose up to 33 points at $L=4$. Part of this
-loss already arises in training. Evaluated without shot noise, the twirled
-models trained with shots remain clearly less accurate than those trained
-exactly, whereas AD loses almost nothing. After training with shots, the
-operational cost of AD stays close to its shot factor, whereas for the twirls
-it still grows by a factor of 3 to 5 per layer [Fig.~\ref{fig:shots}(c)]. The
-reason is that training under shot noise moves the circuit toward expectation
-values whose spread exceeds the shot noise $1/\sqrt{N_s}$. Under AD, the
-smallest spread rises to the floor of Fig.~\ref{fig:width}, above the shot
-noise, while under the twirls it stays below it (Appendix~\ref{app:stats}).
-
-Finally, the learned rescaling is far
-cheaper than generic error mitigation. Probabilistic error
-cancellation~\cite{temme2017error} of the twirled channel would multiply the
-shots by $(1-p)^{-2}$ per insertion, or $(1-p)^{-72}\approx10^{11}$ over the 36
-insertions of the $L=4$ classifier, consistent with the exponential lower
-bounds on mitigation~\cite{takagi2023universal,quek2024exponentially}. The
-rescaling learned under shot noise, by comparison, needs at most 417 times the
-shots of the noiseless circuit. It restores, however, only the spread of the few
-expectation values that the task uses, not the noiseless state.
+Without shot noise in training, $\kappa$ follows the cost of the unital
+channels but misses that of AD [Fig.~\ref{fig:shots}(b)]. At $L=4$, AD then
+needs 19 times more shots than its shot factor predicts, because the exactly
+trained readout relies on expectation values of very small spread, as a
+readout-weighted noise gain shows (Table~\ref{tab:gain} in
+Appendix~\ref{app:stats}). Even so, the Pauli twirl still needs 18 times the
+shots of AD. The floor thus matters for the shot budget. It lets a model
+trained under shot noise keep a cost close to $\kappa$, while the twirled
+models pay a cost that grows with every layer.
 
 \subsection{Dependence on the damping strength}
 \label{sec:pdep}
 
-\begin{table}[t]
-\caption{Dependence on the damping strength $p$ before training, from the
-exact average over parameters: the depth $L^*$ at which
-$(\sigma_{\AD}/\sigma_{\rm Pauli})^2$ first reaches 10, the floor
-$\sigma_{\rm br,\infty}$ of the AD spread and its last-layer part $\sigma_\infty$
-[Eq.~\eqref{eq:floor_var}], and the number of shots
-$1/\sigma_{\rm br,\infty}^2$ that resolves the floor. The floor is estimated from 5000 ($n=4$) and 700 ($n=8$) random image pairs, with a sampling error of about 1\%.}
-\label{tab:pdep}
-\begin{ruledtabular}
-\begin{tabular}{lccccc}
- & \multicolumn{4}{c}{$n=4$} & $n=8$\\
-$p$ & $L^*$ & $\sigma_{\rm br,\infty}$ & $\sigma_\infty$ & $1/\sigma_{\rm br,\infty}^2$ & $L^*$\\
-\colrule
-0.001 & 1508 & 0.0017 & 0.0005 & $3.4\times10^5$ & --\\
-0.003 & 453 & 0.0031 & 0.0014 & $1.0\times10^5$ & --\\
-0.01 & 117 & 0.0067 & 0.0047 & $2.2\times10^4$ & 49\\
-0.03 & 33 & 0.0155 & 0.0137 & $4.2\times10^3$ & 13\\
-0.05 & 18 & 0.0235 & 0.0219 & $1.8\times10^3$ & 8\\
-0.1 & 8 & 0.0408 & 0.0396 & 600 & 5\\
-0.2 & 4 & 0.0647 & 0.0637 & 240 & 3\\
-0.3 & 2 & 0.0757 & 0.0747 & 170 & 2\\
-\end{tabular}
-\end{ruledtabular}
-\end{table}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_sep_main}
+\caption{Separation depth, at which the Pauli twirl needs ten times the shots
+of AD before training, against the damping strength $p$ for four (filled) and
+eight (hollow) qubits. Markers are the exact average over parameters (5000
+image pairs at $n=4$, 700 at $n=8$, computed for $p\ge0.01$ at $n=8$). Gray
+lines are the estimate of Eq.~\eqref{eq:Lstar} in Appendix~\ref{app:width}.}
+\label{fig:sep}
+\end{figure}
 
 So far we have worked at strong damping, $p=0.3$. We now turn to weaker
-damping, closer to current hardware, where both sides of the comparison change
-with $p$ (Table~\ref{tab:pdep} and Fig.~\ref{fig:sep}). At weak damping,
-the twirled spread decays per layer as $e^{-np}$. This is because a scrambled
-Pauli string has about $3n/4$ non-identity sites, and each of the two
-insertions per layer shrinks such a site by a factor of about $1-2p/3$ on
-average. The floor of the AD spread, $\sigma_{\rm br,\infty}$, changes as well.
-Its square has two parts,
-$\sigma_{\rm br,\infty}^2\approx\sigma_\infty^2+b_{\rm br}\,p$. The first is
-proportional to $p^2$ [Eq.~\eqref{eq:floor_var}]. The second comes from
-branchings in the roughly $1/(np)$ earlier layers that the damping does not yet
-suppress. It acts on the input dependence of those layers, which concentrates
-with width, so $b_{\rm br}$ falls by about an order of magnitude from $n=4$ to
-$n=8$.
+damping, closer to current hardware, and ask at which depth the difference
+between AD and its twirls appears. Both sides of the comparison change with
+$p$. The twirled spread decays more slowly per layer, and the floor of the AD
+spread gains a contribution from earlier layers (Appendix~\ref{app:width}).
+To quantify when the two spreads separate, we define the separation depth as
+the depth at which the squared ratio of the AD and Pauli-twirl spreads first
+reaches 10. There, the twirl needs ten times the shots of AD before training.
+At weak damping, the separation depth grows roughly as $p^{-1}\ln(1/p)$
+(Fig.~\ref{fig:sep}), in close agreement with a simple estimate that we derive
+in Appendix~\ref{app:width}.
 
-To quantify when the two spreads separate, we define the separation depth
-$L^*$ as the depth at which $(\sigma_{\AD}/\sigma_{\rm Pauli})^2$ first
-reaches 10 (Table~\ref{tab:pdep}). There, the twirl needs ten times the shots
-of AD before training. Since the AD spread splits into the twirled part
-and a branching part $\sigma_{\rm br}$ (Appendix~\ref{app:width}),
-\begin{equation}
-\sigma_{\AD}^2=\sigma_{\rm Pauli}^2+\sigma_{\rm br}^2 ,
-\label{eq:split}
-\end{equation}
-this happens when $\sigma_{\rm br}=3\,\sigma_{\rm Pauli}$. With
-$\sigma_{\rm br}\approx\sigma_{\rm br,\infty}$ and
-$\sigma_{\rm Pauli}\approx\sigma_{\rm None}\,e^{-npL}$, we obtain the estimate
-\begin{equation}
-L^*\approx\frac{1}{np}\,\ln\frac{3\,\sigma_{\rm None}}{\sigma_{\rm br,\infty}},
-\label{eq:Lstar}
-\end{equation}
-where $\sigma_{\rm None}$ is taken at large depth (0.24 at $n=4$ and 0.062 at
-$n=8$). At weak damping, this estimate agrees closely with the exact separation
-depth [Fig.~\ref{fig:sep}(c)], and it grows
-roughly as $p^{-1}\ln(1/p)$. Interestingly, at fixed weak damping $L^*$ falls
-faster than $1/n$ (Table~\ref{tab:pdep}). This is because the noiseless spread
-in the logarithm concentrates with width faster than the floor does.
+Trained classifiers follow this picture (Table~\ref{tab:pdep_trained} in
+Appendix~\ref{app:stats}). Well below the separation depth, AD and its twirls
+reach the same accuracy at nearly the same shot cost, and at the separation
+depth the twirls need about four times the shots of AD.
 
 This has a clear consequence for real devices. On superconducting hardware,
 the damping
@@ -1100,42 +997,9 @@ is of order $10^{-3}$ per two-qubit gate, for gate times of 30 to 400~ns and
 $T_1$ of order $100~\mu$s~\cite{krantz2019quantum}. In our model, one of the
 two insertions per layer follows a ring of $n$ CNOTs, so $p$ per insertion
 corresponds to several gate durations. At $p=10^{-3}$, the separation needs
-about 1500 layers at $n=4$ (Table~\ref{tab:pdep}). The difference in
-spread between AD and its twirls is therefore a property of strong damping or
-of very deep circuits.
-
-\begin{table*}[t]
-\caption{Trained classifiers at weaker damping (MNIST, standardized readout,
-exact expectation values, eight initializations): test accuracy (mean $\pm$ SD), operational
-shot cost relative to the noiseless circuit at the same depth, shot factor
-$\kappa$, and the squared ratio of the AD and Pauli-twirl spreads before
-training, $(\sigma_{\AD}/\sigma_{\rm Pauli})^2$, from the exact average over
-parameters of Table~\ref{tab:pdep}. The row $p=0.3$ repeats
-Secs.~\ref{sec:clf} and \ref{sec:shots}.}
-\label{tab:pdep_trained}
-\begin{ruledtabular}
-\begin{tabular}{llccccccccccc}
- & & \multicolumn{4}{c}{test accuracy} & \multicolumn{3}{c}{shot cost / noiseless} & \multicolumn{3}{c}{$\kappa$} & before\\
-$p$ & $L$ & None & AD & Pauli & Depol & AD & Pauli & Depol & AD & Pauli & Depol & training\\
-\colrule
-0.3 & 4 & $.869\pm.005$ & $.876\pm.005$ & $.870\pm.007$ & $.870\pm.004$ & 967 & $1.7\times10^4$ & $1.4\times10^4$ & 50 & $1.6\times10^4$ & $1.1\times10^4$ & $1.3\times10^3$\\
-0.05 & 4 & $.869\pm.005$ & $.866\pm.005$ & $.866\pm.007$ & $.864\pm.004$ & 4.7 & 4.8 & 4.1 & 4.6 & 4.7 & 4.4 & 1.06\\
-0.1 & 4 & $.869\pm.005$ & $.872\pm.005$ & $.863\pm.004$ & $.863\pm.003$ & 13.1 & 21.5 & 14.9 & 15.6 & 21.2 & 17.5 & 1.69\\
-0.1 & 8 & $.831\pm.012$ & $.866\pm.006$ & $.840\pm.009$ & $.838\pm.007$ & 115 & 466 & 495 & 62 & 484 & 459 & 16.8\\
-\end{tabular}
-\end{ruledtabular}
-\end{table*}
-
-Trained classifiers follow this picture (Table~\ref{tab:pdep_trained}). Well
-below the separation depth, at $p=0.05$ and $L=4$ ($L^*=18$), AD and its twirls
-reach the same accuracy at nearly the same shot cost, as $\kappa$ predicts.
-Closer to it, at $p=0.1$ and $L=4$ ($L^*=8$), the twirls already need more shots
-than AD. At $L=L^*=8$, the channels finally separate. The twirls then need
-about four times the shots of AD, in the same direction as the spread ratios
-before and after training. At this depth, AD is also 2.6 points more accurate
-than the Pauli twirl. It is not, however, more accurate than the best noiseless
-circuit (0.869 at $L=2$ to 4), and with $10^3$ shots per image it falls behind
-the noiseless circuit (Appendix~\ref{app:stats}).
+about 1500 layers at $n=4$ (Table~\ref{tab:pdep} in Appendix~\ref{app:width}). At realistic damping, the
+difference between AD and its twirls therefore appears only in very deep
+circuits.
 
 % ============================================================
 \section{Conclusion}
@@ -1148,12 +1012,11 @@ Under AD, the spread stops at a floor fixed at strong damping by the last layer,
 and at fixed $T_1$ this floor falls linearly in $1-2N$ as the temperature
 rises. Under the twirls, it keeps shrinking by a constant factor per layer at
 every width up to eight qubits. Training an output scale removes most of the
-resulting differences in fit and accuracy in exact simulation. What it removes reappears as a sampling cost: with $10^3$ shots per
-image at $p=0.3$, the classifier under AD stays within 1.5 percentage points of
-the noiseless accuracy at depths 1 to 4, while the twirled classifiers lose up
-to 33 points at four layers. The separation needs a depth that grows roughly
-as $(np)^{-1}\ln(1/p)$, about 1500 layers on four qubits at $p=10^{-3}$, so it
-matters only at strong damping or in very deep circuits.
+resulting differences in fit and accuracy in exact simulation. What it removes reappears as a sampling cost: at a fixed shot budget, the
+classifier under AD stays close to its noiseless accuracy, while the twirled
+classifiers fall far behind. At weak damping, the two channels separate only
+after many layers, so the difference matters at strong damping or in very deep
+circuits.
 
 The direction of the damping is a gauge, that is, reversing it changes only
 the parameters, whenever the damping follows complete entangling layers and
@@ -1431,11 +1294,27 @@ points also with $10^4$ shots. Evaluated with exact expectation values, the
 twirled models trained with $10^3$ shots are about 0.11 less accurate than
 those trained exactly, and AD about 0.01. At $L=4$ and $N_s=10^3$, the geometric
 mean of the smallest spread is 0.075 for AD, compared with 0.0065 under exact
-training and 0.24 for the noiseless circuit, and 0.005 and 0.003 for the Pauli and depolarizing channels. Table~\ref{tab:gain} compares the exact-training costs
-with the noise gain $G$ of Sec.~\ref{sec:shots} and with the shot factor.
+training and 0.24 for the noiseless circuit, and 0.005 and 0.003 for the Pauli and depolarizing channels.
+
+The extra cost of AD after exact training comes from the readout. The shot
+factor only looks at the average spread of the $z_j$, whereas the readout
+amplifies the shot noise of each $z_j$ by its own weight. Exact training lets
+the AD readout rely on expectation values whose spread is far smaller than in
+the noiseless circuit. We capture this effect with the readout-weighted noise
+gain
+\begin{equation}
+G=\Bigl\langle\sum_j\lVert\mathbf w_j\rVert^2\,\frac{1-z_j^2}{\sigma_j^2}\Bigr\rangle ,
+\label{eq:gain}
+\end{equation}
+where $\mathbf w_j$ is the column of $W$ that multiplies $z_j$ and the average
+runs over the test images. If the shot noise of different qubits is
+uncorrelated, $G$ is $N_s$ times the total shot-noise variance of the class
+scores. Table~\ref{tab:gain} compares the exact-training costs with $G$ and
+with the shot factor. For $L\ge2$, $G$ reproduces the measured cost ratios to
+within a factor of 1.6.
 
 \begin{table*}[t]
-\caption{Readout-weighted noise gain $G$ of Sec.~\ref{sec:shots} compared with the
+\caption{Readout-weighted noise gain $G$ of Eq.~\eqref{eq:gain} compared with the
 operational shot cost of the classifiers trained with exact expectation values at
 $p=0.3$. All entries are relative to the noiseless circuit and are geometric means
 over initializations. For $L\ge2$, $G$ matches the shot cost to within a factor of
@@ -1455,10 +1334,41 @@ Fashion-MNIST & 4 & 603 & $2.2\times10^4$ & $1.8\times10^4$ & 400 & $1.6\times10
 \end{ruledtabular}
 \end{table*}
 
+\begin{table*}[t]
+\caption{Trained classifiers at weaker damping (MNIST, standardized readout,
+exact expectation values, eight initializations): test accuracy (mean $\pm$ SD), operational
+shot cost relative to the noiseless circuit at the same depth, shot factor
+$\kappa$, and the squared ratio of the AD and Pauli-twirl spreads before
+training, $(\sigma_{\AD}/\sigma_{\rm Pauli})^2$, from the exact average over
+parameters of Table~\ref{tab:pdep}. The row $p=0.3$ repeats
+Secs.~\ref{sec:clf} and \ref{sec:shots}.}
+\label{tab:pdep_trained}
+\begin{ruledtabular}
+\begin{tabular}{llccccccccccc}
+ & & \multicolumn{4}{c}{test accuracy} & \multicolumn{3}{c}{shot cost / noiseless} & \multicolumn{3}{c}{$\kappa$} & before\\
+$p$ & $L$ & None & AD & Pauli & Depol & AD & Pauli & Depol & AD & Pauli & Depol & training\\
+\colrule
+0.3 & 4 & $.869\pm.005$ & $.876\pm.005$ & $.870\pm.007$ & $.870\pm.004$ & 967 & $1.7\times10^4$ & $1.4\times10^4$ & 50 & $1.6\times10^4$ & $1.1\times10^4$ & $1.3\times10^3$\\
+0.05 & 4 & $.869\pm.005$ & $.866\pm.005$ & $.866\pm.007$ & $.864\pm.004$ & 4.7 & 4.8 & 4.1 & 4.6 & 4.7 & 4.4 & 1.06\\
+0.1 & 4 & $.869\pm.005$ & $.872\pm.005$ & $.863\pm.004$ & $.863\pm.003$ & 13.1 & 21.5 & 14.9 & 15.6 & 21.2 & 17.5 & 1.69\\
+0.1 & 8 & $.831\pm.012$ & $.866\pm.006$ & $.840\pm.009$ & $.838\pm.007$ & 115 & 466 & 495 & 62 & 484 & 459 & 16.8\\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
 \paragraph{Weaker damping.}
-At $p=0.1$ and $L=8$ (Table~\ref{tab:pdep_trained}), AD minus the Pauli twirl
-in accuracy is $+0.026$, CI $[+0.017,+0.035]$. Evaluated with $10^3$ shots per
-image, AD reaches 0.69 against 0.83 for the noiseless circuit.
+Table~\ref{tab:pdep_trained} lists the trained classifiers at weaker damping,
+with the separation depth $L^*$ of Appendix~\ref{app:width}.
+Well below it, at $p=0.05$ and $L=4$ ($L^*=18$), AD and its
+twirls reach the same accuracy at nearly the same shot cost, as $\kappa$
+predicts. Closer to it, at $p=0.1$ and $L=4$ ($L^*=8$), the twirls already
+need more shots than AD. At $L=L^*=8$, the channels finally separate. The
+twirls then need about four times the shots of AD, in the same direction as the
+spread ratios before and after training. At this depth, AD is also more
+accurate than the Pauli twirl, by $+0.026$ in accuracy, CI $[+0.017,+0.035]$.
+It is not, however, more accurate than the best noiseless circuit (0.869 at
+$L=2$ to 4). Evaluated with $10^3$ shots per image, AD reaches 0.69 against
+0.83 for the noiseless circuit.
 
 \paragraph{Damping direction.}
 With the noise after the whole ring and the raw readout, AD$^{\rm flip}$ minus AD is
@@ -1485,6 +1395,11 @@ $P<10^{-16}$ at every $\gamma$; with the noise after it, $P\ge0.69$.
 \section{Spread before training}
 \label{app:width}
 
+In this appendix, we derive the floor of the AD spread and its dependence on
+the damping strength, and we define the separation depth used in
+Sec.~\ref{sec:pdep}.
+
+\paragraph{Exact average.}
 The lines in Fig.~\ref{fig:width} are exact averages, over parameters drawn
 uniformly from $[0,2\pi)$, of Eq.~\eqref{eq:sigma_rms}, where the variance
 runs over the first 300 training images. We compute them in
@@ -1503,38 +1418,122 @@ for $n\ge6$. Against brute-force averages of the density-matrix simulation,
 the recursion agrees within one to two standard errors in all 18 cells at
 $n=2$ and 3 and $L=1$ to 3. An independent density-matrix simulation at $n=4$, with 200 parameter draws, agrees within two standard errors in all 12 cells for the noiseless circuit, AD, and the Pauli twirl at $L=1$ to 4, and in all four cells for AD and the Pauli twirl at $p=0.1$ and $L=4$ and 8.
 
-Under AD the adjoint channel maps $Z$ to $c^2Z+pI$. The next random block
-averages the cross moments between the $I$ and $Z$ branches to zero, which
-gives Eq.~\eqref{eq:split}, with $\sigma_{\rm br}$ collecting the paths through
-at least one branching into the identity. The
-branching after the last entangler gives Eq.~\eqref{eq:floor}. Averaged over
-the final block, with $\mathbb E\,v_z^2=\frac12$, $\mathbb E\,v_y^2=\frac14$, and
-$\mathbb E\,v_zv_y=0$, it yields Eq.~\eqref{eq:floor_var}. The agreement
-within 0.5\% quoted in Sec.~\ref{sec:floor} uses all image pairs.
-Branchings in earlier layers are attenuated by the rest of the circuit. At
-weaker damping they are not, and they add the term $b_{\rm br}\,p$ of
-Sec.~\ref{sec:pdep}. For uniformly
-distributed angles, $\sigma_\infty=0.096$. The measured points in
+The measured points in
 Fig.~\ref{fig:width} use five parameter draws, the same parameter vectors at
 every depth (those of depth $L$ are the leading entries of those of depth 6),
 so their deviations are correlated across $L$. The distribution over the
 parameters is heavy-tailed, and five draws tend to fall below the average, as
 for the Pauli twirl at $n=8$ and $L\ge4$. An independent Pauli-path simulation
 reproduces these five draws to $2\times10^{-12}$ and, over 120 further draws
-at $L=4$, agrees with the exact average within one standard error.
+at $L=4$, agrees with the exact average within one standard error. In this
+exact average, the ratio of the AD and Pauli-twirl spreads grows by a factor
+of 3.3 per layer at $n=4$ and 4.5 for $n\ge6$, and its square, the ratio of
+their shot factors, by 11 and 20. At $n=4$, the squared ratio is 2.1 at $L=1$
+and $1.3\times10^3$ at $L=4$.
 
-In this exact average, the per-layer growth of the ratio of the AD and
-Pauli-twirl spreads, 3.3 at $n=4$ (Sec.~\ref{sec:floor}), rises to 4.5 for
-$n\ge6$, and that of its square from 11 to 20. At $n=4$, the squared ratio is
-2.1 at $L=1$ and $1.3\times10^3$ at $L=4$. The per-layer decay rate of the
-twirled spread agrees with $np$ within 1\% for $p\le0.05$ at $n=4$ and 8. For
-$p\le0.03$ the coefficient $b_{\rm br}$ of Sec.~\ref{sec:pdep} is
-$(1.8$--$2.7)\times10^{-3}$ at $n=4$ and $(1.0$--$2.4)\times10^{-4}$ at $n=8$, and
-Eq.~\eqref{eq:Lstar} agrees with the exact separation depth within 1\% for
-$p\le0.01$ and within one layer for larger $p$ at $n=4$, and within two layers
-for $p\le0.03$ at $n=8$. At finite temperature, the branching part of the
+\paragraph{Floor at strong damping.}
+Under AD the adjoint channel maps $Z$ to $c^2Z+pI$. The next random block
+averages the cross moments between the $I$ and $Z$ branches to zero. The AD
+spread therefore splits into the twirled part and a branching part,
+\begin{equation}
+\sigma_{\AD}^2=\sigma_{\rm Pauli}^2+\sigma_{\rm br}^2 ,
+\label{eq:split}
+\end{equation}
+where $\sigma_{\rm br}$ collects the paths through at least one branching into
+the identity. The damping after the last entangler branches the $Z$ component
+of each $z_j$ into the identity and adds
+\begin{equation}
+\delta z_j=p(1-p)\bigl[(1-p)\,v_z\cos a_j-c\,v_y\sin a_j\bigr]
+\label{eq:floor}
+\end{equation}
+to $z_j$, where $(v_x,v_y,v_z)$ is the direction into which the final
+trainable block rotates $Z_j$. Averaged over the final block, with
+$\mathbb E\,v_z^2=\frac12$, $\mathbb E\,v_y^2=\frac14$, and
+$\mathbb E\,v_zv_y=0$, Eq.~\eqref{eq:floor} yields Eq.~\eqref{eq:floor_var}.
+The agreement within 0.5\% quoted in Sec.~\ref{sec:floor} uses all image
+pairs. For uniformly distributed angles, $\sigma_\infty=0.096$. At strong
+damping, branchings in earlier layers are attenuated by the rest of the
+circuit, so the last layer alone sets the floor.
+
+\paragraph{Weak damping.}
+At weak damping, the twirled spread decays per layer as $e^{-np}$. This is
+because a scrambled Pauli string has about $3n/4$ non-identity sites, and each
+of the two insertions per layer shrinks such a site by a factor of about
+$1-2p/3$ on average. This decay rate agrees with $np$ within 1\% for
+$p\le0.05$ at $n=4$ and 8. The floor of the AD spread at large depth,
+$\sigma_{\rm br,\infty}$, changes as well (Table~\ref{tab:pdep} and
+Fig.~\ref{fig:sep_app}). Its square has two parts,
+$\sigma_{\rm br,\infty}^2\approx\sigma_\infty^2+b_{\rm br}\,p$. The first is
+proportional to $p^2$ [Eq.~\eqref{eq:floor_var}]. The second comes from
+branchings in the roughly $1/(np)$ earlier layers that the damping does not yet
+suppress. It acts on the input dependence of those layers, which concentrates
+with width. For $p\le0.03$, $b_{\rm br}$ is
+$(1.8$--$2.7)\times10^{-3}$ at $n=4$ and $(1.0$--$2.4)\times10^{-4}$ at
+$n=8$, about an order of magnitude smaller.
+
+\paragraph{Separation depth.}
+We define the separation depth $L^*$ as the depth at which
+$(\sigma_{\AD}/\sigma_{\rm Pauli})^2$ first reaches 10. There, the twirl needs
+ten times the shots of AD before training. By Eq.~\eqref{eq:split}, this
+happens when $\sigma_{\rm br}=3\,\sigma_{\rm Pauli}$. With
+$\sigma_{\rm br}\approx\sigma_{\rm br,\infty}$ and
+$\sigma_{\rm Pauli}\approx\sigma_{\rm None}\,e^{-npL}$, we obtain the estimate
+\begin{equation}
+L^*\approx\frac{1}{np}\,\ln\frac{3\,\sigma_{\rm None}}{\sigma_{\rm br,\infty}},
+\label{eq:Lstar}
+\end{equation}
+where $\sigma_{\rm None}$ is taken at large depth (0.24 at $n=4$ and 0.062 at
+$n=8$). Equation~\eqref{eq:Lstar} agrees with the exact separation depth
+within 1\% for $p\le0.01$ and within one layer for larger $p$ at $n=4$, and
+within two layers for $p\le0.03$ at $n=8$ (Fig.~\ref{fig:sep}). Since
+$\sigma_{\rm br,\infty}$ falls roughly as a power of $p$ and enters only
+through the logarithm, $L^*$ grows roughly as $p^{-1}\ln(1/p)$.
+
+\paragraph{Finite temperature.}
+At finite temperature, the branching part of the
 spread at $n=4$ follows $\lvert1-2N\rvert$ within 0.4\% for every $N$ and
-$L\le8$ at $p=0.3$, and within 0.2\% at $p=0.1$.
+$L\le8$ at $p=0.3$, and within 0.2\% at $p=0.1$. It is thus symmetric under
+$N\leftrightarrow1-N$, as the frame gauge of Sec.~\ref{sec:gauge} requires.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{fig_sep_app}
+\caption{Spread before training at weaker damping, from the exact average over
+parameters (5000 image pairs at $n=4$, 700 at $n=8$). (a) Spread against depth
+at $n=4$ for AD (squares) and the Pauli twirl (triangles) at three values of
+$p$, and for the noiseless circuit up to $L=30$; vertical segments mark $L^*$.
+(b) Floor $\sigma_{\rm br,\infty}$ of the AD spread (markers) and its
+last-layer part $\sigma_\infty$ [Eq.~\eqref{eq:floor_var}, lines] for $n=4$
+(filled, solid) and $n=8$ (hollow, dashed); the dotted line is the shot noise
+$1/\sqrt{N_s}$ at $N_s=10^3$. At $n=8$ the exact average was computed for
+$p\ge0.01$.}
+\label{fig:sep_app}
+\end{figure*}
+
+\begin{table}[t]
+\caption{Dependence on the damping strength $p$ before training, from the
+exact average over parameters: the depth $L^*$ at which
+$(\sigma_{\AD}/\sigma_{\rm Pauli})^2$ first reaches 10, the floor
+$\sigma_{\rm br,\infty}$ of the AD spread and its last-layer part $\sigma_\infty$
+[Eq.~\eqref{eq:floor_var}], and the number of shots
+$1/\sigma_{\rm br,\infty}^2$ that resolves the floor. The floor is estimated from 5000 ($n=4$) and 700 ($n=8$) random image pairs, with a sampling error of about 1\%.}
+\label{tab:pdep}
+\begin{ruledtabular}
+\begin{tabular}{lccccc}
+ & \multicolumn{4}{c}{$n=4$} & $n=8$\\
+$p$ & $L^*$ & $\sigma_{\rm br,\infty}$ & $\sigma_\infty$ & $1/\sigma_{\rm br,\infty}^2$ & $L^*$\\
+\colrule
+0.001 & 1508 & 0.0017 & 0.0005 & $3.4\times10^5$ & --\\
+0.003 & 453 & 0.0031 & 0.0014 & $1.0\times10^5$ & --\\
+0.01 & 117 & 0.0067 & 0.0047 & $2.2\times10^4$ & 49\\
+0.03 & 33 & 0.0155 & 0.0137 & $4.2\times10^3$ & 13\\
+0.05 & 18 & 0.0235 & 0.0219 & $1.8\times10^3$ & 8\\
+0.1 & 8 & 0.0408 & 0.0396 & 600 & 5\\
+0.2 & 4 & 0.0647 & 0.0637 & 240 & 3\\
+0.3 & 2 & 0.0757 & 0.0747 & 170 & 2\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
 
 \section{Training details and numerical checks}
 \label{app:training}

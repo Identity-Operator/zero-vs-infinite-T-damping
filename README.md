@@ -46,16 +46,16 @@ scripts refer to each other by these paths, so they are kept.
 |---|---|---|
 | Fig. 1 | drawn in LaTeX (quantikz) | — |
 | Fig. 2 | `code/scale_gauge/vr/vr_test.py` | `vr/vr_results.pkl` |
-| Fig. 3, Table V | `run_phase1.py depth` (raw readout, 100 steps), `run_phase1.py readout` (standardized readout); `scale_e1e2/scale_test.py` mode e2 (raw readout, 1000 steps, L = 4) | `m5_depth/`, `m5_readout/`, `scale_e1e2/scale_e2_*.pkl` |
+| Fig. 3, Table III | `run_phase1.py depth` (raw readout, 100 steps), `run_phase1.py readout` (standardized readout); `scale_e1e2/scale_test.py` mode e2 (raw readout, 1000 steps, L = 4) | `m5_depth/`, `m5_readout/`, `scale_e1e2/scale_e2_*.pkl` |
 | Fig. 4 | `vqe_gauge/vqe_gauge_test.py` | `vqe_gauge/vqe_gauge_results.pkl` |
 | Sign of the coupling in the eigensolver | `vqe_gauge/vqe_sign_test.py`, `vqe_gauge/vqe_sign_identity.py` | `vqe_sign_results.pkl`, `vqe_sign_log.txt`, `vqe_sign_identity_log.txt` |
 | Table I | `gauge/test_gauge.py` | `gauge/results.json` |
 | Fig. 5 | `run_phase1.py width_diag`; `theory/t1_scale_ratio.py` (exact average) | `m5_width_diag/`, `theory/t1_results.json` |
 | Fig. 6 | `run_phase1.py shots`; `shots/F1_calib.py` + `F1_calib_summary.py`; `shots/F1_s5.py` + `F1_s5_summary.py` | `m5_shots/`, `shots/F1_calib_summary.pkl`, `shots/F1_s5_summary.pkl` |
-| Table II, Fig. 7 | `theory/t1_p_dependence.py` | `theory/t1_p_dependence_n4.json`, `_n8.json` (logs in `.txt`) |
-| Table III | `run_phase1.py pdep`, `run_phase1.py pdep_L8`; `shots/F1_pdep.py` | `m5_pdep/`, `m5_pdep_L8/`, `shots/F1_pdep_*.pkl` |
-| Table IV, App. B | `verify/stats_paired_holm.py`, `verify/stats_appendix.py` | `verify/stats_paired_holm.txt` |
-| Table VI (noise gain $G$) | `shots/F1_gain_check.py` + `F1_gain_table.py` | `shots/F1_gain_check.pkl`, `shots/F1_gain_table.txt` |
+| Table VI, Figs. 7 and 9 | `theory/t1_p_dependence.py` | `theory/t1_p_dependence_n4.json`, `_n8.json` (logs in `.txt`) |
+| Table V | `run_phase1.py pdep`, `run_phase1.py pdep_L8`; `shots/F1_pdep.py` | `m5_pdep/`, `m5_pdep_L8/`, `shots/F1_pdep_*.pkl` |
+| Table II, App. B | `verify/stats_paired_holm.py`, `verify/stats_appendix.py` | `verify/stats_paired_holm.txt` |
+| Table IV (noise gain $G$) | `shots/F1_gain_check.py` + `F1_gain_table.py` | `shots/F1_gain_check.pkl`, `shots/F1_gain_table.txt` |
 | Finite temperature | `theory/t1_gad_temperature.py`, `verify/gad_linearity_check.py` | the `.txt` files beside them |
 | Reversed-damping null test | `run_phase1.py fixedpoint` | `m5_fixedpoint/` |
 | Channel after every CNOT of the entangler | `run_phase1.py inside` | `m5_inside/` |
